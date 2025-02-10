@@ -1,3 +1,3 @@
 # Study-Group-Finder
 
-# Names - Jesus Santiago
+# Names - Jesus Santiago, Vansh Patel
