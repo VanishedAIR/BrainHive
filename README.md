@@ -1,4 +1,3 @@
 # Study-Group-Finder
 
-# Names - Jesus Santiago
-# Name - Karan Verma
+# Names - Jesus Santiago, Vansh Patel
