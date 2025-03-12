@@ -1,3 +1,3 @@
 # Study-Group-Finder
 
-# Names - Jesus Santiago, Vansh Patel, Karan Verma
+# Names - Jesus Santiago, Vansh Patel, Karan Verma, Eloisa Vera
