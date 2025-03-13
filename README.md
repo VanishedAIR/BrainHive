@@ -1,4 +1,4 @@
-# Study-Group-Finder
+# Study-Group-Finder (SGF)
 
 # Names - Jesus Santiago, Vansh Patel, Karan Verma, Eloisa Vera, Kaden Jefferson
 
