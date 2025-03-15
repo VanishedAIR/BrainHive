@@ -34,7 +34,7 @@ _A platform for students to easily find, join, and manage study groups - Develop
 
 ## ⚠️ Academic Disclaimer
 
-This is a student project created for educational purposes at Florida State University. It is not a commercial product and is not intended for production use. Some features may be simplified or incomplete compared to professional applications.
+This is a student project created for educational purposes at California State University - Long Beach. It is not a commercial product and is not intended for production use. Some features may be simplified or incomplete compared to professional applications.
 
 ## Third-Party Services Notice
 
