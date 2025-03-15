@@ -1,0 +1,95 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Feed {
+  id        Int    @id @default(autoincrement())
+  post      Post   @relation("PostToFeed", fields: [postId], references: [id])
+  postId    Int    
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  postId    Int      @unique
+  content   String
+  timeStamp Float
+  user      User     @relation("UserMeetings", fields: [userId], references: [id])
+  userId    Int
+  userPosts User     @relation(fields: [userId], references: [id])
+  feed      Feed[]   @relation("PostToFeed")
+}
+
+model Profile {
+  id                  Int      @id @default(autoincrement())
+  name                String
+  studentSubject      String
+  profileBio          String
+  studentPref         String
+  profileDate         String
+  user                User     @relation(fields: [userId], references: [id])
+  userId              Int      @unique
+}
+
+model ResetCode {
+  id          Int      @id @default(autoincrement())
+  user        User     @relation(fields: [userId], references: [id])
+  userId      Int
+  code        String
+  expireTime  DateTime @default(now())
+}
+
+model User {
+  id                Int  @id @default(autoincrement())
+  name              String @unique
+  studentAge        Int 
+  studentGrade      Int
+  profile           Profile?
+  meetings          Meeting[] @relation("UserMeetings")
+  posts             Post[]
+  userPosts         Post[] @relation("UserMeetings")
+  resetCodes        ResetCode[]
+  studyGroups       StudyGroup[]
+  credentials       Credentials?
+}
+
+model StudyGroup {
+  id          Int      @id @default(autoincrement())
+  groupName   String
+  subject     Int
+  rules       String
+  owner       String
+  members     String
+  status      String
+  user        User     @relation(fields: [userId], references: [id])
+  userId      Int
+}
+
+model Meeting {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation("UserMeetings", fields: [userId], references: [id])
+  userId    Int
+  meeting_ID Int
+  year Int
+  month Int
+  day Int
+  time Int
+  location String
+}
+
+model Credentials {
+  id       Int      @id @default(autoincrement())
+  user     User     @relation(fields: [userId], references: [id])
+  userId   Int      @unique
+  username String   @unique
+  password String
+  email    String   @unique
+  reset_code Int    @default(0)
+}
