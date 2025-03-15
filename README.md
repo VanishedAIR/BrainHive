@@ -1,4 +1,4 @@
-# Study-Group-Finder (SGF)
+# BrainHive
 
 # Names - Jesus Santiago, Vansh Patel, Karan Verma, Eloisa Vera, Kaden Jefferson
 
