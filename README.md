@@ -1,10 +1,10 @@
 # BrainHive 🐝
 
-**Connect. Learn. Grow.**  
+**Hive Together, Thrive Together.**  
 *A platform for students to find, join, and manage study groups with ease.*
 
 **Team**: Jesus Santiago, Vansh Patel, Karan Verma, Eloisa Vera, Kaden Jefferson
-**GitHub**: [Study-Group-Finder](https://github.com/your-org/Study-Group-Finder)
+**GitHub**: [BrainHive](https://github.com/VanishedAIR/BrainHive)
 
 ---
 
