@@ -1,4 +1,5 @@
 @import "tailwindcss";
+
 @plugin "tailwindcss-animate";
 @custom-variant dark (&:is(.dark *));
 @tailwind base;
@@ -49,45 +50,45 @@
 /* Light Mode: Brainhive Brand Colors */
 :root {
   --radius: 0.625rem;
-  --background: #F8F9FA; /* soft gray background */
-  --foreground: #2C3E50; /* deep navy text */
-  --card: #FFFFFF;
-  --card-foreground: #2C3E50;
-  --popover: #FFFFFF;
-  --popover-foreground: #2C3E50;
+  --background: #f8f9fa; /* soft gray background */
+  --foreground: #2c3e50; /* deep navy text */
+  --card: #ffffff;
+  --card-foreground: #2c3e50;
+  --popover: #ffffff;
+  --popover-foreground: #2c3e50;
 
   /* Primary interactive colors */
-  --primary: #F6B93B; /* rich honey gold */
-  --primary-foreground: #2C3E50;
-  --primary-hover: #E67E22; /* warm amber for hover */
+  --primary: #f6b93b; /* rich honey gold */
+  --primary-foreground: #2c3e50;
+  --primary-hover: #e67e22; /* warm amber for hover */
 
   /* Secondary colors / accents */
-  --secondary: #EDF2F7; /* light gray for secondary elements */
-  --secondary-foreground: #2C3E50;
-  --secondary-hover: #E2E8F0; /* subtle hover effect */
+  --secondary: #edf2f7; /* light gray for secondary elements */
+  --secondary-foreground: #2c3e50;
+  --secondary-hover: #e2e8f0; /* subtle hover effect */
 
   /* Additional defaults */
-  --muted: #F1F5F9; /* softer background */
-  --muted-foreground: #4A5568;
-  --accent: #E67E22; /* warm amber accent */
-  --accent-foreground: #FFFFFF;
-  --destructive: #E53E3E; /* refined red */
-  --border: #CBD5E0; /* subtle border */
-  --input: #EDF2F7;
-  --ring: #F6B93B; /* honey gold ring */
-  --chart-1: #F6B93B;
-  --chart-2: #E67E22;
-  --chart-3: #2C3E50;
+  --muted: #f1f5f9; /* softer background */
+  --muted-foreground: #4a5568;
+  --accent: #e67e22; /* warm amber accent */
+  --accent-foreground: #ffffff;
+  --destructive: #e53e3e; /* refined red */
+  --border: #cbd5e0; /* subtle border */
+  --input: #edf2f7;
+  --ring: #f6b93b; /* honey gold ring */
+  --chart-1: #f6b93b;
+  --chart-2: #e67e22;
+  --chart-3: #2c3e50;
   --chart-4: #718096;
-  --chart-5: #A0AEC0;
-  --sidebar: #FFFFFF;
-  --sidebar-foreground: #2C3E50;
-  --sidebar-primary: #F6B93B;
-  --sidebar-primary-foreground: #2C3E50;
-  --sidebar-accent: #E67E22;
-  --sidebar-accent-foreground: #FFFFFF;
-  --sidebar-border: #CBD5E0;
-  --sidebar-ring: #F6B93B;
+  --chart-5: #a0aec0;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #2c3e50;
+  --sidebar-primary: #f6b93b;
+  --sidebar-primary-foreground: #2c3e50;
+  --sidebar-accent: #e67e22;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #cbd5e0;
+  --sidebar-ring: #f6b93b;
 
   /* Link Colors */
   --link-color: var(--primary);
@@ -97,49 +98,49 @@
 /* Dark Mode: Adjusted for Contrast */
 .dark {
   /* Base colors - softer dark blue background */
-  --background: #0F172A;
-  --foreground: #E2E8F0;
-  --card: #1E293B;
-  --card-foreground: #E2E8F0;
-  --popover: #1E293B;
-  --popover-foreground: #E2E8F0;
+  --background: #0f172a;
+  --foreground: #e2e8f0;
+  --card: #1e293b;
+  --card-foreground: #e2e8f0;
+  --popover: #1e293b;
+  --popover-foreground: #e2e8f0;
 
   /* Primary colors - refined honey gold */
-  --primary: #F59E0B;
-  --primary-foreground: #0F172A;
-  --primary-hover: #D97706;
+  --primary: #f59e0b;
+  --primary-foreground: #0f172a;
+  --primary-hover: #d97706;
 
   /* Secondary colors - deep navy */
   --secondary: #334155;
-  --secondary-foreground: #E2E8F0;
+  --secondary-foreground: #e2e8f0;
   --secondary-hover: #475569;
 
   /* Muted and accent colors */
-  --muted: #1E293B;
-  --muted-foreground: #94A3B8;
-  --accent: #D97706;
-  --accent-foreground: #F1F5F9;
-  --destructive: #EF4444;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+  --accent: #d97706;
+  --accent-foreground: #f1f5f9;
+  --destructive: #ef4444;
   --border: #334155;
-  --input: #1E293B;
-  --ring: #F59E0B;
+  --input: #1e293b;
+  --ring: #f59e0b;
 
   /* Chart colors - warm gradient */
-  --chart-1: #F59E0B;
-  --chart-2: #D97706;
-  --chart-3: #B45309;
-  --chart-4: #92400E;
-  --chart-5: #78350F;
+  --chart-1: #f59e0b;
+  --chart-2: #d97706;
+  --chart-3: #b45309;
+  --chart-4: #92400e;
+  --chart-5: #78350f;
 
   /* Sidebar styling */
-  --sidebar: #1E293B;
-  --sidebar-foreground: #E2E8F0;
-  --sidebar-primary: #F59E0B;
-  --sidebar-primary-foreground: #0F172A;
-  --sidebar-accent: #D97706;
-  --sidebar-accent-foreground: #F1F5F9;
+  --sidebar: #1e293b;
+  --sidebar-foreground: #e2e8f0;
+  --sidebar-primary: #f59e0b;
+  --sidebar-primary-foreground: #0f172a;
+  --sidebar-accent: #d97706;
+  --sidebar-accent-foreground: #f1f5f9;
   --sidebar-border: #334155;
-  --sidebar-ring: #F59E0B;
+  --sidebar-ring: #f59e0b;
 
   /* Link colors */
   --link-color: var(--primary);
@@ -148,7 +149,6 @@
 
 /* Base Styles */
 @layer base {
-  
   /* Link Defaults */
   a {
     color: var(--link-color);
@@ -158,7 +158,7 @@
   a:hover {
     color: var(--link-hover);
   }
-  
+
   /* Button Defaults */
   button {
     background: var(--primary);

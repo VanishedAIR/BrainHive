@@ -1,28 +1,16 @@
-import { ModeToggle } from "@/components/ui/toggle";
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  SignUpButton,
-  UserButton,
-} from "@clerk/nextjs";
+import { currentUser } from "@clerk/nextjs/server";
+import { syncUser } from "@/actions/useractions";
+import ClientNavbar from "./ClientNavbar";
 
-export default function Navbar() {
+export default async function Navbar() {
+  const user = await currentUser();
+  if (user) await syncUser(); // POST
+
   return (
     <section>
       <header className="flex justify-between items-center p-4 h-25">
-        {/* logo on the left side of the navbar: */}
         <img src="/logo.svg" alt="Logo" className="h-20 w-20 mt-1.35" />
-        <div className="flex gap-4 flex-row items-center">
-          <SignedOut>
-            <ModeToggle/>
-            <SignInButton mode="modal" />
-            <SignUpButton />
-          </SignedOut>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
-        </div>
+        <ClientNavbar /> {}
       </header>
     </section>
   );
