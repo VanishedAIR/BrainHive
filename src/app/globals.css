@@ -1,19 +1,174 @@
 @import "tailwindcss";
+@plugin "tailwindcss-animate";
+@custom-variant dark (&:is(.dark *));
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+/* Map Tailwind’s theme keys to our custom variables */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* Light Mode: Brainhive Brand Colors */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --radius: 0.625rem;
+  --background: #F8F9FA; /* soft gray background */
+  --foreground: #2C3E50; /* deep navy text */
+  --card: #FFFFFF;
+  --card-foreground: #2C3E50;
+  --popover: #FFFFFF;
+  --popover-foreground: #2C3E50;
+
+  /* Primary interactive colors */
+  --primary: #F6B93B; /* rich honey gold */
+  --primary-foreground: #2C3E50;
+  --primary-hover: #E67E22; /* warm amber for hover */
+
+  /* Secondary colors / accents */
+  --secondary: #EDF2F7; /* light gray for secondary elements */
+  --secondary-foreground: #2C3E50;
+  --secondary-hover: #E2E8F0; /* subtle hover effect */
+
+  /* Additional defaults */
+  --muted: #F1F5F9; /* softer background */
+  --muted-foreground: #4A5568;
+  --accent: #E67E22; /* warm amber accent */
+  --accent-foreground: #FFFFFF;
+  --destructive: #E53E3E; /* refined red */
+  --border: #CBD5E0; /* subtle border */
+  --input: #EDF2F7;
+  --ring: #F6B93B; /* honey gold ring */
+  --chart-1: #F6B93B;
+  --chart-2: #E67E22;
+  --chart-3: #2C3E50;
+  --chart-4: #718096;
+  --chart-5: #A0AEC0;
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #2C3E50;
+  --sidebar-primary: #F6B93B;
+  --sidebar-primary-foreground: #2C3E50;
+  --sidebar-accent: #E67E22;
+  --sidebar-accent-foreground: #FFFFFF;
+  --sidebar-border: #CBD5E0;
+  --sidebar-ring: #F6B93B;
+
+  /* Link Colors */
+  --link-color: var(--primary);
+  --link-hover: var(--primary-hover);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #333333;
+/* Dark Mode: Adjusted for Contrast */
+.dark {
+  /* Base colors - softer dark blue background */
+  --background: #0F172A;
+  --foreground: #E2E8F0;
+  --card: #1E293B;
+  --card-foreground: #E2E8F0;
+  --popover: #1E293B;
+  --popover-foreground: #E2E8F0;
+
+  /* Primary colors - refined honey gold */
+  --primary: #F59E0B;
+  --primary-foreground: #0F172A;
+  --primary-hover: #D97706;
+
+  /* Secondary colors - deep navy */
+  --secondary: #334155;
+  --secondary-foreground: #E2E8F0;
+  --secondary-hover: #475569;
+
+  /* Muted and accent colors */
+  --muted: #1E293B;
+  --muted-foreground: #94A3B8;
+  --accent: #D97706;
+  --accent-foreground: #F1F5F9;
+  --destructive: #EF4444;
+  --border: #334155;
+  --input: #1E293B;
+  --ring: #F59E0B;
+
+  /* Chart colors - warm gradient */
+  --chart-1: #F59E0B;
+  --chart-2: #D97706;
+  --chart-3: #B45309;
+  --chart-4: #92400E;
+  --chart-5: #78350F;
+
+  /* Sidebar styling */
+  --sidebar: #1E293B;
+  --sidebar-foreground: #E2E8F0;
+  --sidebar-primary: #F59E0B;
+  --sidebar-primary-foreground: #0F172A;
+  --sidebar-accent: #D97706;
+  --sidebar-accent-foreground: #F1F5F9;
+  --sidebar-border: #334155;
+  --sidebar-ring: #F59E0B;
+
+  /* Link colors */
+  --link-color: var(--primary);
+  --link-hover: var(--primary-hover);
+}
+
+/* Base Styles */
+@layer base {
+  
+  /* Link Defaults */
+  a {
+    color: var(--link-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-poppins);
+  a:hover {
+    color: var(--link-hover);
+  }
+  
+  /* Button Defaults */
+  button {
+    background: var(--primary);
+    color: var(--primary-foreground);
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius);
+    border: none;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+  button:hover {
+    background: var(--primary-hover);
+  }
 }
