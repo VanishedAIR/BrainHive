@@ -170,5 +170,6 @@
   }
   button:hover {
     background: var(--primary-hover);
+    cursor: pointer;
   }
 }
