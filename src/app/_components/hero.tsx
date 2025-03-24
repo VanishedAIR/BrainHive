@@ -21,9 +21,9 @@ export default function Hero() {
       </div>
       <div className="flex-1 flex items-center justify-center ml-16">
         <img
-          src="/logo.svg"
+          src="/hero-honeycomb.png"
           alt="Study Hive Hero"
-          className="w-full h-auto max-w-lg object-contain"
+          className="w-[auto] h-[400px]"
         />
       </div>
     </div>
