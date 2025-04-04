@@ -10,7 +10,7 @@ export default function ClientNavbar() {
       <SignedOut>
         <ModeToggle />
         <SignInButton mode="modal">
-          <Button variant="default">Sign In</Button>
+          <Button variant="default" className="bg-transparent hover:bg-[#d97706] border-2 border-primary hover:border-[#d97706] text-primary font-bold dark:text-white hover:text-white">Sign In</Button>
         </SignInButton>
       </SignedOut>
       <SignedIn>
