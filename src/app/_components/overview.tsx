@@ -1,8 +1,6 @@
 export default function Overview() {
   return (
-    <div
-      id="overview"
-      className="relative min-h-screen py-16 px-8"
+    <div id="overview" className="relative min-h-screen py-16 px-8"
     >
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12">
         <div className="w-full md:w-1/2 flex items-center justify-center">
