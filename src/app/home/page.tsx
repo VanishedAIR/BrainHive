@@ -12,13 +12,13 @@ export default function HomePage() {
             <img
               src="/logo.svg"
               alt="Logo"
-              className="h-20 w-20 mt-[1.35rem]"
+              className="h-20 w-20 mt-1.35"
             />
           </Link>
           <ClientNavbar />
         </header>
       </section>
-      <div className="flex">
+      <div className="flex border-t border-gray-200 dark:border-gray-800">
         {/* User Sidebar */}
         <UserSidebar />
 

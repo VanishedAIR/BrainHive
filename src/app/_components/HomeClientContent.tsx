@@ -6,12 +6,13 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { ChevronDown } from "lucide-react";
+import StudygroupSidebar from "./StudygroupSidebar";
 
 export default function HomeClientContent() {
   return (
-    <div className="flex-1">
-      <div className="flex w-[70%] flex-col mx-auto">
-        <div className="w-[50%] p-4 mx-auto mb-16">
+    <div className="flex-1 pt-4">
+      <div className="flex w-[90%] flex-col mx-auto">
+        <div className="w-[35%] p-4 mb-16 mx-100">
           <div className="relative">
             <input
               type="text"
@@ -27,7 +28,7 @@ export default function HomeClientContent() {
           </div>
         </div>
         <div className="flex gap-4">
-          <div className="w-[20%] p-4">
+          <div className="w-[17%] p-4">
             <div>
               <h1 className="text-center text-2xl font-semibold py-3 mb-3">
                 Filters
@@ -85,7 +86,10 @@ export default function HomeClientContent() {
               </CollapsibleContent>
             </Collapsible>
           </div>
-          <div className="w-[75%] p-4 border-2 border-black rounded-xl dark:border-white"></div>
+          <div className="w-[67%] p-4 border-2 border-black rounded-xl dark:border-white">
+            FEED
+          </div>
+          <StudygroupSidebar />
         </div>
       </div>
     </div>
