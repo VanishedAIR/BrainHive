@@ -1,5 +1,6 @@
 "use client";
 import Overview from "./overview";
+import { SignUpButton } from "@clerk/nextjs";
 
 export default function Hero() {
   return (
@@ -27,14 +28,18 @@ export default function Hero() {
           />
         </div>
       </div>
-      <div className = "flex flex-row gap-16">
-        <button className="w-74 text-white px-8 md:px-12 py-4 rounded-lg transition-all duration-300 font-bold text-md md:text-lg lg:text-xl shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
-          JOIN NOW FOR FREE
-        </button>
-        <button 
+      <div className="flex flex-row gap-16">
+        <SignUpButton mode="modal">
+          <button className="w-74 text-white px-8 md:px-12 py-4 rounded-lg transition-all duration-300 font-bold text-md md:text-lg lg:text-xl shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+            JOIN NOW FOR FREE
+          </button>
+        </SignUpButton>
+        <button
           className="bg-transparent hover:bg-[#d97706] border-3 border-primary hover:border-[#d97706] text-primary dark:text-white hover:text-white px-8 md:px-12 py-4 rounded-lg transition-all duration-300 font-bold text-md md:text-lg lg:text-xl shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
           onClick={() => {
-            document.getElementById('overview')?.scrollIntoView({ behavior: 'smooth' });
+            document
+              .getElementById("overview")
+              ?.scrollIntoView({ behavior: "smooth" });
           }}
         >
           LEARN MORE!
