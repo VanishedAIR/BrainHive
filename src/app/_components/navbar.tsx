@@ -11,7 +11,7 @@ export default async function Navbar() {
     <section>
       <header className="flex justify-between items-center p-4 h-25">
         <Link href = "/">
-        <img src="/logo.svg" alt="Logo" className="h-20 w-20 mt-1.35" />
+        <img src="/logo.svg" alt="Logo" className="h-20 w-20 mt-[1.35rem]" />
         </Link>
         <ClientNavbar />
       </header>
