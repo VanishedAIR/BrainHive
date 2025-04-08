@@ -41,7 +41,9 @@ This is a student project created for educational purposes at California State U
 This project integrates with external services including:
 
 - **Clerk** (Authentication)
-- **Prisma** (Database)
+- **Postgresql** (Database)
+- **Prisma** (Data Modeling)
+- **Neon** (Serverless Postgres Platform)
 - **When2Meet** (Scheduling)
 
 Each service operates under its own terms of use and privacy policy. This project does not claim ownership or responsibility for these third-party services.
