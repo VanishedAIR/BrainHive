@@ -18,11 +18,9 @@ export default function HomePage() {
           <ClientNavbar />
         </header>
       </section>
-      <div className="flex border-t border-gray-200 dark:border-gray-800">
-        {/* User Sidebar */}
+      <div className="flex border-t border-border">
         <UserSidebar />
 
-        {/* Main Content */}
         <HomeClientContent />
       </div>
     </div>
