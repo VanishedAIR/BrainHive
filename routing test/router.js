@@ -1,8 +1,7 @@
 document.body.innerHTML = `
     <nav>
         <a href="#home">Home</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
+        <a href="#signin">Sign In</a>
     </nav>
     <div id="content"></div>
 `;
@@ -19,7 +18,7 @@ class Router {
         console.log(hash);
         const route = this.routes[hash];
         if (route) {
-            document.querySelector('#content').innerHTML = route.template;
+            document.querySelector('#content').innerHTML = route();
         }
         else {
             document.querySelector('#content').innerHTML = '404 not found';
@@ -28,16 +27,9 @@ class Router {
 }
 
 const routes = {
-    home:() => '<h1>Home</h1>',
-    about:() => '<h1>About</h1>',
-    contact:() => '<h1>Contact</h1>'
+    home: () => '<h1>Welcome to the Homepage</h1>',
+    signin: () => '<h1>Sign In Page</h1>'
 };
 
 const router = new Router(routes);
-
-// router.handleRouteChange(); // should display the home page
-// window.location.hash = '#about'; // should display the about page
-// window.location.hash = '#contact'; // should display the contact page
-// window.location.hash = '#home'; // should display the home page
-// window.location.hash = '#'; // should display the 404 page
 
