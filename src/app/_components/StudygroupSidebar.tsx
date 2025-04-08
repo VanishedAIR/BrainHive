@@ -1,6 +1,6 @@
 export default function StudygroupSidebar() {
     return (
-        <div className = "w-[33%]">
+        <div className = "flex flex-1">
             sidebar
         </div>
     )

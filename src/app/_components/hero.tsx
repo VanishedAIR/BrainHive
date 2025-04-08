@@ -1,5 +1,4 @@
 "use client";
-import Overview from "./overview";
 import { SignUpButton } from "@clerk/nextjs";
 
 export default function Hero() {
@@ -28,14 +27,14 @@ export default function Hero() {
           />
         </div>
       </div>
-      <div className="flex flex-row gap-16">
+      <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 md:gap-12">
         <SignUpButton mode="modal">
-          <button className="w-74 text-white px-8 md:px-12 py-4 rounded-lg transition-all duration-300 font-bold text-md md:text-lg lg:text-xl shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+          <button className="min-w-[137px] bg-primary text-white px-8 md:px-12 py-4 rounded-lg transition-all duration-300 font-bold text-sm md:text-lg lg:text-xl shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
             JOIN NOW FOR FREE
           </button>
         </SignUpButton>
         <button
-          className="bg-transparent hover:bg-[#d97706] border-3 border-primary hover:border-[#d97706] text-primary dark:text-white hover:text-white px-8 md:px-12 py-4 rounded-lg transition-all duration-300 font-bold text-md md:text-lg lg:text-xl shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+          className="min-w-[137px] bg-transparent hover:bg-[#d97706] border-3 border-primary hover:border-[#d97706] text-primary dark:text-white hover:text-white px-8 md:px-12 py-4 rounded-lg transition-all duration-300 font-bold text-md md:text-lg lg:text-xl shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
           onClick={() => {
             document
               .getElementById("overview")
