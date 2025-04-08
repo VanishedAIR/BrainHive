@@ -11,8 +11,8 @@ import StudygroupSidebar from "./StudygroupSidebar";
 export default function HomeClientContent() {
   return (
     <div className="flex-1 pt-4">
-      <div className="flex w-[90%] flex-col mx-auto">
-        <div className="w-[35%] p-4 mb-16 mx-100">
+      <div className="flex w-[75%] flex-col mx-auto">
+        <div className="w-[50%] p-4 mb-16 mx-auto">
           <div className="relative">
             <input
               type="text"
@@ -27,66 +27,8 @@ export default function HomeClientContent() {
             </button>
           </div>
         </div>
-        <div className="flex gap-4">
-          <div className="w-[17%] p-4">
-            <div>
-              <h1 className="text-center text-2xl font-semibold py-3 mb-3">
-                Filters
-              </h1>
-            </div>
-            <Collapsible className="w-full mb-8">
-              <CollapsibleTrigger className="flex w-full items-center justify-between rounded-md border-2 border-black dark:border-white p-4">
-                <span>Subject</span>
-                <ChevronDown className="h-4 w-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />
-              </CollapsibleTrigger>
-              <CollapsibleContent className="mt-2 space-y-2">
-                <div className="rounded-md border-2 border-black/20 dark:border-white/20 p-4">
-                  <select className="w-full bg-transparent outline-none dark:bg-[#1c1b22] dark:text-white">
-                    <option value="option1" className="dark:bg-[#1c1b22]">
-                      Computer Science
-                    </option>
-                    <option value="option2" className="dark:bg-[#1c1b22]">
-                      Calculus 1
-                    </option>
-                    <option value="option3" className="dark:bg-[#1c1b22]">
-                      Calculus 2
-                    </option>
-                  </select>
-                </div>
-              </CollapsibleContent>
-            </Collapsible>
-            <Collapsible className="w-full">
-              <CollapsibleTrigger className="flex w-full items-center justify-between rounded-md border-2 border-black dark:border-white p-4">
-                <span>Location</span>
-                <ChevronDown className="h-4 w-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />
-              </CollapsibleTrigger>
-              <CollapsibleContent className="mt-2 space-y-2">
-                <div className="rounded-md border-2 border-black/20 dark:border-white/20 p-4">
-                  <select className="w-full bg-transparent outline-none dark:bg-[#1c1b22] dark:text-white">
-                    <option value="option1" className="dark:bg-[#1c1b22]">
-                      Long Beach, CA
-                    </option>
-                    <option value="option2" className="dark:bg-[#1c1b22]">
-                      Lakewood, CA
-                    </option>
-                    <option value="option3" className="dark:bg-[#1c1b22]">
-                      Carson, CA
-                    </option>
-                    <option value="option3" className="dark:bg-[#1c1b22]">
-                      Cerritos, CA
-                    </option>
-                    <option value="option3" className="dark:bg-[#1c1b22]">
-                      Artesia, CA
-                    </option>
-                    <option value="option3" className="dark:bg-[#1c1b22]">
-                      Norwalk, CA
-                    </option>
-                  </select>
-                </div>
-              </CollapsibleContent>
-            </Collapsible>
-          </div>
-          <div className="w-[67%] p-4 border-2 border-black rounded-xl dark:border-white">
+        <div className="flex gap-4 border-2 border-border rounded-xl">
+          <div className="flex-1 p-4 border-r border-border">
             FEED
           </div>
           <StudygroupSidebar />

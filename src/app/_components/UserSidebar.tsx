@@ -6,7 +6,7 @@ export async function UserSidebar() {
 
   if (!user) {
     return (
-      <div className="w-[300px] min-h-screen border-r border-gray-200 dark:border-gray-800 p-4 overflow-y-auto">
+      <div className="w-[300px] min-h-screen border-r border-border p-4 overflow-y-auto">
         <h2 className="text-xl font-bold mb-4">User Information</h2>
         <p className="text-gray-500">Please sign in to view your information</p>
       </div>
