@@ -94,6 +94,42 @@ export async function getCurrentUser() {
   }
 }
 
+export async function updateUsername(newUsername: string) {
+  try {
+    const { userId } = await auth();
+
+    if (!userId) {
+      return { success: false, message: "Not authenticated" };
+    }
+
+    // Check if username already exists
+    const existingUser = await prisma.user.findUnique({
+      where: {
+        username: newUsername,
+      },
+    });
+
+    if (existingUser) {
+      return { success: false, message: "Username already taken" };
+    }
+
+    // Update the user's username
+    await prisma.user.update({
+      where: {
+        clerkId: userId,
+      },
+      data: {
+        username: newUsername,
+      },
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.log("Error in updateUsername", error);
+    return { success: false, message: "Failed to update username" };
+  }
+}
+
 export async function deleteCurrentUser() {
   try {
     const { userId } = await auth();
