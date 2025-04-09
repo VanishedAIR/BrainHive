@@ -36,33 +36,6 @@ export async function syncUser() {
   }
 }
 
-export async function getAllUsers() {
-  try {
-    const users = await prisma.user.findMany({
-      select: {
-        id: true,
-        clerkId: true,
-        username: true,
-        email: true,
-        name: true,
-        image: true,
-        bio: true,
-        location: true,
-        website: true,
-        createdAt: true,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
-
-    return users;
-  } catch (error) {
-    console.log("Error in getAllUsers", error);
-    return [];
-  }
-}
-
 export async function getCurrentUser() {
   try {
     const { userId } = await auth();
@@ -102,7 +75,23 @@ export async function updateUsername(newUsername: string) {
       return { success: false, message: "Not authenticated" };
     }
 
-    // Check if username already exists
+    // Get the current user from database
+    const currentUserDb = await prisma.user.findFirst({
+      where: {
+        clerkId: userId,
+      },
+    });
+
+    if (!currentUserDb) {
+      return { success: false, message: "User not found" };
+    }
+
+    // If username hasn't changed, return success without doing anything
+    if (currentUserDb.username === newUsername) {
+      return { success: true };
+    }
+
+    // Check if username already exists for another user
     const existingUser = await prisma.user.findUnique({
       where: {
         username: newUsername,
@@ -113,7 +102,7 @@ export async function updateUsername(newUsername: string) {
       return { success: false, message: "Username already taken" };
     }
 
-    // Update the user's username
+    // Update the username
     await prisma.user.update({
       where: {
         clerkId: userId,
