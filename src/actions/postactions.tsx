@@ -3,7 +3,7 @@
 import prisma from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 
-// Function to create a new post
+// Function to create a new study group
 export async function createPost(data: {
   studyGroupName: string;
   subjects: string[];
@@ -31,9 +31,9 @@ export async function createPost(data: {
       return { success: false, message: "User not found" };
     }
 
-    console.log("Creating post with data:", data);
+    console.log("Creating study group with data:", data);
 
-    const post = await prisma.post.create({
+    const studyGroup = await prisma.studyGroup.create({
       data: {
         studyGroupName: data.studyGroupName,
         subjects: data.subjects.join(", "),
@@ -42,22 +42,32 @@ export async function createPost(data: {
         studyDate: new Date(data.studyDate),
         isPublic: data.isPublic,
         authorId: user.id,
+        status: "active",
+        members: {
+          create: {
+            userId: user.id,
+            username: user.username,
+          },
+        },
+      },
+      include: {
+        members: true,
       },
     });
 
-    console.log("Post created:", post);
+    console.log("Study group created:", studyGroup);
 
-    return { success: true, post };
+    return { success: true, post: studyGroup };
   } catch (error) {
     console.error("Error in createPost:", error);
-    return { success: false, message: "Failed to create post" };
+    return { success: false, message: "Failed to create study group" };
   }
 }
 
-// Function to get all posts
+// Function to get all study groups
 export async function getAllPosts() {
   try {
-    const posts = await prisma.post.findMany({
+    const studyGroups = await prisma.studyGroup.findMany({
       include: {
         author: {
           select: {
@@ -67,23 +77,24 @@ export async function getAllPosts() {
             image: true,
           },
         },
+        members: true,
       },
       orderBy: {
         createdAt: "desc",
       },
     });
 
-    return posts;
+    return studyGroups;
   } catch (error) {
     console.log("Error in getAllPosts", error);
     return [];
   }
 }
 
-// Function to get a single post by ID
+// Function to get a single study group by ID
 export async function getPostById(postId: string) {
   try {
-    const post = await prisma.post.findUnique({
+    const studyGroup = await prisma.studyGroup.findUnique({
       where: {
         id: postId,
       },
@@ -96,21 +107,22 @@ export async function getPostById(postId: string) {
             image: true,
           },
         },
+        members: true,
       },
     });
 
-    if (!post) {
-      return { success: false, message: "Post not found" };
+    if (!studyGroup) {
+      return { success: false, message: "Study group not found" };
     }
 
-    return { success: true, post };
+    return { success: true, post: studyGroup };
   } catch (error) {
     console.log("Error in getPostById", error);
-    return { success: false, message: "Failed to fetch post" };
+    return { success: false, message: "Failed to fetch study group" };
   }
 }
 
-// Function to delete a post by ID
+// Function to delete a study group by ID
 export async function deletePost(postId: string) {
   try {
     const { userId } = await auth();
@@ -119,8 +131,8 @@ export async function deletePost(postId: string) {
       return { success: false, message: "Not authenticated" };
     }
 
-    // Find the post to ensure it belongs to the authenticated user
-    const post = await prisma.post.findFirst({
+    // Find the study group to ensure it belongs to the authenticated user
+    const studyGroup = await prisma.studyGroup.findFirst({
       where: {
         id: postId,
         author: {
@@ -129,12 +141,15 @@ export async function deletePost(postId: string) {
       },
     });
 
-    if (!post) {
-      return { success: false, message: "Post not found or not authorized" };
+    if (!studyGroup) {
+      return {
+        success: false,
+        message: "Study group not found or not authorized",
+      };
     }
 
-    // Delete the post
-    await prisma.post.delete({
+    // Delete the study group
+    await prisma.studyGroup.delete({
       where: {
         id: postId,
       },
@@ -143,6 +158,129 @@ export async function deletePost(postId: string) {
     return { success: true };
   } catch (error) {
     console.log("Error in deletePost", error);
-    return { success: false, message: "Failed to delete post" };
+    return { success: false, message: "Failed to delete study group" };
+  }
+}
+
+// Function to join a study group
+export async function joinStudyGroup(postId: string) {
+  try {
+    const { userId } = await auth();
+
+    if (!userId) {
+      return { success: false, message: "Not authenticated" };
+    }
+
+    const user = await prisma.user.findFirst({
+      where: {
+        clerkId: userId,
+      },
+    });
+
+    if (!user) {
+      return { success: false, message: "User not found" };
+    }
+
+    // Check if user is already a member
+    const existingMembership = await prisma.studyGroupMember.findUnique({
+      where: {
+        userId_postId: {
+          userId: user.id,
+          postId: postId,
+        },
+      },
+    });
+
+    if (existingMembership) {
+      return {
+        success: false,
+        message: "Already a member of this study group",
+      };
+    }
+
+    // Add user as a member
+    await prisma.studyGroupMember.create({
+      data: {
+        userId: user.id,
+        postId: postId,
+        username: user.username,
+      },
+    });
+
+    return { success: true, message: "Successfully joined study group" };
+  } catch (error) {
+    console.error("Error joining study group:", error);
+    return { success: false, message: "Failed to join study group" };
+  }
+}
+
+// Function to leave a study group
+export async function leaveStudyGroup(postId: string) {
+  try {
+    const { userId } = await auth();
+
+    if (!userId) {
+      return { success: false, message: "Not authenticated" };
+    }
+
+    const user = await prisma.user.findFirst({
+      where: {
+        clerkId: userId,
+      },
+    });
+
+    if (!user) {
+      return { success: false, message: "User not found" };
+    }
+
+    // Remove membership
+    await prisma.studyGroupMember.delete({
+      where: {
+        userId_postId: {
+          userId: user.id,
+          postId: postId,
+        },
+      },
+    });
+
+    return { success: true, message: "Successfully left study group" };
+  } catch (error) {
+    console.error("Error leaving study group:", error);
+    return { success: false, message: "Failed to leave study group" };
+  }
+}
+
+// Check if a user is a member of a study group
+export async function checkMembership(postId: string) {
+  try {
+    const { userId } = await auth();
+
+    if (!userId) {
+      return { isMember: false };
+    }
+
+    const user = await prisma.user.findFirst({
+      where: {
+        clerkId: userId,
+      },
+    });
+
+    if (!user) {
+      return { isMember: false };
+    }
+
+    const membership = await prisma.studyGroupMember.findUnique({
+      where: {
+        userId_postId: {
+          userId: user.id,
+          postId: postId,
+        },
+      },
+    });
+
+    return { isMember: !!membership };
+  } catch (error) {
+    console.error("Error checking membership:", error);
+    return { isMember: false };
   }
 }
