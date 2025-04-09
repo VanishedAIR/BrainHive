@@ -19,50 +19,37 @@ model User {
   website     String?
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
-  credentials Credentials?
-  likes       Like[]
   meetings    Meeting?
-  posts       Post[]
-  studyGroups StudyGroup[]
+  posts       StudyGroup[]
+  postMembers StudyGroupMember[]
 }
 
-model Post {
-  id             String   @id @default(cuid())
+model StudyGroup {
+  id             String       @id @default(cuid())
   authorId       String
   image          String?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
   isPublic       Boolean
   studyDate      DateTime
   studyGroupName String
   subjects       String
   when2MeetLink  String
-  likes          Like[]
-  author         User     @relation(fields: [authorId], references: [id])
+  author         User         @relation(fields: [authorId], references: [id])
+  status         String
+  members        StudyGroupMember[]
 }
 
-model Like {
+model StudyGroupMember {
   id        String   @id @default(cuid())
   postId    String
   userId    String
-  createdAt DateTime @default(now())
-  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  username  String
+  joinedAt  DateTime @default(now())
+  post      StudyGroup     @relation(fields: [postId], references: [id], onDelete: Cascade)
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, postId])
-  @@index([userId, postId])
-}
-
-model StudyGroup {
-  id        Int      @id @default(autoincrement())
-  groupName String
-  subject   Int
-  rules     String
-  ownerId   String
-  members   String
-  status    String
-  createdAt DateTime @default(now())
-  owner     User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 }
 
 model Meeting {
@@ -76,14 +63,4 @@ model Meeting {
   location  String
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model Credentials {
-  id        Int    @id @default(autoincrement())
-  userId    String @unique
-  username  String @unique
-  password  String
-  email     String @unique
-  resetCode Int    @default(0)
-  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
