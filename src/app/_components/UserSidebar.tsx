@@ -1,79 +1,121 @@
-import { getCurrentUser } from "@/actions/useractions";
-import DeleteAccountButton from "./DeleteAccountButton";
+"use client";
 
-export async function UserSidebar() {
-  const user = await getCurrentUser();
+import { getCurrentUser, updateUsername } from "@/actions/useractions";
+import DeleteAccountButton from "./DeleteAccountButton";
+import { Button } from "@/components/ui/button";
+import { Pencil, Check, X } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+
+export function UserSidebar() {
+  const [user, setUser] = useState<any>(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [newUsername, setNewUsername] = useState("");
+  const [error, setError] = useState("");
+  const router = useRouter();
+
+  useEffect(() => {
+    async function loadUser() {
+      const userData = await getCurrentUser();
+      setUser(userData);
+    }
+
+    loadUser();
+  }, []);
+
+  const handleEditUsername = () => {
+    setNewUsername(user.username);
+    setIsEditing(true);
+    setError("");
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setError("");
+  };
+
+  const handleSaveUsername = async () => {
+    if (!newUsername.trim()) {
+      setError("Username cannot be empty");
+      return;
+    }
+
+    const result = await updateUsername(newUsername);
+
+    if (result.success) {
+      setUser({ ...user, username: newUsername });
+      setIsEditing(false);
+      router.refresh();
+    } else {
+      setError(result.message || "Failed to update username");
+    }
+  };
 
   if (!user) {
     return (
-      <div className="w-[300px] min-h-screen border-r border-border p-4 overflow-y-auto">
-        <h2 className="text-xl font-bold mb-4">User Information</h2>
-        <p className="text-gray-500">Please sign in to view your information</p>
+      <div className="border-r p-4">
+        <h2 className="font-bold mb-2">User Information</h2>
+        <p>Please sign in to view your information</p>
       </div>
     );
   }
 
   return (
-    <div className="w-[300px] min-h-screen border-r border-gray-200 dark:border-gray-800 p-4 overflow-y-auto">
-      <h2 className="text-xl font-bold mb-4">Your Profile</h2>
-      <div className="border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200 dark:bg-gray-800/50">
-        <div className="flex items-center gap-2 mb-4">
+    <div className="border-r p-4">
+      <h2 className="font-bold mb-2">Profile</h2>
+
+      {/* User profile */}
+      <div className="mb-4">
+        <div className="mb-2">
           {user.image ? (
             <img
               src={user.image}
               alt={user.username}
-              className="w-12 h-12 rounded-full"
+              className="w-10 h-10 rounded-full"
             />
           ) : (
-            <div className="w-12 h-12 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-              <span className="text-lg font-medium">
-                {user.username.charAt(0).toUpperCase()}
-              </span>
+            <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
+              <span>{user.username.charAt(0).toUpperCase()}</span>
             </div>
           )}
-          <h3 className="text-lg font-semibold">
-            {user.name || user.username}
-          </h3>
         </div>
-        <div className="space-y-2 text-gray-600 dark:text-gray-400">
-          <p>
-            <span className="font-medium">ID:</span> {user.id}
-          </p>
-          <p>
-            <span className="font-medium">Clerk ID:</span> {user.clerkId}
-          </p>
-          <p>
-            <span className="font-medium">Username:</span> {user.username}
-          </p>
-          <p>
-            <span className="font-medium">Email:</span> {user.email}
-          </p>
-          {user.location && (
-            <p>
-              <span className="font-medium">Location:</span> {user.location}
-            </p>
-          )}
-          {user.bio && (
-            <p>
-              <span className="font-medium">Bio:</span> {user.bio}
-            </p>
-          )}
-          {user.website && (
-            <p>
-              <span className="font-medium">Website:</span> {user.website}
-            </p>
-          )}
-          <p>
-            <span className="font-medium">Joined:</span>{" "}
-            {new Date(user.createdAt).toLocaleDateString()}
-          </p>
-        </div>
+        <h3 className="font-semibold">{user.name || user.username}</h3>
 
-        {/* Account Management */}
-        <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
-          <h4 className="font-medium mb-3">Account Management</h4>
-          <DeleteAccountButton />
-        </div>
+        {/* Username edit section */}
+        {isEditing ? (
+          <div className="mt-1">
+            <div className="flex items-center">
+              <input
+                type="text"
+                value={newUsername}
+                onChange={(e) => setNewUsername(e.target.value)}
+                className="border p-1 text-sm w-full"
+                placeholder="New username"
+                autoFocus
+              />
+              <Button variant="outline" onClick={handleSaveUsername}>
+                <Check size={16} />
+              </Button>
+              <Button variant="outline" onClick={handleCancelEdit}>
+                <X size={16} />
+              </Button>
+            </div>
+            {error && <p className="text-red-500 text-xs">{error}</p>}
+          </div>
+        ) : (
+          <div className="flex items-center">
+            <p className="text-sm text-gray-500">@{user.username}</p>
+            <Button variant="outline" onClick={handleEditUsername}>
+              <Pencil size={12} />
+            </Button>
+          </div>
+        )}
+      </div>
+
+      {/* Account Management */}
+      <div className="mb-4">
+        <h4 className="font-medium mb-2">Account Management</h4>
+        <DeleteAccountButton />
       </div>
     </div>
   );
