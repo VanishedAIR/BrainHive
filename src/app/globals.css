@@ -194,13 +194,13 @@
 }
 
 :root {
-  --primary-light: rgba(246, 185, 59, 0.05);  /* lighter honey gold */
-  --accent-hover: rgba(230, 125, 34, 0.219);   /* subtle amber */
-  --study-group-bg: rgba(230, 125, 34, 0.363);  /* nearly white, slightly transparent */
+  --primary-light: rgba(246, 185, 59, 0.05);
+  --accent-hover: rgba(230, 125, 34, 0.219);
+  --study-group-bg: rgba(230, 125, 34, 0.363);
 }
 
 .dark {
-  --primary-light: rgba(255, 1, 1, 0.08);   /* subtle gold */
-  --accent-hover: rgba(30, 41, 59, 0.556);     /* warm amber */
-  --study-group-bg: rgba(30, 41, 59, 0.7);     /* matching dark theme background */
+  --primary-light: rgba(255, 1, 1, 0.08);
+  --accent-hover: rgba(30, 41, 59, 0.556);
+  --study-group-bg: rgba(30, 41, 59, 0.7);
 }
