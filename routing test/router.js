@@ -28,7 +28,8 @@ class Router {
 
 const routes = {
     home: () => '<h1>Welcome to the Homepage</h1>',
-    signin: () => '<h1>Sign In Page</h1>'
+    signin: () => '<h1>Sign In Page</h1>',
+    post: () => '<h1>Start Page</h1>'
 };
 
 const router = new Router(routes);
