@@ -53,7 +53,7 @@ export function UserSidebar() {
 
   if (!user) {
     return (
-      <div className="border-r p-4">
+      <div className="border-r border-border p-4">
         <h2 className="font-bold mb-2">User Information</h2>
         <p>Please sign in to view your information</p>
       </div>
@@ -61,7 +61,7 @@ export function UserSidebar() {
   }
 
   return (
-    <div className="border-r p-4">
+    <div className="border-r border-border p-4">
       <h2 className="font-bold mb-2">Profile</h2>
 
       {/* User profile */}
