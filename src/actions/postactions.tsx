@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { auth } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 
 // Function to create a new study group
 export async function createPost(data: {
@@ -10,6 +10,7 @@ export async function createPost(data: {
   when2MeetLink: string;
   image: string | null;
   studyDate: string;
+  studyTime: string;
   isPublic: boolean;
 }) {
   try {
@@ -33,6 +34,12 @@ export async function createPost(data: {
 
     console.log("Creating study group with data:", data);
 
+    const formattedStudyTime = new Date(`1970-01-01T${data.studyTime}`).toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    });
+
     const studyGroup = await prisma.studyGroup.create({
       data: {
         studyGroupName: data.studyGroupName,
@@ -40,6 +47,7 @@ export async function createPost(data: {
         when2MeetLink: data.when2MeetLink,
         image: data.image,
         studyDate: new Date(data.studyDate),
+        studyTime: formattedStudyTime,
         isPublic: data.isPublic,
         authorId: user.id,
         status: "active",

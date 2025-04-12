@@ -8,46 +8,47 @@ datasource db {
 }
 
 model User {
-  id          String       @id @default(cuid())
-  email       String       @unique
-  username    String       @unique
-  clerkId     String       @unique
+  id          String             @id @default(cuid())
+  email       String             @unique
+  username    String             @unique
+  clerkId     String             @unique
   name        String?
   bio         String?
   image       String?
   location    String?
   website     String?
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
   meetings    Meeting?
   posts       StudyGroup[]
   postMembers StudyGroupMember[]
 }
 
 model StudyGroup {
-  id             String       @id @default(cuid())
+  id             String             @id @default(cuid())
   authorId       String
   image          String?
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
   isPublic       Boolean
   studyDate      DateTime
+  studyTime      String
   studyGroupName String
   subjects       String
   when2MeetLink  String
-  author         User         @relation(fields: [authorId], references: [id])
   status         String
+  author         User               @relation(fields: [authorId], references: [id])
   members        StudyGroupMember[]
 }
 
 model StudyGroupMember {
-  id        String   @id @default(cuid())
-  postId    String
-  userId    String
-  username  String
-  joinedAt  DateTime @default(now())
-  post      StudyGroup     @relation(fields: [postId], references: [id], onDelete: Cascade)
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id       String     @id @default(cuid())
+  postId   String
+  userId   String
+  username String
+  joinedAt DateTime   @default(now())
+  post     StudyGroup @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user     User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, postId])
 }
