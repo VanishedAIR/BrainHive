@@ -12,6 +12,7 @@ const PostPage: React.FC = () => {
     const [when2MeetLink, setWhen2MeetLink] = useState('');
     const [image, setImage] = useState<File | null>(null);
     const [studyDate, setStudyDate] = useState('');
+    const [studyTime, setStudyTime] = useState(''); 
     const [isPublic, setIsPublic] = useState(true);
     const [loading, setLoading] = useState(false);
     const [posts, setPosts] = useState<any[]>([]); // Local state to store posts
@@ -38,6 +39,7 @@ const PostPage: React.FC = () => {
                 when2MeetLink,
                 image: image ? URL.createObjectURL(image) : null, // Simulate image URL
                 studyDate,
+                studyTime, 
                 isPublic,
             };
 
@@ -51,6 +53,7 @@ const PostPage: React.FC = () => {
                 setWhen2MeetLink('');
                 setImage(null);
                 setStudyDate('');
+                setStudyTime('');
                 setIsPublic(true);
             } else {
                 alert(`Failed to create post: ${response.message}`);
@@ -67,7 +70,7 @@ const PostPage: React.FC = () => {
         <div className="max-w-[600px] mx-auto p-5 font-sans">
             <h1 className="text-center text-gray-800 dark:text-white text-2xl font-bold mb-6">Create a Study Group Post</h1>
             <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
-                {/* Study Group Name */}
+                {/*Study Group Name*/}
                 <div className="space-y-2">
                     <Label htmlFor="studyGroupName" className="block font-bold text-gray-700 dark:text-white">Name of Study Group:</Label>
                     <Input
@@ -81,7 +84,7 @@ const PostPage: React.FC = () => {
                     />
                 </div>
 
-                {/* Subjects */}
+                {/*Subjects*/}
                 <div className="space-y-2">
                     <Label htmlFor="subjects" className="block font-bold text-gray-700 dark:text-white">Subjects:</Label>
                     <div className="flex items-center space-x-2">
@@ -120,7 +123,7 @@ const PostPage: React.FC = () => {
                     </div>
                 </div>
 
-                {/* When2Meet Link */}
+                {/*When2Meet Link*/}
                 <div className="space-y-2">
                     <Label htmlFor="when2MeetLink" className="block font-bold text-gray-700 dark:text-white">When2Meet Link:</Label>
                     <Input
@@ -134,7 +137,7 @@ const PostPage: React.FC = () => {
                     />
                 </div>
 
-                {/* Image Upload */}
+                {/*Image Upload*/}
                 <div className="space-y-2">
                     <Label htmlFor="picture" className="block font-bold text-gray-700 dark:text-white">Picture:</Label>
                     <Input
@@ -145,7 +148,7 @@ const PostPage: React.FC = () => {
                     />
                 </div>
 
-                {/* Study Date */}
+                {/*Study Date*/}
                 <div className="space-y-2">
                     <Label htmlFor="studyDate" className="block font-bold text-gray-700 dark:text-white">Study Date:</Label>
                     <Input
@@ -158,7 +161,20 @@ const PostPage: React.FC = () => {
                     />
                 </div>
 
-                {/* Public/Private Toggle */}
+                {/*Study Time*/}
+                <div className="space-y-2">
+                    <Label htmlFor="studyTime" className="block font-bold text-gray-700 dark:text-white">Study Time:</Label>
+                    <Input
+                        id="studyTime"
+                        type="time"
+                        value={studyTime}
+                        onChange={(e) => setStudyTime(e.target.value)}
+                        className="w-full p-3 border border-gray-300 rounded-md text-base focus:ring-2 focus:ring-primary focus:border-primary"
+                        required
+                    />
+                </div>
+
+                {/*Public/Private Toggle*/}
                 <div className="space-y-2">
                     <Label className="block font-bold text-gray-700 dark:text-white">Visibility:</Label>
                     <button
@@ -170,7 +186,7 @@ const PostPage: React.FC = () => {
                     </button>
                 </div>
 
-                {/* Submit Button */}
+                {/*Submit Button*/}
                 <button
                     type="submit"
                     className="px-5 py-2.5 bg-primary text-white rounded-md text-base hover:bg-primary-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
@@ -180,18 +196,15 @@ const PostPage: React.FC = () => {
                 </button>
             </form>
 
-            {/* Display Created Posts */}
+            {/*Display Created Posts*/}
             {posts.length > 0 && (
                 <div className="mt-10">
                     <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-4">Created Study Groups:</h2>
                     {posts.map((post, index) => (
-                        <div key={index} className="p-4 border border-gray-300 rounded-md mb-4">
-                            <h3 className="font-bold text-lg">{post.studyGroupName}</h3>
-                            <p><strong>Subjects:</strong> {post.subjects.join(', ')}</p>
-                            <p><strong>When2Meet Link:</strong> {post.when2MeetLink}</p>
-                            {post.image && <img src={post.image} alt="Uploaded" className="mt-2 w-full h-auto" />}
-                            <p><strong>Study Date:</strong> {post.studyDate}</p>
-                            <p><strong>Visibility:</strong> {post.isPublic ? 'Public' : 'Private'}</p>
+                        <div key={index}>
+                            <p>Study Group Name: {post.studyGroupName}</p>
+                            <p>Study Date: {new Date(post.studyDate).toLocaleDateString()}</p>
+                            <p>Study Time: {new Date(post.studyTime).toLocaleTimeString()}</p>
                         </div>
                     ))}
                 </div>
