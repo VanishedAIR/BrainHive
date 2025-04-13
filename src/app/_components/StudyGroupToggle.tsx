@@ -4,6 +4,8 @@ import {
   checkMembership,
   joinStudyGroup,
   leaveStudyGroup,
+  getUserOwnedStudyGroups,
+  getPostById,
 } from "@/actions/postactions";
 import { toast } from "@/components/ui/use-toast";
 
@@ -14,15 +16,26 @@ interface StudyGroupToggleProps {
 function StudyGroupToggle({ postId }: StudyGroupToggleProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [isMember, setIsMember] = useState(false);
+  const [isOwner, setIsOwner] = useState(false);
 
-  // Check membership status when component loads
+  // Check membership status and ownership when component loads
   useEffect(() => {
     const checkStatus = async () => {
       try {
+        // Check if user is a member
         const membershipCheck = await checkMembership(postId);
         setIsMember(membershipCheck.isMember);
+
+        // Check if user is the owner
+        const ownedGroups = await getUserOwnedStudyGroups();
+        if (ownedGroups.success && ownedGroups.groups) {
+          const isUserOwner = ownedGroups.groups.some(
+            (group) => group.id === postId
+          );
+          setIsOwner(isUserOwner);
+        }
       } catch (error) {
-        console.error("Error checking membership status:", error);
+        console.error("Error checking status:", error);
       }
     };
 
@@ -90,6 +103,15 @@ function StudyGroupToggle({ postId }: StudyGroupToggleProps) {
       setIsLoading(false);
     }
   };
+
+  // If user is the owner, don't show any toggle button
+  if (isOwner) {
+    return (
+      <div>
+        <Button disabled>You own this study group</Button>
+      </div>
+    );
+  }
 
   return (
     <div>
