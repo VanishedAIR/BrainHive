@@ -184,23 +184,17 @@
 
   .study-group-button:hover {
     background: var(--accent-hover);
-    border-color: var(--accent);
-  }
-
-  .study-group-button.selected {
-    background: var(--primary-light);
-    border-color: var(--primary);
   }
 }
 
 :root {
   --primary-light: rgba(246, 185, 59, 0.05);
-  --accent-hover: rgba(230, 125, 34, 0.219);
-  --study-group-bg: rgba(230, 125, 34, 0.363);
+  --accent-hover: rgba(230, 125, 34, 0.1);
+  --study-group-bg: rgba(230, 125, 34, 0.1);
 }
 
 .dark {
   --primary-light: rgba(255, 1, 1, 0.08);
-  --accent-hover: rgba(30, 41, 59, 0.556);
+  --accent-hover: rgba(41, 68, 110, 0.7);
   --study-group-bg: rgba(30, 41, 59, 0.7);
 }

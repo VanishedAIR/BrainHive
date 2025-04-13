@@ -26,8 +26,8 @@ export default function HomeClientContent() {
             </button>
           </div>
         </div>
-        <div className="flex gap-4 border-2 border-border rounded-xl">
-          <div className="flex-1 p-4 border-r border-border">
+        <div className="flex gap-4 border-2 border-border rounded-xl mb-16">
+          <div className="flex-1 p-4 border-r border-border overflow-y-auto h-[75vh]">
             <Feed onGroupSelect={handleGroupSelect} />
           </div>
           <StudygroupSidebar selectedGroup={selectedGroup} />
