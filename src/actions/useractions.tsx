@@ -102,10 +102,20 @@ export async function updateUsername(newUsername: string) {
       return { success: false, message: "Username already taken" };
     }
 
-    // Update the username
+    // Update the username in the User table
     await prisma.user.update({
       where: {
         clerkId: userId,
+      },
+      data: {
+        username: newUsername,
+      },
+    });
+
+    // Also update the username in all StudyGroupMember records for this user
+    await prisma.studyGroupMember.updateMany({
+      where: {
+        userId: currentUserDb.id,
       },
       data: {
         username: newUsername,
