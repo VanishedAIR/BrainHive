@@ -314,3 +314,109 @@ export async function checkMembership(postId: string) {
     };
   }
 }
+
+// Get all study groups a user is a member of
+export async function getUserStudyGroups() {
+  try {
+    const { userId } = await auth();
+
+    if (!userId) {
+      return { success: false, message: "Not authenticated", groups: [] };
+    }
+
+    const user = await prisma.user.findFirst({
+      where: {
+        clerkId: userId,
+      },
+    });
+
+    if (!user) {
+      return { success: false, message: "User not found", groups: [] };
+    }
+
+    // Find all study groups where the user is a member
+    const studyGroups = await prisma.studyGroup.findMany({
+      where: {
+        members: {
+          some: {
+            userId: user.id,
+          },
+        },
+      },
+      include: {
+        author: {
+          select: {
+            id: true,
+            username: true,
+            name: true,
+            image: true,
+          },
+        },
+        members: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return { success: true, groups: studyGroups };
+  } catch (error) {
+    console.error("Error fetching user study groups:", error);
+    return {
+      success: false,
+      message: "Failed to fetch study groups",
+      groups: [],
+    };
+  }
+}
+
+// Get all study groups a user has created (is the author of)
+export async function getUserOwnedStudyGroups() {
+  try {
+    const { userId } = await auth();
+
+    if (!userId) {
+      return { success: false, message: "Not authenticated", groups: [] };
+    }
+
+    const user = await prisma.user.findFirst({
+      where: {
+        clerkId: userId,
+      },
+    });
+
+    if (!user) {
+      return { success: false, message: "User not found", groups: [] };
+    }
+
+    // Find all study groups where the user is the author
+    const ownedStudyGroups = await prisma.studyGroup.findMany({
+      where: {
+        authorId: user.id,
+      },
+      include: {
+        author: {
+          select: {
+            id: true,
+            username: true,
+            name: true,
+            image: true,
+          },
+        },
+        members: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return { success: true, groups: ownedStudyGroups };
+  } catch (error) {
+    console.error("Error fetching user owned study groups:", error);
+    return {
+      success: false,
+      message: "Failed to fetch owned study groups",
+      groups: [],
+    };
+  }
+}
