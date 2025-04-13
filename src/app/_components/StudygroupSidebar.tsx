@@ -1,4 +1,5 @@
 import type { StudyGroup } from "./feed";
+import { Button } from "@/components/ui/button";
 
 interface StudygroupSidebarProps {
   selectedGroup: StudyGroup | null;
@@ -78,20 +79,19 @@ export default function StudygroupSidebar({
       {selectedGroup.when2MeetLink && (
         <div className="space-y-2">
           <h3 className="text-lg font-semibold">When2Meet Link</h3>
-          <a
-            href={selectedGroup.when2MeetLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-primary hover:text-primary-hover underline"
-          >
-            Open Schedule
-          </a>
+          <Button variant="outline" asChild className="w-full">
+            <a
+              href={selectedGroup.when2MeetLink}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open Schedule
+            </a>
+          </Button>
         </div>
       )}
       <div className="relative bottom-[-3%] left-50 translate-x-[-35%] w-fit">
-        <button className="w-[150%] text-white font-bold rounded-t-lg rounded-l-lg rounded-r-lg rounded-b-none">
-          Join Study Group
-        </button>
+        <Button className="w-[150%]">Join Study Group</Button>
       </div>
     </div>
   );
