@@ -34,7 +34,9 @@ export async function createPost(data: {
 
     console.log("Creating study group with data:", data);
 
-    const formattedStudyTime = new Date(`1970-01-01T${data.studyTime}`).toLocaleTimeString("en-US", {
+    const formattedStudyTime = new Date(
+      `1970-01-01T${data.studyTime}`
+    ).toLocaleTimeString("en-US", {
       hour: "numeric",
       minute: "numeric",
       hour12: true,
@@ -176,7 +178,10 @@ export async function joinStudyGroup(postId: string) {
     const { userId } = await auth();
 
     if (!userId) {
-      return { success: false, message: "Not authenticated" };
+      return {
+        success: false,
+        message: "Not authenticated",
+      };
     }
 
     const user = await prisma.user.findFirst({
@@ -186,7 +191,10 @@ export async function joinStudyGroup(postId: string) {
     });
 
     if (!user) {
-      return { success: false, message: "User not found" };
+      return {
+        success: false,
+        message: "User not found",
+      };
     }
 
     // Check if user is already a member
@@ -215,10 +223,16 @@ export async function joinStudyGroup(postId: string) {
       },
     });
 
-    return { success: true, message: "Successfully joined study group" };
+    return {
+      success: true,
+      message: "Successfully joined study group",
+    };
   } catch (error) {
     console.error("Error joining study group:", error);
-    return { success: false, message: "Failed to join study group" };
+    return {
+      success: false,
+      message: "Failed to join study group",
+    };
   }
 }
 
@@ -264,7 +278,9 @@ export async function checkMembership(postId: string) {
     const { userId } = await auth();
 
     if (!userId) {
-      return { isMember: false };
+      return {
+        isMember: false,
+      };
     }
 
     const user = await prisma.user.findFirst({
@@ -274,7 +290,9 @@ export async function checkMembership(postId: string) {
     });
 
     if (!user) {
-      return { isMember: false };
+      return {
+        isMember: false,
+      };
     }
 
     const membership = await prisma.studyGroupMember.findUnique({
@@ -286,9 +304,13 @@ export async function checkMembership(postId: string) {
       },
     });
 
-    return { isMember: !!membership };
+    return {
+      isMember: !!membership,
+    };
   } catch (error) {
     console.error("Error checking membership:", error);
-    return { isMember: false };
+    return {
+      isMember: false,
+    };
   }
 }
