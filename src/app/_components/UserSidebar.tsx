@@ -31,6 +31,9 @@ export function UserSidebar() {
   const [error, setError] = useState("");
   const [studyGroups, setStudyGroups] = useState<StudyGroup[]>([]);
   const [ownedStudyGroups, setOwnedStudyGroups] = useState<StudyGroup[]>([]);
+  const [filteredJoinedGroups, setFilteredJoinedGroups] = useState<
+    StudyGroup[]
+  >([]);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
@@ -61,6 +64,20 @@ export function UserSidebar() {
     loadUser();
     loadStudyGroups();
   }, []);
+
+  // Filter out owned study groups from joined study groups
+  useEffect(() => {
+    if (studyGroups.length > 0 && ownedStudyGroups.length > 0) {
+      const ownedGroupIds = new Set(ownedStudyGroups.map((group) => group.id));
+
+      const filteredGroups = studyGroups.filter(
+        (group) => !ownedGroupIds.has(group.id)
+      );
+      setFilteredJoinedGroups(filteredGroups);
+    } else {
+      setFilteredJoinedGroups(studyGroups);
+    }
+  }, [studyGroups, ownedStudyGroups]);
 
   const handleEditUsername = () => {
     setNewUsername(user.username);
@@ -173,7 +190,30 @@ export function UserSidebar() {
         )}
       </div>
 
-        
+      {/* Joined Study Groups */}
+      <div>
+        <h4>Joined Study Groups</h4>
+        {isLoading ? (
+          <p>Loading study groups...</p>
+        ) : filteredJoinedGroups.length > 0 ? (
+          <ul>
+            {filteredJoinedGroups.map((group) => (
+              <li
+                key={group.id}
+                onClick={() => router.push(`/studygroup/${group.id}`)}
+                style={{ cursor: "pointer" }}
+              >
+                <div>
+                  <strong>{group.studyGroupName}</strong>
+                  <p>{group.subjects}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>You haven't joined any study groups yet.</p>
+        )}
+      </div>
     </div>
   );
 }
