@@ -1,17 +1,37 @@
 "use client";
 
 import { getCurrentUser, updateUsername } from "@/actions/useractions";
+import {
+  getUserStudyGroups,
+  getUserOwnedStudyGroups,
+} from "@/actions/postactions";
 import DeleteAccountButton from "./DeleteAccountButton";
 import { Button } from "@/components/ui/button";
 import { Pencil, Check, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
+interface StudyGroup {
+  id: string;
+  studyGroupName: string;
+  subjects: string;
+  image: string | null;
+  author?: {
+    id: string;
+    username: string;
+    name: string | null;
+    image: string | null;
+  };
+}
+
 export function UserSidebar() {
   const [user, setUser] = useState<any>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [newUsername, setNewUsername] = useState("");
   const [error, setError] = useState("");
+  const [studyGroups, setStudyGroups] = useState<StudyGroup[]>([]);
+  const [ownedStudyGroups, setOwnedStudyGroups] = useState<StudyGroup[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -20,7 +40,26 @@ export function UserSidebar() {
       setUser(userData);
     }
 
+    async function loadStudyGroups() {
+      setIsLoading(true);
+
+      // Get joined study groups
+      const result = await getUserStudyGroups();
+      if (result.success) {
+        setStudyGroups(result.groups);
+      }
+
+      // Get owned study groups
+      const ownedResult = await getUserOwnedStudyGroups();
+      if (ownedResult.success) {
+        setOwnedStudyGroups(ownedResult.groups);
+      }
+
+      setIsLoading(false);
+    }
+
     loadUser();
+    loadStudyGroups();
   }, []);
 
   const handleEditUsername = () => {
@@ -53,43 +92,34 @@ export function UserSidebar() {
 
   if (!user) {
     return (
-      <div className="border-r border-border p-4">
-        <h2 className="font-bold mb-2">User Information</h2>
+      <div className="border-r p-4">
+        <h2>User Information</h2>
         <p>Please sign in to view your information</p>
       </div>
     );
   }
 
   return (
-    <div className="border-r border-border p-4">
-      <h2 className="font-bold mb-2">Profile</h2>
+    <div className="border-r p-4">
+      <h2>Profile</h2>
 
       {/* User profile */}
-      <div className="mb-4">
-        <div className="mb-2">
-          {user.image ? (
-            <img
-              src={user.image}
-              alt={user.username}
-              className="w-10 h-10 rounded-full"
-            />
-          ) : (
-            <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
-              <span>{user.username.charAt(0).toUpperCase()}</span>
-            </div>
-          )}
-        </div>
-        <h3 className="font-semibold">{user.name || user.username}</h3>
+      <div>
+        {user.image ? (
+          <img src={user.image} alt={user.username} width={40} height={40} />
+        ) : (
+          <div>{user.username.charAt(0).toUpperCase()}</div>
+        )}
+        <h3>{user.name || user.username}</h3>
 
         {/* Username edit section */}
         {isEditing ? (
-          <div className="mt-1">
-            <div className="flex items-center">
+          <div>
+            <div>
               <input
                 type="text"
                 value={newUsername}
                 onChange={(e) => setNewUsername(e.target.value)}
-                className="border p-1 text-sm w-full"
                 placeholder="New username"
                 autoFocus
               />
@@ -100,11 +130,11 @@ export function UserSidebar() {
                 <X size={16} />
               </Button>
             </div>
-            {error && <p className="text-red-500 text-xs">{error}</p>}
+            {error && <p>{error}</p>}
           </div>
         ) : (
-          <div className="flex items-center">
-            <p className="text-sm text-gray-500">@{user.username}</p>
+          <div>
+            <p>@{user.username}</p>
             <Button variant="outline" onClick={handleEditUsername}>
               <Pencil size={12} />
             </Button>
@@ -113,10 +143,37 @@ export function UserSidebar() {
       </div>
 
       {/* Account Management */}
-      <div className="mb-4">
-        <h4 className="font-medium mb-2">Account Management</h4>
+      <div>
+        <h4>Account Management</h4>
         <DeleteAccountButton />
       </div>
+
+      {/* Owner's Study Groups */}
+      <div>
+        <h4>Your Study Groups</h4>
+        {isLoading ? (
+          <p>Loading study groups...</p>
+        ) : ownedStudyGroups.length > 0 ? (
+          <ul>
+            {ownedStudyGroups.map((group) => (
+              <li
+                key={group.id}
+                onClick={() => router.push(`/studygroup/${group.id}`)}
+                style={{ cursor: "pointer" }}
+              >
+                <div>
+                  <strong>{group.studyGroupName}</strong>
+                  <p>{group.subjects}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>You haven't created any study groups yet.</p>
+        )}
+      </div>
+
+        
     </div>
   );
 }
