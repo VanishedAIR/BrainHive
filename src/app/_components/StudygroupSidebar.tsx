@@ -4,7 +4,9 @@ interface StudygroupSidebarProps {
   selectedGroup: StudyGroup | null;
 }
 
-export default function StudygroupSidebar({ selectedGroup }: StudygroupSidebarProps) {
+export default function StudygroupSidebar({
+  selectedGroup,
+}: StudygroupSidebarProps) {
   if (!selectedGroup) {
     return (
       <div className="flex-1 p-4">
@@ -14,9 +16,13 @@ export default function StudygroupSidebar({ selectedGroup }: StudygroupSidebarPr
   }
 
   return (
-    <div className="flex-1 p-4 space-y-4">
-      <h2 className="text-2xl font-bold text-primary">{selectedGroup.studyGroupName}</h2>
-      
+    <div className="flex-1 p-4 space-y-8">
+      <div className="flex items-center justify-center mt-4">
+        <h2 className="text-2xl font-bold text-primary">
+          {selectedGroup.studyGroupName}
+        </h2>
+      </div>
+
       <div className="space-y-2">
         <h3 className="text-lg font-semibold">Subjects</h3>
         <p className="text-gray-600">{selectedGroup.subjects}</p>
@@ -30,11 +36,18 @@ export default function StudygroupSidebar({ selectedGroup }: StudygroupSidebarPr
       </div>
 
       <div className="space-y-2">
+        <h3 className="text-lg font-semibold">Created</h3>
+        <p className="text-gray-600">
+          {new Date(selectedGroup.createdAt).toLocaleDateString()}
+        </p>
+      </div>
+
+      <div className="space-y-2">
         <h3 className="text-lg font-semibold">Created by</h3>
         <div className="flex items-center space-x-2">
           {selectedGroup.author.image ? (
-            <img 
-              src={selectedGroup.author.image} 
+            <img
+              src={selectedGroup.author.image}
               alt={selectedGroup.author.username}
               className="w-8 h-8 rounded-full"
             />
@@ -43,14 +56,18 @@ export default function StudygroupSidebar({ selectedGroup }: StudygroupSidebarPr
               {selectedGroup.author.username[0].toUpperCase()}
             </div>
           )}
-          <span className="text-gray-600">@{selectedGroup.author.username}</span>
+          <span className="text-gray-600">
+            @{selectedGroup.author.username}
+          </span>
         </div>
       </div>
 
       <div className="space-y-2">
-        <h3 className="text-lg font-semibold">Members ({selectedGroup.members.length})</h3>
+        <h3 className="text-lg font-semibold">
+          Members ({selectedGroup.members.length})
+        </h3>
         <div className="space-y-1">
-          {selectedGroup.members.map(member => (
+          {selectedGroup.members.map((member) => (
             <div key={member.id} className="text-gray-600">
               @{member.username}
             </div>
@@ -61,7 +78,7 @@ export default function StudygroupSidebar({ selectedGroup }: StudygroupSidebarPr
       {selectedGroup.when2MeetLink && (
         <div className="space-y-2">
           <h3 className="text-lg font-semibold">When2Meet Link</h3>
-          <a 
+          <a
             href={selectedGroup.when2MeetLink}
             target="_blank"
             rel="noopener noreferrer"
@@ -71,6 +88,11 @@ export default function StudygroupSidebar({ selectedGroup }: StudygroupSidebarPr
           </a>
         </div>
       )}
+      <div className="relative bottom-[-3%] left-50 translate-x-[-35%] w-fit">
+        <button className="w-[150%] text-white font-bold rounded-t-lg rounded-l-lg rounded-r-lg rounded-b-none">
+          Join Study Group
+        </button>
+      </div>
     </div>
   );
 }

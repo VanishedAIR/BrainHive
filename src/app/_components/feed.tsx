@@ -14,6 +14,7 @@ interface StudyGroup {
   studyDate: Date;
   isPublic: boolean;
   status: string;
+  createdAt: Date;
   author: {
     id: string;
     username: string;
@@ -71,8 +72,10 @@ export default function Feed({ onGroupSelect }: FeedProps) {
         <button
           key={group.id}
           onClick={() => handleGroupClick(group)}
-          className={`study-group-button w-full text-left p-4 rounded-lg transition-all duration-200 border-2 shadow-sm hover:shadow-md ${
-            selectedGroupId === group.id ? 'border-primary bg-primary/5' : ''
+          className={`study-group-button w-full text-left p-4 rounded-lg transition-all duration-200 border-2 shadow-sm hover:border-primary dark:hover:border-[#3f557a] hover:shadow-md ${
+            selectedGroupId === group.id
+              ? "border-primary bg-primary/5 dark:border-[#3f557a] dark:bg-[rgba(41,68,110,0.7)]/50"
+              : ""
           }`}
         >
           <div className="flex items-center gap-3">
@@ -87,7 +90,9 @@ export default function Feed({ onGroupSelect }: FeedProps) {
                 {group.studyGroupName[0].toUpperCase()}
               </div>
             )}
-            <h3 className="text-xl font-semibold text-primary">{group.studyGroupName}</h3>
+            <h3 className="text-xl font-semibold text-primary">
+              {group.studyGroupName}
+            </h3>
           </div>
           <p className="text-gray-500 mt-2">Subjects: {group.subjects}</p>
           <p className="text-sm text-gray-400">
