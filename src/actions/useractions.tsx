@@ -138,6 +138,13 @@ export async function deleteCurrentUser() {
       return { success: false, message: "User not found" };
     }
 
+    // First, delete all study groups authored by the user
+    await prisma.studyGroup.deleteMany({
+      where: {
+        authorId: user.id,
+      },
+    });
+
     // Delete the user from the database
     await prisma.user.delete({
       where: {
