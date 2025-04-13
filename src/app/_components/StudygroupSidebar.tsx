@@ -1,5 +1,6 @@
 import type { StudyGroup } from "./feed";
 import { Button } from "@/components/ui/button";
+import StudyGroupToggle from "./StudyGroupToggle";
 
 interface StudygroupSidebarProps {
   selectedGroup: StudyGroup | null;
@@ -91,7 +92,7 @@ export default function StudygroupSidebar({
         </div>
       )}
       <div className="relative bottom-[-3%] left-50 translate-x-[-35%] w-fit">
-        <Button className="w-[150%]">Join Study Group</Button>
+        <StudyGroupToggle postId={selectedGroup.id} />
       </div>
     </div>
   );
