@@ -1,7 +1,8 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { syncUser } from "@/actions/useractions";
 import ClientNavbar from "./ClientNavbar";
-import Link from 'next/link'
+import Link from 'next/link';
+import { ModeToggle } from "@/components/ui/toggle";
 
 export default async function Navbar() {
   const user = await currentUser();
@@ -13,6 +14,7 @@ export default async function Navbar() {
         <Link href = "/">
         <img src="/logo.svg" alt="Logo" className="h-20 w-20 mt-1.35" />
         </Link>
+        <ModeToggle />
         <ClientNavbar />
       </header>
     </section>
