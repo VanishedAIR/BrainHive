@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,70 +8,54 @@ datasource db {
 }
 
 model User {
-  id                String   @id @default(cuid())
-  email             String   @unique
-  username          String   @unique
-  clerkId           String   @unique
-  name              String?
-  bio               String?
-  image             String?
-  location          String?
-  website           String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-
-  // Relations
-  posts             Post[]  
-  likes             Like[]
-  studyGroups       StudyGroup[]  
-  meetings          Meeting?
-  credentials       Credentials?
-}
-
-model Post {
-  id        String   @id @default(cuid())
-  authorId  String
-  content   String?
-  image     String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // Relations
-  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  likes     Like[]
-}
-
-model Like {
-  id        String   @id @default(cuid())
-  postId    String                 
-  userId    String                 
-  createdAt DateTime @default(now())
-
-  // Relations
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
-
-  @@index([userId, postId]) 
-  @@unique([userId, postId]) 
+  id          String             @id @default(cuid())
+  email       String             @unique
+  username    String             @unique
+  clerkId     String             @unique
+  name        String?
+  bio         String?
+  image       String?
+  location    String?
+  website     String?
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+  meetings    Meeting?
+  posts       StudyGroup[]
+  postMembers StudyGroupMember[]
 }
 
 model StudyGroup {
-  id          Int      @id @default(autoincrement())
-  groupName   String
-  subject     Int
-  rules       String
-  ownerId     String
-  members     String  
-  status      String
-  createdAt   DateTime @default(now())
+  id             String             @id @default(cuid())
+  authorId       String
+  image          String?
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+  isPublic       Boolean
+  studyDate      DateTime
+  studyTime      String
+  studyGroupName String
+  subjects       String
+  when2MeetLink  String
+  status         String
+  author         User               @relation(fields: [authorId], references: [id])
+  members        StudyGroupMember[]
+}
 
-  // Relations
-  owner       User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+model StudyGroupMember {
+  id       String     @id @default(cuid())
+  postId   String
+  userId   String
+  username String
+  joinedAt DateTime   @default(now())
+  post     StudyGroup @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user     User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, postId])
 }
 
 model Meeting {
   id        Int      @id @default(autoincrement())
-  userId    String @unique
+  userId    String   @unique
   meetingID Int
   year      Int
   month     Int
@@ -82,19 +63,5 @@ model Meeting {
   time      Int
   location  String
   createdAt DateTime @default(now())
-
-  // Relations
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model Credentials {
-  id         Int      @id @default(autoincrement())
-  userId     String   @unique
-  username   String   @unique
-  password   String
-  email      String   @unique
-  resetCode  Int      @default(0)
-
-  // Relations
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

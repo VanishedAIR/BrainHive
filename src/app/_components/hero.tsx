@@ -29,7 +29,7 @@ export default function Hero() {
       </div>
       <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 md:gap-12">
         <SignUpButton mode="modal">
-          <button className="min-w-[137px] bg-primary text-white px-8 md:px-12 py-4 rounded-lg transition-all duration-300 font-bold text-sm md:text-lg lg:text-xl shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+          <button className="min-w-[137px] bg-primary hover:bg-[#d97706] text-white px-8 md:px-12 py-4 rounded-lg transition-all duration-300 font-bold text-sm md:text-lg lg:text-xl shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
             JOIN NOW FOR FREE
           </button>
         </SignUpButton>

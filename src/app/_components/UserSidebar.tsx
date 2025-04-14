@@ -1,79 +1,218 @@
-import { getCurrentUser } from "@/actions/useractions";
-import DeleteAccountButton from "./DeleteAccountButton";
+"use client";
 
-export async function UserSidebar() {
-  const user = await getCurrentUser();
+import { getCurrentUser, updateUsername } from "@/actions/useractions";
+import {
+  getUserStudyGroups,
+  getUserOwnedStudyGroups,
+} from "@/actions/postactions";
+import DeleteAccountButton from "./DeleteAccountButton";
+import { Button } from "@/components/ui/button";
+import { Pencil, Check, X } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+
+interface StudyGroup {
+  id: string;
+  studyGroupName: string;
+  subjects: string;
+  image: string | null;
+  author?: {
+    id: string;
+    username: string;
+    name: string | null;
+    image: string | null;
+  };
+}
+
+export function UserSidebar() {
+  const [user, setUser] = useState<any>(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [newUsername, setNewUsername] = useState("");
+  const [error, setError] = useState("");
+  const [studyGroups, setStudyGroups] = useState<StudyGroup[]>([]);
+  const [ownedStudyGroups, setOwnedStudyGroups] = useState<StudyGroup[]>([]);
+  const [filteredJoinedGroups, setFilteredJoinedGroups] = useState<
+    StudyGroup[]
+  >([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
+
+  useEffect(() => {
+    async function loadUser() {
+      const userData = await getCurrentUser();
+      setUser(userData);
+    }
+
+    async function loadStudyGroups() {
+      setIsLoading(true);
+
+      // Get joined study groups
+      const result = await getUserStudyGroups();
+      if (result.success) {
+        setStudyGroups(result.groups);
+      }
+
+      // Get owned study groups
+      const ownedResult = await getUserOwnedStudyGroups();
+      if (ownedResult.success) {
+        setOwnedStudyGroups(ownedResult.groups);
+      }
+
+      setIsLoading(false);
+    }
+
+    loadUser();
+    loadStudyGroups();
+  }, []);
+
+  // Filter out owned study groups from joined study groups
+  useEffect(() => {
+    if (studyGroups.length > 0 && ownedStudyGroups.length > 0) {
+      const ownedGroupIds = new Set(ownedStudyGroups.map((group) => group.id));
+
+      const filteredGroups = studyGroups.filter(
+        (group) => !ownedGroupIds.has(group.id)
+      );
+      setFilteredJoinedGroups(filteredGroups);
+    } else {
+      setFilteredJoinedGroups(studyGroups);
+    }
+  }, [studyGroups, ownedStudyGroups]);
+
+  const handleEditUsername = () => {
+    setNewUsername(user.username);
+    setIsEditing(true);
+    setError("");
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setError("");
+  };
+
+  const handleSaveUsername = async () => {
+    if (!newUsername.trim()) {
+      setError("Username cannot be empty");
+      return;
+    }
+
+    const result = await updateUsername(newUsername);
+
+    if (result.success) {
+      setUser({ ...user, username: newUsername });
+      setIsEditing(false);
+      router.refresh();
+    } else {
+      setError(result.message || "Failed to update username");
+    }
+  };
 
   if (!user) {
     return (
-      <div className="w-[300px] min-h-screen border-r border-border p-4 overflow-y-auto">
-        <h2 className="text-xl font-bold mb-4">User Information</h2>
-        <p className="text-gray-500">Please sign in to view your information</p>
+      <div className="border-r p-4">
+        <h2>User Information</h2>
+        <p>Please sign in to view your information</p>
       </div>
     );
   }
 
   return (
-    <div className="w-[300px] min-h-screen border-r border-gray-200 dark:border-gray-800 p-4 overflow-y-auto">
-      <h2 className="text-xl font-bold mb-4">Your Profile</h2>
-      <div className="border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200 dark:bg-gray-800/50">
-        <div className="flex items-center gap-2 mb-4">
-          {user.image ? (
-            <img
-              src={user.image}
-              alt={user.username}
-              className="w-12 h-12 rounded-full"
-            />
-          ) : (
-            <div className="w-12 h-12 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-              <span className="text-lg font-medium">
-                {user.username.charAt(0).toUpperCase()}
-              </span>
-            </div>
-          )}
-          <h3 className="text-lg font-semibold">
-            {user.name || user.username}
-          </h3>
-        </div>
-        <div className="space-y-2 text-gray-600 dark:text-gray-400">
-          <p>
-            <span className="font-medium">ID:</span> {user.id}
-          </p>
-          <p>
-            <span className="font-medium">Clerk ID:</span> {user.clerkId}
-          </p>
-          <p>
-            <span className="font-medium">Username:</span> {user.username}
-          </p>
-          <p>
-            <span className="font-medium">Email:</span> {user.email}
-          </p>
-          {user.location && (
-            <p>
-              <span className="font-medium">Location:</span> {user.location}
-            </p>
-          )}
-          {user.bio && (
-            <p>
-              <span className="font-medium">Bio:</span> {user.bio}
-            </p>
-          )}
-          {user.website && (
-            <p>
-              <span className="font-medium">Website:</span> {user.website}
-            </p>
-          )}
-          <p>
-            <span className="font-medium">Joined:</span>{" "}
-            {new Date(user.createdAt).toLocaleDateString()}
-          </p>
-        </div>
+    <div className="border-r p-4">
+      <h2>Profile</h2>
 
-        {/* Account Management */}
-        <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
-          <h4 className="font-medium mb-3">Account Management</h4>
-          <DeleteAccountButton />
-        </div>
+      {/* User profile */}
+      <div>
+        {user.image ? (
+          <img src={user.image} alt={user.username} width={40} height={40} />
+        ) : (
+          <div>{user.username.charAt(0).toUpperCase()}</div>
+        )}
+        <h3>{user.name || user.username}</h3>
+
+        {/* Username edit section */}
+        {isEditing ? (
+          <div>
+            <div>
+              <input
+                type="text"
+                value={newUsername}
+                onChange={(e) => setNewUsername(e.target.value)}
+                placeholder="New username"
+                autoFocus
+              />
+              <Button variant="outline" onClick={handleSaveUsername}>
+                <Check size={16} />
+              </Button>
+              <Button variant="outline" onClick={handleCancelEdit}>
+                <X size={16} />
+              </Button>
+            </div>
+            {error && <p>{error}</p>}
+          </div>
+        ) : (
+          <div>
+            <p>@{user.username}</p>
+            <Button variant="outline" onClick={handleEditUsername}>
+              <Pencil size={12} />
+            </Button>
+          </div>
+        )}
+      </div>
+
+      {/* Account Management */}
+      <div>
+        <h4>Account Management</h4>
+        <DeleteAccountButton />
+      </div>
+
+      {/* Owner's Study Groups */}
+      <div>
+        <h4>Your Study Groups</h4>
+        {isLoading ? (
+          <p>Loading study groups...</p>
+        ) : ownedStudyGroups.length > 0 ? (
+          <ul>
+            {ownedStudyGroups.map((group) => (
+              <li
+                key={group.id}
+                onClick={() => router.push(`/studygroup/${group.id}`)}
+                style={{ cursor: "pointer" }}
+              >
+                <div>
+                  <strong>{group.studyGroupName}</strong>
+                  <p>{group.subjects}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>You haven't created any study groups yet.</p>
+        )}
+      </div>
+
+      {/* Joined Study Groups */}
+      <div>
+        <h4>Joined Study Groups</h4>
+        {isLoading ? (
+          <p>Loading study groups...</p>
+        ) : filteredJoinedGroups.length > 0 ? (
+          <ul>
+            {filteredJoinedGroups.map((group) => (
+              <li
+                key={group.id}
+                onClick={() => router.push(`/studygroup/${group.id}`)}
+                style={{ cursor: "pointer" }}
+              >
+                <div>
+                  <strong>{group.studyGroupName}</strong>
+                  <p>{group.subjects}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>You haven't joined any study groups yet.</p>
+        )}
       </div>
     </div>
   );
