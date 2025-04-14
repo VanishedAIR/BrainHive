@@ -11,16 +11,16 @@ export default function StudygroupSidebar({
 }: StudygroupSidebarProps) {
   if (!selectedGroup) {
     return (
-      <div className="flex-1 p-4">
+      <div className="flex-1 p-4 mx-auto my-auto text-center">
         <p className="text-gray-500">Select a study group to view details</p>
       </div>
     );
   }
 
   return (
-    <div className="flex-1 p-4 space-y-8">
-      <div className="flex items-center justify-center mt-4">
-        <h2 className="text-2xl font-bold text-primary">
+    <div className="flex-1 p-4 space-y-6 md:space-y-8">
+      <div className="flex items-center justify-center mt-2 md:mt-4">
+        <h2 className="text-xl md:text-2xl font-bold text-primary text-center">
           {selectedGroup.studyGroupName}
         </h2>
       </div>

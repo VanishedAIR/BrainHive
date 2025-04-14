@@ -67,18 +67,18 @@ export default function Feed({ onGroupSelect }: FeedProps) {
   };
 
   return (
-    <div className="w-full space-y-4">
+    <div className="w-full space-y-3 md:space-y-4">
       {studyGroups.map((group) => (
         <button
           key={group.id}
           onClick={() => handleGroupClick(group)}
-          className={`study-group-button w-full text-left p-4 rounded-lg transition-all duration-200 border-2 shadow-sm hover:border-primary dark:hover:border-[#3f557a] hover:shadow-md ${
+          className={`study-group-button w-full text-left p-3 md:p-4 rounded-lg transition-all duration-200 border-2 shadow-sm hover:border-primary dark:hover:border-[#3f557a] hover:shadow-md ${
             selectedGroupId === group.id
               ? "border-primary bg-primary/5 dark:border-[#3f557a] dark:bg-[rgba(41,68,110,0.7)]/50"
               : ""
           }`}
         >
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 md:gap-3">
             {group.image ? (
               <img
                 src={group.image}
