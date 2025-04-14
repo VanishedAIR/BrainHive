@@ -30,7 +30,6 @@ model StudyGroup {
   image          String?
   createdAt      DateTime           @default(now())
   updatedAt      DateTime           @updatedAt
-  isPublic       Boolean
   studyDate      DateTime
   studyTime      String
   studyGroupName String

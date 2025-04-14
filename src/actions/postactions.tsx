@@ -11,7 +11,6 @@ export async function createPost(data: {
   image: string | null;
   studyDate: string;
   studyTime: string;
-  isPublic: boolean;
 }) {
   try {
     const { userId } = await auth();
@@ -50,7 +49,6 @@ export async function createPost(data: {
         image: data.image,
         studyDate: new Date(data.studyDate),
         studyTime: formattedStudyTime,
-        isPublic: data.isPublic,
         authorId: user.id,
         status: "active",
         members: {
