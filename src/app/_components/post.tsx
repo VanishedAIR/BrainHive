@@ -7,13 +7,13 @@ import { createPost } from "@/actions/postactions";
 
 const PostPage: React.FC = () => {
   const [studyGroupName, setStudyGroupName] = useState("");
+  const [studyGroupBio, setStudyGroupBio] = useState("");
   const [subjects, setSubjects] = useState<string[]>([]); // Array to store multiple subjects
   const [newSubject, setNewSubject] = useState(""); // Temporary input for adding a new subject
   const [when2MeetLink, setWhen2MeetLink] = useState("");
   const [image, setImage] = useState<File | null>(null);
   const [studyDate, setStudyDate] = useState("");
   const [studyTime, setStudyTime] = useState("");
-  const [isPublic, setIsPublic] = useState(true);
   const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState<any[]>([]); // Local state to store posts
 
@@ -42,7 +42,6 @@ const PostPage: React.FC = () => {
         image: image ? URL.createObjectURL(image) : null, // Simulate image URL
         studyDate,
         studyTime,
-        isPublic,
       };
 
       const response = await createPost(postData);
@@ -56,7 +55,6 @@ const PostPage: React.FC = () => {
         setImage(null);
         setStudyDate("");
         setStudyTime("");
-        setIsPublic(true);
       } else {
         alert(`Failed to create post: ${response.message}`);
       }
