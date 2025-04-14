@@ -15,12 +15,13 @@ class Router {
 
     handleRouteChange() {
         const hash = window.location.hash.slice(1);
-        console.log(hash);
+        console.log(`Current hash: ${hash}`);
         const route = this.routes[hash];
         if (route) {
+            console.log(`Executing route for hash: ${hash}`);
             document.querySelector('#content').innerHTML = route();
-        }
-        else {
+        } else {
+            console.log(`No route found for hash: ${hash}`);
             document.querySelector('#content').innerHTML = '404 not found';
         }
     }
