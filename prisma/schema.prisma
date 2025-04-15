@@ -35,7 +35,7 @@ model StudyGroup {
   studyGroupName String
   studyGroupBio  String             @default("No bio provided")
   location       String?
-  subjects       String
+  subjects       String[]
   when2MeetLink  String
   status         String
   author         User               @relation(fields: [authorId], references: [id])
