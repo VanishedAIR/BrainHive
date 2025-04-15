@@ -10,7 +10,7 @@ export async function createPost(data: {
   subjects: string[];
   when2MeetLink: string;
   image: string | null;
-  studyDate: string;
+  studyDates: string[]; 
   studyTime: string;
   location: string;
 }) {
@@ -50,7 +50,7 @@ export async function createPost(data: {
         subjects: data.subjects.join(", "),
         when2MeetLink: data.when2MeetLink,
         image: data.image,
-        studyDate: new Date(data.studyDate),
+        studyDates: data.studyDates, 
         studyTime: formattedStudyTime,
         location: data.location,
         authorId: user.id,
