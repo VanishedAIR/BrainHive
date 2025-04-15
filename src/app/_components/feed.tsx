@@ -8,11 +8,13 @@ import { getAllPosts } from "@/actions/postactions";
 interface StudyGroup {
   id: string;
   studyGroupName: string;
-  subjects: string;
-  when2MeetLink: string;
+  studyGroupBio?: string | null;
+  subjects: string[];
+  when2MeetLink?: string | null;
   image: string | null;
-  studyDate: Date;
-  isPublic: boolean;
+  studyDates: string[];  
+  studyTime: string;
+  location: string;
   status: string;
   createdAt: Date;
   author: {
@@ -101,9 +103,14 @@ export default function Feed({ onGroupSelect }: FeedProps) {
           <p className="text-sm text-gray-400">
             Members: {group.members.length}
           </p>
-          <p className="text-sm text-gray-400">
-            Study Date(s): {new Date(group.studyDate).toLocaleDateString()}
-          </p>
+          <div className="text-sm text-gray-400">
+            Study Sessions: 
+            {group.studyDates.map((date, index) => (
+              <span key={index} className="block">
+                {new Date(date).toLocaleDateString()} at {group.studyTime}
+              </span>
+            ))}
+          </div>
         </button>
       ))}
     </div>

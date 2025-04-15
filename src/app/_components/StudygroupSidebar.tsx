@@ -25,16 +25,27 @@ export default function StudygroupSidebar({
         </h2>
       </div>
 
+      {selectedGroup.studyGroupBio && (
+        <div className="space-y-2">
+          <h3 className="text-lg font-semibold">About</h3>
+          <p className="text-gray-600">{selectedGroup.studyGroupBio}</p>
+        </div>
+      )}
+
       <div className="space-y-2">
         <h3 className="text-lg font-semibold">Subjects</h3>
         <p className="text-gray-600">{selectedGroup.subjects}</p>
       </div>
 
       <div className="space-y-2">
-        <h3 className="text-lg font-semibold">Study Date</h3>
-        <p className="text-gray-600">
-          {new Date(selectedGroup.studyDate).toLocaleDateString()}
-        </p>
+        <h3 className="text-lg font-semibold">Study Sessions</h3>
+        <div className="text-gray-600">
+          {selectedGroup.studyDates.map((date, index) => (
+            <div key={index} className="mb-1">
+              {new Date(date).toLocaleDateString()} at {selectedGroup.studyTime}
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="space-y-2">
@@ -91,6 +102,24 @@ export default function StudygroupSidebar({
           </Button>
         </div>
       )}
+      <div className="space-y-2">
+        <h3 className="text-lg font-semibold">Location</h3>
+        <p className="text-gray-600">
+          {selectedGroup.location &&
+          selectedGroup.location.match(/^https?:\/\//) ? (
+            <a
+              href={selectedGroup.location}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-500 hover:text-blue-600 underline"
+            >
+              Online Meeting Link
+            </a>
+          ) : (
+            selectedGroup.location
+          )}
+        </p>
+      </div>
       <div className="relative bottom-[-3%] left-50 translate-x-[-35%] w-fit">
         <StudyGroupToggle postId={selectedGroup.id} />
       </div>
