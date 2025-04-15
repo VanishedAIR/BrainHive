@@ -37,6 +37,7 @@ const PostPage: React.FC = () => {
     try {
       const postData = {
         studyGroupName,
+        studyGroupBio,
         subjects,
         when2MeetLink,
         image: image ? URL.createObjectURL(image) : null, // Simulate image URL
@@ -50,6 +51,7 @@ const PostPage: React.FC = () => {
         alert("Post created successfully!");
         // Reset form fields
         setStudyGroupName("");
+        setStudyGroupBio("");
         setSubjects([]);
         setWhen2MeetLink("");
         setImage(null);
@@ -88,6 +90,24 @@ const PostPage: React.FC = () => {
             className="w-full h-12 p-3 border border-gray-300 rounded-md text-base focus:ring-2 focus:ring-primary focus:border-primary"
             placeholder="Enter the name of the study group"
             required
+          />
+        </div>
+
+        {/*Study Group Bio*/}
+        <div className="space-y-2">
+          <Label
+            htmlFor="studyGroupBio"
+            className="block font-bold text-gray-700 dark:text-white"
+          >
+            Study Group Bio:
+          </Label>
+          <Input
+            id="studyGroupBio"
+            type="text"
+            value={studyGroupBio}
+            onChange={(e) => setStudyGroupBio(e.target.value)}
+            className="w-full h-12 p-3 border border-gray-300 rounded-md text-base focus:ring-2 focus:ring-primary focus:border-primary"
+            placeholder="Enter a brief bio about the study group"
           />
         </div>
 

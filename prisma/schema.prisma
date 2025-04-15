@@ -33,6 +33,7 @@ model StudyGroup {
   studyDate      DateTime
   studyTime      String
   studyGroupName String
+  studyGroupBio  String             @default("No bio provided")
   subjects       String
   when2MeetLink  String
   status         String
