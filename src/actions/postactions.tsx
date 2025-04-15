@@ -47,7 +47,7 @@ export async function createPost(data: {
       data: {
         studyGroupName: data.studyGroupName,
         studyGroupBio: data.studyGroupBio,
-        subjects: data.subjects.join(", "),
+        subjects: data.subjects,
         when2MeetLink: data.when2MeetLink,
         image: data.image,
         studyDates: data.studyDates, 
