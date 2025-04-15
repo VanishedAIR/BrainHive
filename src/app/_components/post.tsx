@@ -12,11 +12,12 @@ const PostPage: React.FC = () => {
   const [newSubject, setNewSubject] = useState(""); // Temporary input for adding a new subject
   const [when2MeetLink, setWhen2MeetLink] = useState("");
   const [image, setImage] = useState<File | null>(null);
-  const [studyDate, setStudyDate] = useState("");
+  const [studyDates, setStudyDates] = useState<string[]>([]); // Array to store multiple study dates
   const [studyTime, setStudyTime] = useState("");
   const [location, setLocation] = useState("");
   const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState<any[]>([]); // Local state to store posts
+  const [newStudyDate, setNewStudyDate] = useState(""); // Temporary input for adding a new study date
 
   const handleAddSubject = () => {
     if (newSubject.trim() && !subjects.includes(newSubject)) {
@@ -31,6 +32,19 @@ const PostPage: React.FC = () => {
     );
   };
 
+  const handleAddStudyDate = () => {
+    if (newStudyDate.trim() && !studyDates.includes(newStudyDate)) {
+      setStudyDates((prevDates) => [...prevDates, newStudyDate]);
+      setNewStudyDate(""); // Clear the input field
+    }
+  };
+
+  const handleRemoveStudyDate = (dateToRemove: string) => {
+    setStudyDates((prevDates) =>
+      prevDates.filter((date) => date !== dateToRemove)
+    );
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -42,7 +56,7 @@ const PostPage: React.FC = () => {
         subjects,
         when2MeetLink,
         image: image ? URL.createObjectURL(image) : null, // Simulate image URL
-        studyDate,
+        studyDates,
         studyTime,
         location,
       };
@@ -57,7 +71,7 @@ const PostPage: React.FC = () => {
         setSubjects([]);
         setWhen2MeetLink("");
         setImage(null);
-        setStudyDate("");
+        setStudyDates([]);
         setStudyTime("");
         setLocation("");
       } else {
@@ -191,24 +205,45 @@ const PostPage: React.FC = () => {
             onChange={(e) => setImage(e.target.files?.[0] || null)}
             className="w-full h-12 px-3 py-2 border border-gray-300 rounded-md text-base focus:ring-2 focus:ring-primary focus:border-primary file:mr-4 file:py-1 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"
           />
-        </div>
+        </div> 
 
-        {/*Study Date*/}
+        {/*Study Dates*/}
         <div className="space-y-2">
           <Label
-            htmlFor="studyDate"
+            htmlFor="studyDates"
             className="block font-bold text-gray-700 dark:text-white"
           >
-            Study Date:
+            Study Dates:
           </Label>
-          <Input
-            id="studyDate"
-            type="date"
-            value={studyDate}
-            onChange={(e) => setStudyDate(e.target.value)}
-            className="w-full h-12 p-3 border border-gray-300 rounded-md text-base focus:ring-2 focus:ring-primary focus:border-primary"
-            required
-          />
+          <div className="flex items-center space-x-2">
+            <Input
+              id="studyDates"
+              type="date"
+              value={newStudyDate}
+              onChange={(e) => setNewStudyDate(e.target.value)}
+              className="w-full h-12 p-3 border border-gray-300 rounded-md text-base focus:ring-2 focus:ring-primary focus:border-primary"
+              placeholder="Add a study date"
+            />
+            <button
+              type="button"
+              onClick={handleAddStudyDate}
+              className="h-12 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-hover"
+            >
+              Add
+            </button>
+          </div>
+          <div className="flex flex-wrap gap-2 mt-2">
+            {studyDates.map((date, index) => (
+              <button
+                key={index}
+                type="button"
+                onClick={() => handleRemoveStudyDate(date)}
+                className="flex items-center px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-red-300 hover:text-red-700 transition-colors"
+              >
+                {new Date(date).toLocaleDateString()}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/*Study Time*/}
@@ -231,21 +266,21 @@ const PostPage: React.FC = () => {
 
         {/*Location*/}
         <div className="space-y-2">
-        <Label
-          htmlFor="location"
-          className="block font-bold text-gray-700 dark:text-white"
-        >
-          Location:
-        </Label>
-        <Input
-          id="location"
-          type="text"
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
-          className="w-full h-12 p-3 border border-gray-300 rounded-md text-base focus:ring-2 focus:ring-primary focus:border-primary"
-          placeholder="Enter the location of the study group"
-        />
-      </div>
+          <Label
+            htmlFor="location"
+            className="block font-bold text-gray-700 dark:text-white"
+          >
+            Location:
+          </Label>
+          <Input
+            id="location"
+            type="text"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            className="w-full h-12 p-3 border border-gray-300 rounded-md text-base focus:ring-2 focus:ring-primary focus:border-primary"
+            placeholder="Enter the location of the study group"
+          />
+        </div>
 
         {/*Submit Button*/}
         <button

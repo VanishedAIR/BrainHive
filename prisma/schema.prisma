@@ -30,7 +30,7 @@ model StudyGroup {
   image          String?
   createdAt      DateTime           @default(now())
   updatedAt      DateTime           @updatedAt
-  studyDate      DateTime
+  studyDates     String[]
   studyTime      String
   studyGroupName String
   studyGroupBio  String             @default("No bio provided")
