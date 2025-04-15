@@ -120,7 +120,7 @@ export default function StudygroupSidebar({
           )}
         </p>
       </div>
-      <div className="relative bottom-[-3%] left-50 translate-x-[-35%] w-fit">
+      <div className="relative bottom-[-3%] left-[50%] translate-x-[-50%] w-fit">
         <StudyGroupToggle postId={selectedGroup.id} />
       </div>
     </div>
