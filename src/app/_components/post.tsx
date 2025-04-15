@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createPost } from "@/actions/postactions";
+import { Button } from "@/components/ui/button";
 
 const PostPage: React.FC = () => {
   const [studyGroupName, setStudyGroupName] = useState("");
@@ -176,13 +177,13 @@ const PostPage: React.FC = () => {
               className="w-full h-12 p-3 border border-gray-300 rounded-md text-base focus:ring-2 focus:ring-primary focus:border-primary"
               placeholder="Add a subject"
             />
-            <button
+            <Button
               type="button"
               onClick={handleAddSubject}
               className="h-12 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-hover"
             >
               Add
-            </button>
+            </Button>
           </div>
           <div className="flex flex-wrap gap-2 mt-2">
             {subjects.map((subject, index) => (
@@ -191,12 +192,12 @@ const PostPage: React.FC = () => {
                 className="flex items-center space-x-2 bg-gray-200 text-gray-700 rounded-md"
               >
                 <span>
-                  <button
+                  <Button
                     onClick={() => handleRemoveSubject(subject)}
                     className=" hover:text-red-700 hover:bg-red-300 bg-transparent"
                   >
                     {subject}
-                  </button>
+                  </Button>
                 </span>
               </div>
             ))}
@@ -262,24 +263,24 @@ const PostPage: React.FC = () => {
               className="w-full h-12 p-3 border border-gray-300 rounded-md text-base focus:ring-2 focus:ring-primary focus:border-primary"
               placeholder="Add a study date"
             />
-            <button
+            <Button
               type="button"
               onClick={handleAddStudyDate}
               className="h-12 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-hover"
             >
               Add
-            </button>
+            </Button>
           </div>
           <div className="flex flex-wrap gap-2 mt-2">
             {studyDates.map((date, index) => (
-              <button
+              <Button
                 key={index}
                 type="button"
                 onClick={() => handleRemoveStudyDate(date)}
                 className="flex items-center px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-red-300 hover:text-red-700 transition-colors"
               >
                 {new Date(date).toLocaleDateString()}
-              </button>
+              </Button>
             ))}
           </div>
         </div>
@@ -329,13 +330,13 @@ const PostPage: React.FC = () => {
         </div>
 
         {/*Submit Button*/}
-        <button
+        <Button
           type="submit"
           className="px-5 py-2.5 bg-primary text-white rounded-md text-base hover:bg-primary-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           disabled={loading}
         >
           {loading ? "Submitting..." : "Submit"}
-        </button>
+        </Button>
       </form>
 
       {/*Display Created Posts*/}
