@@ -14,6 +14,7 @@ const PostPage: React.FC = () => {
   const [image, setImage] = useState<File | null>(null);
   const [studyDate, setStudyDate] = useState("");
   const [studyTime, setStudyTime] = useState("");
+  const [location, setLocation] = useState("");
   const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState<any[]>([]); // Local state to store posts
 
@@ -43,6 +44,7 @@ const PostPage: React.FC = () => {
         image: image ? URL.createObjectURL(image) : null, // Simulate image URL
         studyDate,
         studyTime,
+        location,
       };
 
       const response = await createPost(postData);
@@ -57,6 +59,7 @@ const PostPage: React.FC = () => {
         setImage(null);
         setStudyDate("");
         setStudyTime("");
+        setLocation("");
       } else {
         alert(`Failed to create post: ${response.message}`);
       }
@@ -226,6 +229,24 @@ const PostPage: React.FC = () => {
           />
         </div>
 
+        {/*Location*/}
+        <div className="space-y-2">
+        <Label
+          htmlFor="location"
+          className="block font-bold text-gray-700 dark:text-white"
+        >
+          Location:
+        </Label>
+        <Input
+          id="location"
+          type="text"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+          className="w-full h-12 p-3 border border-gray-300 rounded-md text-base focus:ring-2 focus:ring-primary focus:border-primary"
+          placeholder="Enter the location of the study group"
+        />
+      </div>
+
         {/*Submit Button*/}
         <button
           type="submit"
@@ -247,6 +268,7 @@ const PostPage: React.FC = () => {
               <p>Study Group Name: {post.studyGroupName}</p>
               <p>Study Date: {new Date(post.studyDate).toLocaleDateString()}</p>
               <p>Study Time: {new Date(post.studyTime).toLocaleTimeString()}</p>
+              <p>Location: {post.location || "No location provided"}</p>
             </div>
           ))}
         </div>
