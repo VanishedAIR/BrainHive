@@ -1,15 +1,48 @@
 import type { StudyGroup } from "./feed";
 import { Button } from "@/components/ui/button";
 import StudyGroupToggle from "./StudyGroupToggle";
+import { useEffect, useState } from "react";
+import { getPostById } from "@/actions/postactions";
 
 interface StudygroupSidebarProps {
   selectedGroup: StudyGroup | null;
+  refreshTrigger?: number;
+  refreshData?: () => void;
 }
 
 export default function StudygroupSidebar({
   selectedGroup,
+  refreshTrigger = 0,
+  refreshData,
 }: StudygroupSidebarProps) {
-  if (!selectedGroup) {
+  const [currentGroup, setCurrentGroup] = useState<StudyGroup | null>(
+    selectedGroup
+  );
+
+  // Update currentGroup when selectedGroup changes
+  useEffect(() => {
+    setCurrentGroup(selectedGroup);
+  }, [selectedGroup]);
+
+  // Refresh data when refreshTrigger changes
+  useEffect(() => {
+    async function refreshSelectedGroup() {
+      if (currentGroup?.id) {
+        try {
+          const response = await getPostById(currentGroup.id);
+          if (response.success && response.post) {
+            setCurrentGroup(response.post as unknown as StudyGroup);
+          }
+        } catch (error) {
+          console.error("Error refreshing study group data:", error);
+        }
+      }
+    }
+
+    refreshSelectedGroup();
+  }, [refreshTrigger, currentGroup?.id]);
+
+  if (!currentGroup) {
     return (
       <div className="flex-1 p-4 mx-auto my-auto text-center">
         <p className="text-gray-500">Select a study group to view details</p>
@@ -21,28 +54,28 @@ export default function StudygroupSidebar({
     <div className="flex-1 p-4 space-y-6 md:space-y-8">
       <div className="flex items-center justify-center mt-2 md:mt-4">
         <h2 className="text-xl md:text-2xl font-bold text-primary text-center">
-          {selectedGroup.studyGroupName}
+          {currentGroup.studyGroupName}
         </h2>
       </div>
 
-      {selectedGroup.studyGroupBio && (
+      {currentGroup.studyGroupBio && (
         <div className="space-y-2">
           <h3 className="text-lg font-semibold">About</h3>
-          <p className="text-gray-600">{selectedGroup.studyGroupBio}</p>
+          <p className="text-gray-600">{currentGroup.studyGroupBio}</p>
         </div>
       )}
 
       <div className="space-y-2">
         <h3 className="text-lg font-semibold">Subjects</h3>
-        <p className="text-gray-600">{selectedGroup.subjects}</p>
+        <p className="text-gray-600">{currentGroup.subjects}</p>
       </div>
 
       <div className="space-y-2">
         <h3 className="text-lg font-semibold">Study Sessions</h3>
         <div className="text-gray-600">
-          {selectedGroup.studyDates.map((date, index) => (
+          {currentGroup.studyDates.map((date, index) => (
             <div key={index} className="mb-1">
-              {new Date(date).toLocaleDateString()} at {selectedGroup.studyTime}
+              {new Date(date).toLocaleDateString()} at {currentGroup.studyTime}
             </div>
           ))}
         </div>
@@ -51,36 +84,34 @@ export default function StudygroupSidebar({
       <div className="space-y-2">
         <h3 className="text-lg font-semibold">Created</h3>
         <p className="text-gray-600">
-          {new Date(selectedGroup.createdAt).toLocaleDateString()}
+          {new Date(currentGroup.createdAt).toLocaleDateString()}
         </p>
       </div>
 
       <div className="space-y-2">
         <h3 className="text-lg font-semibold">Created by</h3>
         <div className="flex items-center space-x-2">
-          {selectedGroup.author.image ? (
+          {currentGroup.author.image ? (
             <img
-              src={selectedGroup.author.image}
-              alt={selectedGroup.author.username}
+              src={currentGroup.author.image}
+              alt={currentGroup.author.username}
               className="w-8 h-8 rounded-full"
             />
           ) : (
             <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
-              {selectedGroup.author.username[0].toUpperCase()}
+              {currentGroup.author.username[0].toUpperCase()}
             </div>
           )}
-          <span className="text-gray-600">
-            @{selectedGroup.author.username}
-          </span>
+          <span className="text-gray-600">@{currentGroup.author.username}</span>
         </div>
       </div>
 
       <div className="space-y-2">
         <h3 className="text-lg font-semibold">
-          Members ({selectedGroup.members.length})
+          Members ({currentGroup.members.length})
         </h3>
         <div className="space-y-1">
-          {selectedGroup.members.map((member) => (
+          {currentGroup.members.map((member) => (
             <div key={member.id} className="text-gray-600">
               @{member.username}
             </div>
@@ -88,12 +119,12 @@ export default function StudygroupSidebar({
         </div>
       </div>
 
-      {selectedGroup.when2MeetLink && (
+      {currentGroup.when2MeetLink && (
         <div className="space-y-2">
           <h3 className="text-lg font-semibold">When2Meet Link</h3>
           <Button variant="outline" asChild className="w-full">
             <a
-              href={selectedGroup.when2MeetLink}
+              href={currentGroup.when2MeetLink}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -105,10 +136,10 @@ export default function StudygroupSidebar({
       <div className="space-y-2">
         <h3 className="text-lg font-semibold">Location</h3>
         <p className="text-gray-600">
-          {selectedGroup.location &&
-          selectedGroup.location.match(/^https?:\/\//) ? (
+          {currentGroup.location &&
+          currentGroup.location.match(/^https?:\/\//) ? (
             <a
-              href={selectedGroup.location}
+              href={currentGroup.location}
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-500 hover:text-blue-600 underline"
@@ -116,12 +147,16 @@ export default function StudygroupSidebar({
               Online Meeting Link
             </a>
           ) : (
-            selectedGroup.location
+            currentGroup.location
           )}
         </p>
       </div>
       <div className="relative bottom-[-3%] left-[50%] translate-x-[-50%] w-fit">
-        <StudyGroupToggle postId={selectedGroup.id} />
+        <StudyGroupToggle
+          postId={currentGroup.id}
+          refreshTrigger={refreshTrigger}
+          refreshData={refreshData}
+        />
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ import { useRouter } from "next/navigation";
 interface StudyGroup {
   id: string;
   studyGroupName: string;
-  subjects: string;
+  subjects: string | string[];
   image: string | null;
   author?: {
     id: string;
@@ -24,7 +24,12 @@ interface StudyGroup {
   };
 }
 
-export function UserSidebar() {
+interface UserSidebarProps {
+  refreshData: () => void;
+  refreshTrigger?: number;
+}
+
+export function UserSidebar({ refreshData, refreshTrigger = 0 }: UserSidebarProps) {
   const [user, setUser] = useState<any>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [newUsername, setNewUsername] = useState("");
@@ -34,36 +39,35 @@ export function UserSidebar() {
   const [filteredJoinedGroups, setFilteredJoinedGroups] = useState<
     StudyGroup[]
   >([]);
-  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
+  // Function to load user data
+  const loadUserData = async () => {
+    const userData = await getCurrentUser();
+    setUser(userData);
+  };
+
+  // Function to load study groups
+  const loadStudyGroups = async () => {
+
+    // Get joined study groups
+    const result = await getUserStudyGroups();
+    if (result.success) {
+      setStudyGroups(result.groups);
+    }
+
+    // Get owned study groups
+    const ownedResult = await getUserOwnedStudyGroups();
+    if (ownedResult.success) {
+      setOwnedStudyGroups(ownedResult.groups);
+    }
+  };
+
+  // Load data initially and when refreshTrigger changes
   useEffect(() => {
-    async function loadUser() {
-      const userData = await getCurrentUser();
-      setUser(userData);
-    }
-
-    async function loadStudyGroups() {
-      setIsLoading(true);
-
-      // Get joined study groups
-      const result = await getUserStudyGroups();
-      if (result.success) {
-        setStudyGroups(result.groups);
-      }
-
-      // Get owned study groups
-      const ownedResult = await getUserOwnedStudyGroups();
-      if (ownedResult.success) {
-        setOwnedStudyGroups(ownedResult.groups);
-      }
-
-      setIsLoading(false);
-    }
-
-    loadUser();
+    loadUserData();
     loadStudyGroups();
-  }, []);
+  }, [refreshTrigger]); // Add refreshTrigger to dependency array
 
   // Filter out owned study groups from joined study groups
   useEffect(() => {
@@ -102,9 +106,14 @@ export function UserSidebar() {
       setUser({ ...user, username: newUsername });
       setIsEditing(false);
       router.refresh();
+      refreshData(); // Call refreshData to trigger a refresh in the parent component
     } else {
       setError(result.message || "Failed to update username");
     }
+  };
+
+  const handleGroupClick = (groupId: string) => {
+    router.push(`/studygroup/${groupId}`);
   };
 
   if (!user) {
@@ -168,14 +177,12 @@ export function UserSidebar() {
       {/* Owner's Study Groups */}
       <div>
         <h4>Your Study Groups</h4>
-        {isLoading ? (
-          <p>Loading study groups...</p>
-        ) : ownedStudyGroups.length > 0 ? (
+        {ownedStudyGroups.length > 0 ? (
           <ul>
             {ownedStudyGroups.map((group) => (
               <li
                 key={group.id}
-                onClick={() => router.push(`/studygroup/${group.id}`)}
+                onClick={() => handleGroupClick(group.id)}
                 style={{ cursor: "pointer" }}
               >
                 <div>
@@ -193,14 +200,12 @@ export function UserSidebar() {
       {/* Joined Study Groups */}
       <div>
         <h4>Joined Study Groups</h4>
-        {isLoading ? (
-          <p>Loading study groups...</p>
-        ) : filteredJoinedGroups.length > 0 ? (
+        {filteredJoinedGroups.length > 0 ? (
           <ul>
             {filteredJoinedGroups.map((group) => (
               <li
                 key={group.id}
-                onClick={() => router.push(`/studygroup/${group.id}`)}
+                onClick={() => handleGroupClick(group.id)}
                 style={{ cursor: "pointer" }}
               >
                 <div>

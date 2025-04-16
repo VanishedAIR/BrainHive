@@ -17,7 +17,6 @@ export default function HomePage() {
             </a>
           </div>
         <div className="flex border-t border-border flex-1">
-          <UserSidebar />
           <HomeClientContent />
         </div>
       </section>
