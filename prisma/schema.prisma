@@ -30,10 +30,12 @@ model StudyGroup {
   image          String?
   createdAt      DateTime           @default(now())
   updatedAt      DateTime           @updatedAt
-  studyDate      DateTime
+  studyDates     String[]
   studyTime      String
   studyGroupName String
-  subjects       String
+  studyGroupBio  String             @default("No bio provided")
+  location       String?
+  subjects       String[]
   when2MeetLink  String
   status         String
   author         User               @relation(fields: [authorId], references: [id])

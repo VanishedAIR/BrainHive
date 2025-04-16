@@ -6,11 +6,13 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 // Function to create a new study group
 export async function createPost(data: {
   studyGroupName: string;
+  studyGroupBio?: string | null;  //optional = nullable
   subjects: string[];
-  when2MeetLink: string;
+  when2MeetLink?: string | null;  //optional = nullable
   image: string | null;
-  studyDate: string;
+  studyDates: string[];
   studyTime: string;
+  location: string;
 }) {
   try {
     const { userId } = await auth();
@@ -44,11 +46,13 @@ export async function createPost(data: {
     const studyGroup = await prisma.studyGroup.create({
       data: {
         studyGroupName: data.studyGroupName,
-        subjects: data.subjects.join(", "),
-        when2MeetLink: data.when2MeetLink,
+        studyGroupBio: data.studyGroupBio || "",  // Provide default empty string
+        subjects: data.subjects,
+        when2MeetLink: data.when2MeetLink || "",  // Provide default empty string
         image: data.image,
-        studyDate: new Date(data.studyDate),
+        studyDates: data.studyDates,
         studyTime: formattedStudyTime,
+        location: data.location,
         authorId: user.id,
         status: "active",
         members: {
