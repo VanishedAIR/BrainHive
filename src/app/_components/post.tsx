@@ -12,7 +12,7 @@ const PostPage: React.FC = () => {
   const [subjects, setSubjects] = useState<string[]>([]); // Array to store multiple subjects
   const [newSubject, setNewSubject] = useState(""); // Temporary input for adding a new subject
   const [when2MeetLink, setWhen2MeetLink] = useState("");
-  const [image, setImage] = useState<File | string | null>(null);
+  const [image, setImage] = useState<File | null>(null);
   const [studyDates, setStudyDates] = useState<string[]>([]); // Array to store multiple study dates
   const [studyTime, setStudyTime] = useState("");
   const [location, setLocation] = useState("");
@@ -44,32 +44,6 @@ const PostPage: React.FC = () => {
     setStudyDates((prevDates) =>
       prevDates.filter((date) => date !== dateToRemove)
     );
-  };
-
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const formData = new FormData();
-      formData.append("image", file);
-
-      try {
-        const response = await fetch("/api/upload", {
-          method: "POST",
-          body: formData,
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to upload image");
-        }
-
-        const data = await response.json();
-        console.log("Uploaded Image URL:", data.url);
-        setImage(data.url); 
-      } catch (error) {
-        console.error("Error uploading image:", error);
-        alert("Failed to upload image. Please try again.");
-      }
-    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -113,7 +87,7 @@ const PostPage: React.FC = () => {
         studyGroupBio: studyGroupBio.trim() || null, // Optional
         subjects,
         when2MeetLink: when2MeetLink.trim() || null, // Optional
-        image: typeof image === "string" ? image : null, 
+        image: image ? URL.createObjectURL(image) : null, // Optional
         studyDates,
         studyTime,
         location: location.trim(),
@@ -267,7 +241,7 @@ const PostPage: React.FC = () => {
           <Input
             id="picture"
             type="file"
-            onChange={handleImageUpload}
+            onChange={(e) => setImage(e.target.files?.[0] || null)}
             className="w-full h-12 px-3 py-2 border border-gray-300 rounded-md text-base focus:ring-2 focus:ring-primary focus:border-primary file:mr-4 file:py-1 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"
           />
         </div> 
