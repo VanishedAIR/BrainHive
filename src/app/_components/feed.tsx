@@ -9,12 +9,12 @@ interface StudyGroup {
   id: string;
   studyGroupName: string;
   studyGroupBio?: string | null;
-  subjects: string[];
+  subjects: string[] | string;
   when2MeetLink?: string | null;
   image: string | null;
-  studyDates: string[];  
+  studyDates: string[];
   studyTime: string;
-  location: string;
+  location: string | null;
   status: string;
   createdAt: Date;
   author: {
@@ -34,9 +34,10 @@ interface StudyGroup {
 
 interface FeedProps {
   onGroupSelect: (group: StudyGroup) => void;
+  refreshTrigger?: number;
 }
 
-export default function Feed({ onGroupSelect }: FeedProps) {
+export default function Feed({ onGroupSelect, refreshTrigger = 0 }: FeedProps) {
   const [studyGroups, setStudyGroups] = useState<StudyGroup[]>([]);
   const [selectedGroupId, setSelectedGroupId] = useState<string | null>(null);
 
@@ -59,7 +60,9 @@ export default function Feed({ onGroupSelect }: FeedProps) {
     return () => {
       mounted = false;
     };
-  }, []); // Remove onGroupSelect from dependencies
+  }, [selectedGroupId, onGroupSelect, refreshTrigger]);
+
+  // Initial fetch and refresh when the trigger changes
 
   const handleGroupClick = (group: StudyGroup) => {
     if (selectedGroupId !== group.id) {
@@ -104,7 +107,7 @@ export default function Feed({ onGroupSelect }: FeedProps) {
             Members: {group.members.length}
           </p>
           <div className="text-sm text-gray-400">
-            Study Sessions: 
+            Study Sessions:
             {group.studyDates.map((date, index) => (
               <span key={index} className="block">
                 {new Date(date).toLocaleDateString()} at {group.studyTime}

@@ -11,14 +11,20 @@ import { toast } from "@/components/ui/use-toast";
 
 interface StudyGroupToggleProps {
   postId: string;
+  refreshTrigger?: number;
+  refreshData?: () => void;
 }
 
-function StudyGroupToggle({ postId }: StudyGroupToggleProps) {
+function StudyGroupToggle({
+  postId,
+  refreshTrigger = 0,
+  refreshData,
+}: StudyGroupToggleProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [isMember, setIsMember] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
 
-  // Check membership status and ownership when component loads
+  // Check membership status and ownership when component loads, postId changes, or refreshTrigger changes
   useEffect(() => {
     const checkStatus = async () => {
       try {
@@ -40,7 +46,7 @@ function StudyGroupToggle({ postId }: StudyGroupToggleProps) {
     };
 
     checkStatus();
-  }, [postId]);
+  }, [postId, refreshTrigger]); // Added refreshTrigger to dependency array
 
   const handleJoin = async () => {
     try {
@@ -55,6 +61,8 @@ function StudyGroupToggle({ postId }: StudyGroupToggleProps) {
           description: "You've joined the study group!",
         });
         setIsMember(true);
+        // Refresh data if available
+        if (refreshData) refreshData();
       } else {
         toast({
           title: "Error",
@@ -86,6 +94,8 @@ function StudyGroupToggle({ postId }: StudyGroupToggleProps) {
           description: "You've left the study group",
         });
         setIsMember(false);
+        // Refresh data if available
+        if (refreshData) refreshData();
       } else {
         toast({
           title: "Error",
