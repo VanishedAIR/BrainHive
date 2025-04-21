@@ -4,25 +4,13 @@ import { getCurrentUser, updateUsername } from "@/actions/useractions";
 import {
   getUserStudyGroups,
   getUserOwnedStudyGroups,
-  deletePost,
 } from "@/actions/postactions";
 import DeleteAccountButton from "./DeleteAccountButton";
+import DeleteStudyGroupButton from "./DeleteStudyGroupButton";
 import { Button } from "@/components/ui/button";
 import { Pencil, Check, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { toast } from "@/components/ui/use-toast";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 
 interface StudyGroup {
   id: string;
@@ -57,8 +45,6 @@ export function UserSidebar({
     StudyGroup[]
   >([]);
   const router = useRouter();
-  const [deletingGroupId, setDeletingGroupId] = useState<string | null>(null);
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   // Function to load user data
   const loadUserData = async () => {
@@ -130,39 +116,9 @@ export function UserSidebar({
     }
   };
 
-  const handleGroupClick = (groupId: string) => {
-    router.push(`/studygroup/${groupId}`);
-  };
-
-  const handleDeleteGroup = async (groupId: string) => {
-    setDeletingGroupId(groupId);
-    setIsDeleteDialogOpen(true);
-  };
-
-  const confirmDeleteGroup = async () => {
-    if (!deletingGroupId) return;
-
-    const result = await deletePost(deletingGroupId);
-
-    if (result.success) {
-      toast({
-        title: "Success",
-        description: "Study group deleted successfully",
-      });
-
-      // Refresh the list of owned study groups
-      loadStudyGroups();
-      refreshData();
-    } else {
-      toast({
-        title: "Error",
-        description: result.message || "Failed to delete study group",
-        variant: "destructive",
-      });
-    }
-
-    setIsDeleteDialogOpen(false);
-    setDeletingGroupId(null);
+  const handleDeleteSuccess = () => {
+    loadStudyGroups();
+    refreshData();
   };
 
   if (!user) {
@@ -229,24 +185,15 @@ export function UserSidebar({
         {ownedStudyGroups.length > 0 ? (
           <ul>
             {ownedStudyGroups.map((group) => (
-              <li
-                key={group.id}
-                onClick={() => handleGroupClick(group.id)}
-                style={{ cursor: "pointer" }}
-              >
+              <li key={group.id}>
                 <div>
                   <strong>{group.studyGroupName}</strong>
                   <p>{group.subjects}</p>
                 </div>
-                <Button
-                  variant="destructive"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDeleteGroup(group.id);
-                  }}
-                >
-                  Delete
-                </Button>
+                <DeleteStudyGroupButton
+                  groupId={group.id}
+                  onDeleteSuccess={handleDeleteSuccess}
+                />
               </li>
             ))}
           </ul>
@@ -261,11 +208,7 @@ export function UserSidebar({
         {filteredJoinedGroups.length > 0 ? (
           <ul>
             {filteredJoinedGroups.map((group) => (
-              <li
-                key={group.id}
-                onClick={() => handleGroupClick(group.id)}
-                style={{ cursor: "pointer" }}
-              >
+              <li key={group.id}>
                 <div>
                   <strong>{group.studyGroupName}</strong>
                   <p>{group.subjects}</p>
@@ -277,28 +220,6 @@ export function UserSidebar({
           <p>You haven't joined any study groups yet.</p>
         )}
       </div>
-
-      {/* Delete Confirmation Dialog */}
-      <AlertDialog
-        open={isDeleteDialogOpen}
-        onOpenChange={setIsDeleteDialogOpen}
-      >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the
-              study group and remove all members.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={confirmDeleteGroup}>
-              Delete
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </div>
   );
 }
