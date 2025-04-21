@@ -1,3 +1,11 @@
+/**
+ * Middleware configuration for the Study Group Finder application.
+ * Uses Clerk for authentication and applies middleware to specific routes.
+
+ * Matcher:
+ * - Skips Next.js internals and static files unless found in search params.
+ * - Always applies to API routes (`/api` and `/trpc`).
+ */
 import { clerkMiddleware } from "@clerk/nextjs/server";
 
 export default clerkMiddleware();
