@@ -1,3 +1,12 @@
+/**
+ * Handles the creation and management of study group posts in the Study Group Finder application.
+ *
+ * Features:
+ * - Form for creating a new study group post.
+ * - Input fields for group name, bio, subjects, location, and more.
+ * - Integration with When2Meet for scheduling.
+ */
+
 "use client";
 
 import React, { useState } from "react";
