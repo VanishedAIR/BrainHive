@@ -1,5 +1,17 @@
 "use client";
 
+/**
+ * Displays a feed of study groups in the Study Group Finder application.
+ *
+ * Props:
+ * - `onGroupSelect`: Callback function triggered when a study group is selected.
+ * - `refreshTrigger`: A number that triggers a refresh of the feed when updated.
+ *
+ * Interfaces:
+ * - `StudyGroup`: Represents a study group object.
+ * - `FeedProps`: Represents the props for the `Feed` component.
+ */
+
 import { useEffect, useState } from "react";
 import { getAllPosts } from "@/actions/postactions";
 
