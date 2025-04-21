@@ -1,5 +1,19 @@
 "use client";
 
+/**
+ * Displays the user sidebar in the Study Group Finder application.
+ * Allows users to manage their profile and navigate between study groups.
+ *
+ * Props:
+ * - `refreshData`: Callback function to refresh data in the parent component.
+ * - `refreshTrigger`: A number that triggers a refresh when updated.
+ *
+ * Functions:
+ * - `handleEditUsername`: Enables editing of the username.
+ * - `handleSaveUsername`: Saves the updated username.
+ * - `handleGroupClick`: Navigates to a specific study group.
+ */
+
 import { getCurrentUser, updateUsername } from "@/actions/useractions";
 import {
   getUserStudyGroups,
