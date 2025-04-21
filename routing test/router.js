@@ -6,23 +6,32 @@ document.body.innerHTML = `
     <div id="content"></div>
 `;
 
+/**
+ * Handles hash-based routing for the Study Group Finder application.
+ * Dynamically updates the content of the page based on the current URL hash.
+ *
+ * Routes:
+ * - `#home`: Displays the homepage.
+ * - `#signin`: Displays the sign-in page.
+ * - `#post`: Displays the start page.
+ */
 class Router {
+    /**
+     * @param {Object} routes - An object mapping route names to functions that return HTML content.
+     */
     constructor(routes) {
         this.routes = routes;
         window.addEventListener('hashchange', this.handleRouteChange.bind(this));
         this.handleRouteChange();
     }
 
+    /**
+     * Handles changes to the URL hash and updates the page content.
+     */
     handleRouteChange() {
         const hash = window.location.hash.slice(1);
-        console.log(hash);
         const route = this.routes[hash];
-        if (route) {
-            document.querySelector('#content').innerHTML = route();
-        }
-        else {
-            document.querySelector('#content').innerHTML = '404 not found';
-        }
+        document.querySelector('#content').innerHTML = route ? route() : '404 not found';
     }
 }
 
