@@ -1,5 +1,14 @@
 "use server";
 
+/**
+ * Contains actions related to user management in the Study Group Finder application.
+ *
+ * Functions:
+ * - `fetchUser`: Fetches user details by ID.
+ * - `updateUsername`: Updates the username of the current user.
+ * - `deleteUser`: Deletes a user account.
+ */
+
 import prisma from "@/lib/prisma";
 import { auth, currentUser } from "@clerk/nextjs/server";
 
