@@ -23,14 +23,13 @@ function StudyGroupToggle({
   const [isLoading, setIsLoading] = useState(false);
   const [isMember, setIsMember] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
+  const [isCheckingStatus, setIsCheckingStatus] = useState(true);
 
   // Check membership status and ownership when component loads, postId changes, or refreshTrigger changes
   useEffect(() => {
     const checkStatus = async () => {
       try {
-        // Check if user is a member
-        const membershipCheck = await checkMembership(postId);
-        setIsMember(membershipCheck.isMember);
+        setIsCheckingStatus(true);
 
         // Check if user is the owner
         const ownedGroups = await getUserOwnedStudyGroups();
@@ -39,9 +38,18 @@ function StudyGroupToggle({
             (group) => group.id === postId
           );
           setIsOwner(isUserOwner);
+
+          // Only check membership if not the owner
+          if (!isUserOwner) {
+            // Check if user is a member
+            const membershipCheck = await checkMembership(postId);
+            setIsMember(membershipCheck.isMember);
+          }
         }
       } catch (error) {
         console.error("Error checking status:", error);
+      } finally {
+        setIsCheckingStatus(false);
       }
     };
 
@@ -114,7 +122,16 @@ function StudyGroupToggle({
     }
   };
 
-  // If user is the owner, don't show any toggle button
+  // Show a loading state while checking status
+  if (isCheckingStatus) {
+    return (
+      <div>
+        <Button disabled>Loading...</Button>
+      </div>
+    );
+  }
+
+  // If user is the owner, show owner button
   if (isOwner) {
     return (
       <div>
@@ -123,9 +140,10 @@ function StudyGroupToggle({
     );
   }
 
-  return (
-    <div>
-      {isMember ? (
+  // If user is a member but not the owner, show leave button
+  if (isMember) {
+    return (
+      <div>
         <Button
           onClick={handleLeave}
           disabled={isLoading}
@@ -133,11 +151,16 @@ function StudyGroupToggle({
         >
           {isLoading ? "Leaving..." : "Leave Group"}
         </Button>
-      ) : (
-        <Button onClick={handleJoin} disabled={isLoading}>
-          {isLoading ? "Joining..." : "Join Group"}
-        </Button>
-      )}
+      </div>
+    );
+  }
+
+  // If user is neither owner nor member, show join button
+  return (
+    <div>
+      <Button onClick={handleJoin} disabled={isLoading}>
+        {isLoading ? "Joining..." : "Join Group"}
+      </Button>
     </div>
   );
 }
