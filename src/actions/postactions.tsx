@@ -1,3 +1,12 @@
+/**
+ * Contains actions related to posts in the Study Group Finder application.
+ *
+ * Functions:
+ * - `fetchPosts`: Fetches all posts from the server.
+ * - `createPost`: Creates a new post with the provided data.
+ * - `deletePost`: Deletes a post by its ID.
+ */
+
 "use server";
 
 import prisma from "@/lib/prisma";
