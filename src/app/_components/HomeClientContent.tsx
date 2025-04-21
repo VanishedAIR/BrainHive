@@ -1,4 +1,8 @@
 "use client";
+/**
+ * Renders the main content for the homepage of the Study Group Finder application.
+ * Includes the study group sidebar, feed, and user sidebar.
+ */
 import StudygroupSidebar from "./StudygroupSidebar";
 import Feed from "./feed";
 import { useState, useCallback } from "react";
