@@ -4,6 +4,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/themeprovider";
 import { Toaster } from "@/components/ui/toaster";
+import { SmallScreenWarning } from "@/components/SmallScreenWarning";
 
 export const metadata: Metadata = {
   title: "BrainHive",
@@ -28,8 +29,10 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ClerkProvider>
-            {children}
-            <Toaster />
+            <SmallScreenWarning>
+              {children}
+              <Toaster />
+            </SmallScreenWarning>
           </ClerkProvider>
         </ThemeProvider>
       </body>
