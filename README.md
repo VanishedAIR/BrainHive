@@ -18,27 +18,25 @@ _A platform for students to easily find, join, and manage study groups - Develop
 
 - **🔐 Secure Authentication**  
   Login/Logout with [Clerk](https://clerk.com) & password recovery flow
-- **📝 Profile Management**  
-  Customize bio, study preferences, and academic subjects
 - **👥 Study Groups**
-  - Create/delete groups with custom rules
-  - Advanced search with subject/location filters
+  - Create/delete groups
+  - Advanced search with subject/location
 - **🔄 Real-Time Feed**  
   Post updates and resources with chronological sorting
 - **📅 Meeting Sync**  
   Integrate with [When2Meet](https://www.when2meet.com) for optimal scheduling
-- **🔔 Notifications**  
-  Instant alerts for group updates and schedule changes
+- **📱 Mobile Support**  
+  Responsive website providing full website support to smaller devices
 
 ---
 
 ## ⚠️ Academic Disclaimer
 
-This is a student project created for educational purposes at California State University - Long Beach. It is not a commercial product and is not intended for production use. Some features may be simplified or incomplete compared to professional applications.
+This student project was created at California State University - Long Beach for educational purposes. It is not a commercial product and is not intended for production use. Some features may be simplified or incomplete compared to professional applications.
 
 ## Third-Party Services Notice
 
-This project integrates with external services including:
+This project integrates with external services, including:
 
 - **Clerk** (Authentication)
 - **Postgresql** (Database)
@@ -46,4 +44,4 @@ This project integrates with external services including:
 - **Neon** (Serverless Postgres Platform)
 - **When2Meet** (Scheduling)
 
-Each service operates under its own terms of use and privacy policy. This project does not claim ownership or responsibility for these third-party services.
+Each service operates under its terms of use and privacy policy. This project does not claim ownership or responsibility for these third-party services.
