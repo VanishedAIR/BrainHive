@@ -37,6 +37,7 @@ export function SmallScreenWarning({ children }: SmallScreenWarningProps) {
           <p className="text-muted-foreground">
             Your screen is too small to properly view this application.
           </p>
+          <p className="text-muted-foreground font-bold">𝓲𝓬𝓵 𝓽𝓼 𝓹𝓶𝓸 𝓼𝓶 𝓻𝓷 𝓰𝓷𝓰 𝓯𝓻 💔</p>
           <div className="w-full h-1 bg-primary/20 rounded-full overflow-hidden">
             <div className="h-full w-[360px] bg-primary scale-x-[30%] origin-left"></div>
           </div>
