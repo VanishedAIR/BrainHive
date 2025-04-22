@@ -53,9 +53,6 @@ export async function getCurrentUser() {
         email: true,
         name: true,
         image: true,
-        bio: true,
-        location: true,
-        website: true,
         createdAt: true,
       },
     });

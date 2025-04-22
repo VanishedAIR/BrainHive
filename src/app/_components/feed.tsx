@@ -117,7 +117,7 @@ export default function Feed({ onGroupSelect, refreshTrigger = 0 }: FeedProps) {
       {isMobile && studyGroups.length > 3 && (
         <button
           onClick={() => setShowAll(!showAll)}
-          className="w-full text-center py-2 text-primary hover:text-accent dark:text-accent dark:hover:text-primary transition-colors"
+          className="w-full text-center py-2 text-white hover:text-accent dark:text-white dark:hover:text-primary transition-colors"
         >
           {showAll ? "Show Less" : `Show ${studyGroups.length - 3} More`}
         </button>
