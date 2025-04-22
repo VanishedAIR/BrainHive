@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getAllPosts } from "@/actions/postactions";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // define the interface for the post
 
@@ -40,6 +41,8 @@ interface FeedProps {
 export default function Feed({ onGroupSelect, refreshTrigger = 0 }: FeedProps) {
   const [studyGroups, setStudyGroups] = useState<StudyGroup[]>([]);
   const [selectedGroupId, setSelectedGroupId] = useState<string | null>(null);
+  const isMobile = useIsMobile();
+  const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -62,18 +65,22 @@ export default function Feed({ onGroupSelect, refreshTrigger = 0 }: FeedProps) {
     };
   }, [selectedGroupId, onGroupSelect, refreshTrigger]);
 
-  // Initial fetch and refresh when the trigger changes
-
   const handleGroupClick = (group: StudyGroup) => {
     if (selectedGroupId !== group.id) {
       setSelectedGroupId(group.id);
       onGroupSelect(group);
+      if (isMobile) {
+        setShowAll(false); // Collapse back to 3 items after selection on mobile
+      }
     }
   };
 
+  const displayedGroups =
+    isMobile && !showAll ? studyGroups.slice(0, 3) : studyGroups;
+
   return (
     <div className="w-full space-y-3 md:space-y-4">
-      {studyGroups.map((group) => (
+      {displayedGroups.map((group) => (
         <button
           key={group.id}
           onClick={() => handleGroupClick(group)}
@@ -116,6 +123,16 @@ export default function Feed({ onGroupSelect, refreshTrigger = 0 }: FeedProps) {
           </div>
         </button>
       ))}
+
+      {/* Show more/less button on mobile */}
+      {isMobile && studyGroups.length > 3 && (
+        <button
+          onClick={() => setShowAll(!showAll)}
+          className="w-full text-center py-2 text-primary hover:text-accent dark:text-accent dark:hover:text-primary transition-colors"
+        >
+          {showAll ? "Show Less" : `Show ${studyGroups.length - 3} More`}
+        </button>
+      )}
     </div>
   );
 }
