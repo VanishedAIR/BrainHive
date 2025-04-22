@@ -13,13 +13,9 @@ model User {
   username    String             @unique
   clerkId     String             @unique
   name        String?
-  bio         String?
   image       String?
-  location    String?
-  website     String?
   createdAt   DateTime           @default(now())
   updatedAt   DateTime           @updatedAt
-  meetings    Meeting?
   posts       StudyGroup[]
   postMembers StudyGroupMember[]
 }
@@ -27,7 +23,6 @@ model User {
 model StudyGroup {
   id             String             @id @default(cuid())
   authorId       String
-  image          String?
   createdAt      DateTime           @default(now())
   updatedAt      DateTime           @updatedAt
   studyDates     String[]
@@ -54,15 +49,3 @@ model StudyGroupMember {
   @@unique([userId, postId])
 }
 
-model Meeting {
-  id        Int      @id @default(autoincrement())
-  userId    String   @unique
-  meetingID Int
-  year      Int
-  month     Int
-  day       Int
-  time      Int
-  location  String
-  createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}

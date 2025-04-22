@@ -11,8 +11,6 @@ interface StudyGroup {
   studyGroupName: string;
   studyGroupBio?: string | null;
   subjects: string[] | string;
-  when2MeetLink?: string | null;
-  image: string | null;
   studyDates: string[];
   studyTime: string;
   location: string | null;
@@ -22,7 +20,6 @@ interface StudyGroup {
     id: string;
     username: string;
     name: string | null;
-    image: string | null;
   };
   members: Array<{
     id: string;
@@ -91,17 +88,9 @@ export default function Feed({ onGroupSelect, refreshTrigger = 0 }: FeedProps) {
           }`}
         >
           <div className="flex items-center gap-2 md:gap-3">
-            {group.image ? (
-              <img
-                src={group.image}
-                alt={group.studyGroupName}
-                className="w-10 h-10 rounded-lg object-cover"
-              />
-            ) : (
-              <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center text-primary font-semibold">
-                {group.studyGroupName[0].toUpperCase()}
-              </div>
-            )}
+            <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center text-primary font-semibold">
+              {group.studyGroupName[0].toUpperCase()}
+            </div>
             <h3 className="text-xl font-semibold text-primary">
               {group.studyGroupName}
             </h3>

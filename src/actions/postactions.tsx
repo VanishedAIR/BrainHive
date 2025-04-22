@@ -9,7 +9,6 @@ export async function createPost(data: {
   studyGroupBio?: string | null;  //optional = nullable
   subjects: string[];
   when2MeetLink?: string | null;  //optional = nullable
-  image: string | null;
   studyDates: string[];
   studyTime: string;
   location: string;
@@ -49,7 +48,6 @@ export async function createPost(data: {
         studyGroupBio: data.studyGroupBio || "",  // Provide default empty string
         subjects: data.subjects,
         when2MeetLink: data.when2MeetLink || "",  // Provide default empty string
-        image: data.image,
         studyDates: data.studyDates,
         studyTime: formattedStudyTime,
         location: data.location,
@@ -86,7 +84,6 @@ export async function getAllPosts() {
             id: true,
             username: true,
             name: true,
-            image: true,
           },
         },
         members: true,
@@ -116,7 +113,6 @@ export async function getPostById(postId: string) {
             id: true,
             username: true,
             name: true,
-            image: true,
           },
         },
         members: true,
@@ -351,7 +347,6 @@ export async function getUserStudyGroups() {
             id: true,
             username: true,
             name: true,
-            image: true,
           },
         },
         members: true,
@@ -402,7 +397,6 @@ export async function getUserOwnedStudyGroups() {
             id: true,
             username: true,
             name: true,
-            image: true,
           },
         },
         members: true,
