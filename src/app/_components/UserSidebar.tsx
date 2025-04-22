@@ -123,102 +123,160 @@ export function UserSidebar({
 
   if (!user) {
     return (
-      <div className="border-r p-4">
-        <h2>User Information</h2>
-        <p>Please sign in to view your information</p>
+      <div className="h-full p-4">
+        <h2 className="text-foreground/80">User Information</h2>
+        <p className="text-muted-foreground">
+          Please sign in to view your information
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="border-r p-4">
-      <h2>Profile</h2>
+    <div className="h-full p-4 overflow-y-auto">
+      <div className="space-y-6">
+        <h2 className="text-xl font-bold text-primary dark:text-accent">
+          Profile
+        </h2>
 
-      {/* User profile */}
-      <div>
-        {user.image ? (
-          <img src={user.image} alt={user.username} width={40} height={40} />
-        ) : (
-          <div>{user.username.charAt(0).toUpperCase()}</div>
-        )}
-        <h3>{user.name || user.username}</h3>
-
-        {/* Username edit section */}
-        {isEditing ? (
-          <div>
-            <div>
-              <input
-                type="text"
-                value={newUsername}
-                onChange={(e) => setNewUsername(e.target.value)}
-                placeholder="New username"
-                autoFocus
+        {/* User profile */}
+        <div className="space-y-4">
+          <div className="flex items-center space-x-3">
+            {user.image ? (
+              <img
+                src={user.image}
+                alt={user.username}
+                className="w-10 h-10 rounded-full ring-2 ring-primary/20 dark:ring-accent/20"
               />
-              <Button variant="outline" onClick={handleSaveUsername}>
-                <Check size={16} />
-              </Button>
-              <Button variant="outline" onClick={handleCancelEdit}>
-                <X size={16} />
-              </Button>
-            </div>
-            {error && <p>{error}</p>}
+            ) : (
+              <div className="w-10 h-10 rounded-full bg-primary/10 dark:bg-accent/10 flex items-center justify-center text-primary dark:text-accent font-semibold ring-2 ring-primary/20 dark:ring-accent/20">
+                {user.username.charAt(0).toUpperCase()}
+              </div>
+            )}
+            <h3 className="font-semibold text-foreground/90 dark:text-foreground/90">
+              {user.name || user.username}
+            </h3>
           </div>
-        ) : (
-          <div>
-            <p>@{user.username}</p>
-            <Button variant="outline" onClick={handleEditUsername}>
-              <Pencil size={12} />
-            </Button>
+
+          {/* Username edit section */}
+          <div className="space-y-2">
+            {isEditing ? (
+              <div className="space-y-2">
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="text"
+                    value={newUsername}
+                    onChange={(e) => setNewUsername(e.target.value)}
+                    placeholder="New username"
+                    className="flex-1 px-2 py-1 text-sm border rounded bg-background dark:bg-muted focus:border-primary dark:focus:border-accent outline-none"
+                    autoFocus
+                  />
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={handleSaveUsername}
+                    className="hover:bg-primary/10 dark:hover:bg-accent/10 hover:text-primary dark:hover:text-accent"
+                  >
+                    <Check className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={handleCancelEdit}
+                    className="hover:bg-destructive/10 hover:text-destructive"
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+                {error && <p className="text-destructive text-sm">{error}</p>}
+              </div>
+            ) : (
+              <div className="flex items-center space-x-2">
+                <p className="text-sm text-muted-foreground">
+                  @{user.username}
+                </p>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={handleEditUsername}
+                  className="hover:bg-primary/10 dark:hover:bg-accent/10 hover:text-primary dark:hover:text-accent"
+                >
+                  <Pencil className="h-3 w-3" />
+                </Button>
+              </div>
+            )}
           </div>
-        )}
-      </div>
+        </div>
 
-      {/* Account Management */}
-      <div>
-        <h4>Account Management</h4>
-        <DeleteAccountButton />
-      </div>
+        {/* Account Management */}
+        <div className="space-y-2">
+          <h4 className="font-semibold text-primary/90 dark:text-accent/90">
+            Account Management
+          </h4>
+          <DeleteAccountButton />
+        </div>
 
-      {/* Owner's Study Groups */}
-      <div>
-        <h4>Your Study Groups</h4>
-        {ownedStudyGroups.length > 0 ? (
-          <ul>
-            {ownedStudyGroups.map((group) => (
-              <li key={group.id}>
-                <div>
-                  <strong>{group.studyGroupName}</strong>
-                  <p>{group.subjects}</p>
-                </div>
-                <DeleteStudyGroupButton
-                  groupId={group.id}
-                  onDeleteSuccess={handleDeleteSuccess}
-                />
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>You haven't created any study groups yet.</p>
-        )}
-      </div>
+        {/* Owner's Study Groups */}
+        <div className="space-y-3">
+          <h4 className="font-semibold text-primary/90 dark:text-accent/90">
+            Your Study Groups
+          </h4>
+          {ownedStudyGroups.length > 0 ? (
+            <ul className="space-y-3">
+              {ownedStudyGroups.map((group) => (
+                <li
+                  key={group.id}
+                  className="space-y-2 bg-primary/5 dark:bg-accent/5 p-3 rounded-lg border border-primary/10 dark:border-accent/10 hover:border-primary/20 dark:hover:border-accent/20 transition-colors duration-200"
+                >
+                  <div>
+                    <strong className="text-sm text-foreground/90">
+                      {group.studyGroupName}
+                    </strong>
+                    <p className="text-sm text-muted-foreground">
+                      {group.subjects}
+                    </p>
+                  </div>
+                  <DeleteStudyGroupButton
+                    groupId={group.id}
+                    onDeleteSuccess={handleDeleteSuccess}
+                  />
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-sm text-muted-foreground">
+              You haven't created any study groups yet.
+            </p>
+          )}
+        </div>
 
-      {/* Joined Study Groups */}
-      <div>
-        <h4>Joined Study Groups</h4>
-        {filteredJoinedGroups.length > 0 ? (
-          <ul>
-            {filteredJoinedGroups.map((group) => (
-              <li key={group.id}>
-                <div>
-                  <strong>{group.studyGroupName}</strong>
-                  <p>{group.subjects}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>You haven't joined any study groups yet.</p>
-        )}
+        {/* Joined Study Groups */}
+        <div className="space-y-3">
+          <h4 className="font-semibold text-primary/90 dark:text-accent/90">
+            Joined Study Groups
+          </h4>
+          {filteredJoinedGroups.length > 0 ? (
+            <ul className="space-y-3">
+              {filteredJoinedGroups.map((group) => (
+                <li
+                  key={group.id}
+                  className="space-y-1 bg-primary/5 dark:bg-accent/5 p-3 rounded-lg border border-primary/10 dark:border-accent/10 hover:border-primary/20 dark:hover:border-accent/20 transition-colors duration-200"
+                >
+                  <strong className="text-sm text-foreground/90">
+                    {group.studyGroupName}
+                  </strong>
+                  <p className="text-sm text-muted-foreground">
+                    {group.subjects}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-sm text-muted-foreground">
+              You haven't joined any study groups yet.
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );
