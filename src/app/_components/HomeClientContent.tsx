@@ -30,9 +30,18 @@ export default function HomeClientContent() {
       setSearchResults(null); // reset to full feed
       return;
     }
-    const res = await fetch(`/api/search?q=${encodeURIComponent(searchTerm)}`);
-    const data = await res.json();
-    setSearchResults(data);
+    try {
+      const res = await fetch(`/api/search?q=${encodeURIComponent(searchTerm)}`);
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      const data = await res.json();
+      setSearchResults(data);
+    } catch (error) {
+      console.error("Search request failed:", error);
+      setSearchResults(null); // reset to full feed
+      // Optionally, set an error message state here to display to the user
+    }
   };
 
   return (
