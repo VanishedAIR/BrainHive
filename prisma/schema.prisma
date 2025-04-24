@@ -25,14 +25,14 @@ model StudyGroup {
   authorId       String
   createdAt      DateTime           @default(now())
   updatedAt      DateTime           @updatedAt
-  studyDates     String[]
-  studyTime      String
   studyGroupName String
-  studyGroupBio  String             @default("No bio provided")
-  location       String?
-  subjects       String[]
   when2MeetLink  String
   status         String
+  studyTime      String
+  studyGroupBio  String             @default("No bio provided")
+  location       String?
+  studyDates     String[]
+  subjects       String[]
   author         User               @relation(fields: [authorId], references: [id])
   members        StudyGroupMember[]
 }
@@ -48,4 +48,3 @@ model StudyGroupMember {
 
   @@unique([userId, postId])
 }
-

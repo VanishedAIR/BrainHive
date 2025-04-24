@@ -165,3 +165,55 @@ export async function deleteCurrentUser() {
     return { success: false, message: "Failed to delete account" };
   }
 }
+
+
+export async function searchStudyGroups(query: string) {
+  console.log(" searchStudyGroups() called!");
+
+  try {
+    if (!query.trim()) return [];
+
+    console.log("Search Query:", query);
+
+    const results = await prisma.studyGroup.findMany({
+      where: {
+        OR: [
+          {
+            studyGroupName: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+          {
+            studyGroupBio: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+        ],
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      include: {
+        author: {
+          select: {
+            id: true,
+            name: true,
+            username: true,
+            image: true,
+          },
+        },
+        members: true,
+      },
+    });
+
+    console.log("Results:", results);
+    return results;
+  } catch (error) {
+    console.error(" Error in searchStudyGroups", error);
+    return [];
+  }
+}
+
+
