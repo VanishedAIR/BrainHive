@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createPost } from "@/actions/postactions";
 import { Button } from "@/components/ui/button";
+import {toast} from "@/components/ui/use-toast";
 
 const PostPage: React.FC = () => {
   const [studyGroupName, setStudyGroupName] = useState("");
@@ -45,37 +46,51 @@ const PostPage: React.FC = () => {
     );
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async()  => {
     setLoading(true);
 
     // Validate required fields
     if (!studyGroupName.trim()) {
-      alert("Please enter a study group name");
+      toast({
+        title: "Required Field",
+        description: "Please enter a study group name",
+      });
       setLoading(false);
       return;
     }
 
     if (subjects.length === 0) {
-      alert("Please add at least one subject");
+      toast({
+        title: "Required Field",
+        description: "Please add at least one subject",
+      });
       setLoading(false);
       return;
     }
 
     if (studyDates.length === 0) {
-      alert("Please add at least one study date");
+      toast({
+        title: "Required Field",
+        description: "Please add at least one study date",
+      });
       setLoading(false);
       return;
     }
 
     if (!studyTime) {
-      alert("Please select a study time");
+      toast({
+        title: "Required Field",
+        description: "Please select a study time",
+      });
       setLoading(false);
       return;
     }
 
     if (!location.trim()) {
-      alert("Please enter a location");
+      toast({
+        title: "Required Field",
+        description: "Please enter a location",
+      });
       setLoading(false);
       return;
     }
@@ -94,7 +109,10 @@ const PostPage: React.FC = () => {
       const response = await createPost(postData);
 
       if (response.success) {
-        alert("Post created successfully!");
+        toast({
+          title: "Success",
+          description: "Study group created successfully",
+        });
         // Reset form fields
         setStudyGroupName("");
         setStudyGroupBio("");
@@ -104,11 +122,18 @@ const PostPage: React.FC = () => {
         setStudyTime("");
         setLocation("");
       } else {
-        alert(`Failed to create post: ${response.message}`);
+        toast({
+          title: "Error",
+          description: response.message || "Failed to create study group",
+          variant: "destructive",
+        });
       }
     } catch (error) {
-      console.error("Error creating post:", error);
-      alert("An error occurred. Please try again.");
+      toast({
+        title: "Error",
+        description: "An error occurred. Please try again.",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
@@ -312,7 +337,8 @@ const PostPage: React.FC = () => {
 
           {/*Submit Button*/}
           <Button
-            type="submit"
+            type="button"
+            onClick={handleSubmit}
             className="px-5 py-2.5 bg-primary text-white rounded-md text-base hover:bg-primary-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={loading}
           >
