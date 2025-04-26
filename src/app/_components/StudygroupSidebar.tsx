@@ -18,29 +18,26 @@ export default function StudygroupSidebar({
   const [currentGroup, setCurrentGroup] = useState<StudyGroup | null>(
     selectedGroup
   );
+  const [showAllMembers, setShowAllMembers] = useState(false);
 
-  // Update currentGroup when selectedGroup changes
+  // Update currentGroup when selectedGroup changes or when refreshTrigger changes
   useEffect(() => {
-    setCurrentGroup(selectedGroup);
-  }, [selectedGroup]);
-
-  // Refresh data when refreshTrigger changes
-  useEffect(() => {
-    async function refreshSelectedGroup() {
-      if (currentGroup?.id) {
-        try {
-          const response = await getPostById(currentGroup.id);
-          if (response.success && response.post) {
-            setCurrentGroup(response.post as unknown as StudyGroup);
-          }
-        } catch (error) {
-          console.error("Error refreshing study group data:", error);
+    const updateGroup = async () => {
+      if (selectedGroup?.id) {
+        const response = await getPostById(selectedGroup.id);
+        if (response.success && response.post) {
+          setCurrentGroup(response.post as unknown as StudyGroup);
         }
+      } else {
+        setCurrentGroup(selectedGroup);
       }
-    }
+    };
+    updateGroup();
+  }, [selectedGroup, refreshTrigger]);
 
-    refreshSelectedGroup();
-  }, [refreshTrigger, currentGroup?.id]);
+  const displayedMembers = showAllMembers
+    ? currentGroup?.members
+    : currentGroup?.members.slice(0, 5);
 
   if (!currentGroup) {
     return (
@@ -67,7 +64,11 @@ export default function StudygroupSidebar({
 
       <div className="space-y-2">
         <h3 className="text-lg font-semibold">Subjects</h3>
-        <p className="text-gray-600">{currentGroup.subjects}</p>
+        <p className="text-gray-600">
+          {Array.isArray(currentGroup.subjects)
+            ? currentGroup.subjects.join(", ")
+            : currentGroup.subjects}
+        </p>
       </div>
 
       <div className="space-y-2">
@@ -91,17 +92,9 @@ export default function StudygroupSidebar({
       <div className="space-y-2">
         <h3 className="text-lg font-semibold">Created by</h3>
         <div className="flex items-center space-x-2">
-          {currentGroup.author.image ? (
-            <img
-              src={currentGroup.author.image}
-              alt={currentGroup.author.username}
-              className="w-8 h-8 rounded-full"
-            />
-          ) : (
-            <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
-              {currentGroup.author.username[0].toUpperCase()}
-            </div>
-          )}
+          <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+            {currentGroup.author.username[0].toUpperCase()}
+          </div>
           <span className="text-gray-600">@{currentGroup.author.username}</span>
         </div>
       </div>
@@ -111,11 +104,27 @@ export default function StudygroupSidebar({
           Members ({currentGroup.members.length})
         </h3>
         <div className="space-y-1">
-          {currentGroup.members.map((member) => (
+          {displayedMembers?.map((member) => (
             <div key={member.id} className="text-gray-600">
               @{member.username}
             </div>
           ))}
+          {currentGroup.members.length > 5 && !showAllMembers && (
+            <button
+              onClick={() => setShowAllMembers(true)}
+              className="text-primary hover:text-primary/80 text-sm font-medium"
+            >
+              + {currentGroup.members.length - 5} more members
+            </button>
+          )}
+          {showAllMembers && (
+            <button
+              onClick={() => setShowAllMembers(false)}
+              className="text-primary hover:text-primary/80 text-sm font-medium"
+            >
+              Show less
+            </button>
+          )}
         </div>
       </div>
 
@@ -133,24 +142,27 @@ export default function StudygroupSidebar({
           </Button>
         </div>
       )}
-      <div className="space-y-2">
-        <h3 className="text-lg font-semibold">Location</h3>
-        <p className="text-gray-600">
-          {currentGroup.location &&
-          currentGroup.location.match(/^https?:\/\//) ? (
-            <a
-              href={currentGroup.location}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-500 hover:text-blue-600 underline"
-            >
-              Online Meeting Link
-            </a>
-          ) : (
-            currentGroup.location
-          )}
-        </p>
-      </div>
+
+      {currentGroup.location && (
+        <div className="space-y-2">
+          <h3 className="text-lg font-semibold">Location</h3>
+          <p className="text-gray-600">
+            {currentGroup.location.match(/^https?:\/\//) ? (
+              <a
+                href={currentGroup.location}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 hover:text-blue-600 underline"
+              >
+                Online Meeting Link
+              </a>
+            ) : (
+              currentGroup.location
+            )}
+          </p>
+        </div>
+      )}
+
       <div className="relative bottom-[-3%] left-[50%] translate-x-[-50%] w-fit">
         <StudyGroupToggle
           postId={currentGroup.id}
