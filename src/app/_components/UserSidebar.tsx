@@ -15,15 +15,26 @@ import { useRouter } from "next/navigation";
 interface StudyGroup {
   id: string;
   studyGroupName: string;
-  subjects: string | string[];
-  image: string | null;
-
-  author?: {
+  studyGroupBio?: string | null;
+  subjects: string[] | string;
+  when2MeetLink?: string | null;
+  studyDates: string[];
+  studyTime: string;
+  location: string | null;
+  status: string;
+  createdAt: Date;
+  author: {
     id: string;
     username: string;
     name: string | null;
-    image: string | null;
   };
+  members: Array<{
+    id: string;
+    userId: string;
+    username: string;
+    postId: string;
+    joinedAt: Date;
+  }>;
 }
 
 interface UserSidebarProps {
@@ -233,7 +244,9 @@ export function UserSidebar({
                       {group.studyGroupName}
                     </strong>
                     <p className="text-sm text-muted-foreground">
-                      {group.subjects}
+                      {Array.isArray(group.subjects)
+                        ? group.subjects.join(", ")
+                        : group.subjects}
                     </p>
                   </div>
                   <DeleteStudyGroupButton
@@ -266,7 +279,9 @@ export function UserSidebar({
                     {group.studyGroupName}
                   </strong>
                   <p className="text-sm text-muted-foreground">
-                    {group.subjects}
+                    {Array.isArray(group.subjects)
+                      ? group.subjects.join(", ")
+                      : group.subjects}
                   </p>
                 </li>
               ))}

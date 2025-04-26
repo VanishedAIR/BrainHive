@@ -18,40 +18,26 @@ export default function StudygroupSidebar({
   const [currentGroup, setCurrentGroup] = useState<StudyGroup | null>(
     selectedGroup
   );
+  const [showAllMembers, setShowAllMembers] = useState(false);
 
-  // Update currentGroup when selectedGroup changes
+  // Update currentGroup when selectedGroup changes or when refreshTrigger changes
   useEffect(() => {
-    setCurrentGroup(selectedGroup);
-  }, [selectedGroup]);
-
-  useEffect(() => {
-    if (!currentGroup?.id) return;
-
-    let timeoutId: NodeJS.Timeout | undefined;
-    const lastUpdate = Date.now();
-
-    // Skip if last update was less than 1 second ago
-    if (Date.now() - lastUpdate < 1000) {
-      return;
-    }
-
-    timeoutId = setTimeout(async () => {
-      try {
-        const response = await getPostById(currentGroup.id);
+    const updateGroup = async () => {
+      if (selectedGroup?.id) {
+        const response = await getPostById(selectedGroup.id);
         if (response.success && response.post) {
           setCurrentGroup(response.post as unknown as StudyGroup);
         }
-      } catch (error) {
-        console.error("Error refreshing study group data:", error);
-      }
-    }, 500);
-
-    return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
+      } else {
+        setCurrentGroup(selectedGroup);
       }
     };
-  }, [refreshTrigger, currentGroup?.id]);
+    updateGroup();
+  }, [selectedGroup, refreshTrigger]);
+
+  const displayedMembers = showAllMembers
+    ? currentGroup?.members
+    : currentGroup?.members.slice(0, 5);
 
   if (!currentGroup) {
     return (
@@ -118,11 +104,27 @@ export default function StudygroupSidebar({
           Members ({currentGroup.members.length})
         </h3>
         <div className="space-y-1">
-          {currentGroup.members.map((member) => (
+          {displayedMembers?.map((member) => (
             <div key={member.id} className="text-gray-600">
               @{member.username}
             </div>
           ))}
+          {currentGroup.members.length > 5 && !showAllMembers && (
+            <button
+              onClick={() => setShowAllMembers(true)}
+              className="text-primary hover:text-primary/80 text-sm font-medium"
+            >
+              + {currentGroup.members.length - 5} more members
+            </button>
+          )}
+          {showAllMembers && (
+            <button
+              onClick={() => setShowAllMembers(false)}
+              className="text-primary hover:text-primary/80 text-sm font-medium"
+            >
+              Show less
+            </button>
+          )}
         </div>
       </div>
 

@@ -42,6 +42,33 @@ export default function Feed({ onGroupSelect, refreshTrigger = 0 }: FeedProps) {
   const isMobile = useIsMobile();
   const [showAll, setShowAll] = useState(false);
 
+  // Function to get the closest upcoming date
+  const getClosestDate = (dates: string[]): string | null => {
+    if (!dates.length) return null;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const futureOrTodayDates = dates
+      .map((date) => new Date(date))
+      .filter((date) => {
+        const dateToCompare = new Date(date);
+        dateToCompare.setHours(0, 0, 0, 0);
+        return dateToCompare >= today;
+      });
+
+    if (futureOrTodayDates.length === 0) {
+      // If no upcoming dates, return the most recent past date
+      return dates.sort(
+        (a, b) => new Date(b).getTime() - new Date(a).getTime()
+      )[0];
+    }
+
+    return futureOrTodayDates
+      .sort((a, b) => a.getTime() - b.getTime())[0]
+      .toISOString()
+      .split("T")[0];
+  };
+
   useEffect(() => {
     let mounted = true;
 
@@ -96,7 +123,12 @@ export default function Feed({ onGroupSelect, refreshTrigger = 0 }: FeedProps) {
               {group.studyGroupName}
             </h3>
           </div>
-          <p className="text-gray-500 mt-2">Subjects: {group.subjects}</p>
+          <p className="text-gray-500 mt-2">
+            Subjects:{" "}
+            {Array.isArray(group.subjects)
+              ? group.subjects.join(", ")
+              : group.subjects}
+          </p>
           <p className="text-sm text-gray-400">
             Created by: {group.author.username}
           </p>
@@ -104,12 +136,18 @@ export default function Feed({ onGroupSelect, refreshTrigger = 0 }: FeedProps) {
             Members: {group.members.length}
           </p>
           <div className="text-sm text-gray-400">
-            Study Sessions:
-            {group.studyDates.map((date, index) => (
-              <span key={index} className="block">
-                {new Date(date).toLocaleDateString()} at {group.studyTime}
+            Next Session:{" "}
+            {getClosestDate(group.studyDates) && (
+              <span>
+                {new Date(
+                  getClosestDate(group.studyDates)!
+                ).toLocaleDateString()}{" "}
+                at {group.studyTime}
+                {group.studyDates.length > 1
+                  ? ` (+${group.studyDates.length - 1} more sessions)`
+                  : ""}
               </span>
-            ))}
+            )}
           </div>
         </button>
       ))}
