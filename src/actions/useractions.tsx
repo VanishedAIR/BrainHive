@@ -166,50 +166,54 @@ export async function deleteCurrentUser() {
   }
 }
 
+
 export async function searchStudyGroups(query: string) {
+  console.log(" searchStudyGroups() called!");
+
   try {
     if (!query.trim()) return [];
 
-    // Get all groups and then filter for partial matches since Prisma doesn't
-    // support partial matches in arrays directly
+    console.log("Search Query:", query);
+
     const results = await prisma.studyGroup.findMany({
+      where: {
+        OR: [
+          {
+            studyGroupName: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+          {
+            studyGroupBio: {
+              contains: query,
+              mode: "insensitive",
+            },
+          },
+        ],
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
       include: {
         author: {
           select: {
             id: true,
             name: true,
             username: true,
+            image: true,
           },
         },
-        members: {
-          select: {
-            id: true,
-            userId: true,
-            username: true,
-            postId: true,
-            joinedAt: true,
-          },
-        },
-      },
-      orderBy: {
-        createdAt: "desc",
+        members: true,
       },
     });
 
-    // Filter in memory to catch partial matches in all fields including subjects
-    const filteredResults = results.filter(
-      (group) =>
-        group.studyGroupName.toLowerCase().includes(query.toLowerCase()) ||
-        (group.studyGroupBio &&
-          group.studyGroupBio.toLowerCase().includes(query.toLowerCase())) ||
-        group.subjects.some((subject) =>
-          subject.toLowerCase().includes(query.toLowerCase())
-        )
-    );
-
-    return filteredResults;
+    console.log("Results:", results);
+    return results;
   } catch (error) {
-    console.error("Error in searchStudyGroups", error);
+    console.error(" Error in searchStudyGroups", error);
     return [];
   }
 }
+
+
