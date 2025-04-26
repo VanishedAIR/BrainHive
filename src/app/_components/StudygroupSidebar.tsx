@@ -24,22 +24,33 @@ export default function StudygroupSidebar({
     setCurrentGroup(selectedGroup);
   }, [selectedGroup]);
 
-  // Refresh data when refreshTrigger changes
   useEffect(() => {
-    async function refreshSelectedGroup() {
-      if (currentGroup?.id) {
-        try {
-          const response = await getPostById(currentGroup.id);
-          if (response.success && response.post) {
-            setCurrentGroup(response.post as unknown as StudyGroup);
-          }
-        } catch (error) {
-          console.error("Error refreshing study group data:", error);
-        }
-      }
+    if (!currentGroup?.id) return;
+
+    let timeoutId: NodeJS.Timeout | undefined;
+    const lastUpdate = Date.now();
+
+    // Skip if last update was less than 1 second ago
+    if (Date.now() - lastUpdate < 1000) {
+      return;
     }
 
-    refreshSelectedGroup();
+    timeoutId = setTimeout(async () => {
+      try {
+        const response = await getPostById(currentGroup.id);
+        if (response.success && response.post) {
+          setCurrentGroup(response.post as unknown as StudyGroup);
+        }
+      } catch (error) {
+        console.error("Error refreshing study group data:", error);
+      }
+    }, 500);
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
   }, [refreshTrigger, currentGroup?.id]);
 
   if (!currentGroup) {
@@ -67,7 +78,11 @@ export default function StudygroupSidebar({
 
       <div className="space-y-2">
         <h3 className="text-lg font-semibold">Subjects</h3>
-        <p className="text-gray-600">{currentGroup.subjects}</p>
+        <p className="text-gray-600">
+          {Array.isArray(currentGroup.subjects)
+            ? currentGroup.subjects.join(", ")
+            : currentGroup.subjects}
+        </p>
       </div>
 
       <div className="space-y-2">
@@ -91,17 +106,9 @@ export default function StudygroupSidebar({
       <div className="space-y-2">
         <h3 className="text-lg font-semibold">Created by</h3>
         <div className="flex items-center space-x-2">
-          {currentGroup.author.image ? (
-            <img
-              src={currentGroup.author.image}
-              alt={currentGroup.author.username}
-              className="w-8 h-8 rounded-full"
-            />
-          ) : (
-            <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
-              {currentGroup.author.username[0].toUpperCase()}
-            </div>
-          )}
+          <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+            {currentGroup.author.username[0].toUpperCase()}
+          </div>
           <span className="text-gray-600">@{currentGroup.author.username}</span>
         </div>
       </div>
@@ -133,24 +140,27 @@ export default function StudygroupSidebar({
           </Button>
         </div>
       )}
-      <div className="space-y-2">
-        <h3 className="text-lg font-semibold">Location</h3>
-        <p className="text-gray-600">
-          {currentGroup.location &&
-          currentGroup.location.match(/^https?:\/\//) ? (
-            <a
-              href={currentGroup.location}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-500 hover:text-blue-600 underline"
-            >
-              Online Meeting Link
-            </a>
-          ) : (
-            currentGroup.location
-          )}
-        </p>
-      </div>
+
+      {currentGroup.location && (
+        <div className="space-y-2">
+          <h3 className="text-lg font-semibold">Location</h3>
+          <p className="text-gray-600">
+            {currentGroup.location.match(/^https?:\/\//) ? (
+              <a
+                href={currentGroup.location}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 hover:text-blue-600 underline"
+              >
+                Online Meeting Link
+              </a>
+            ) : (
+              currentGroup.location
+            )}
+          </p>
+        </div>
+      )}
+
       <div className="relative bottom-[-3%] left-[50%] translate-x-[-50%] w-fit">
         <StudyGroupToggle
           postId={currentGroup.id}

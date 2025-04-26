@@ -11,6 +11,7 @@ interface StudyGroup {
   studyGroupName: string;
   studyGroupBio?: string | null;
   subjects: string[] | string;
+  when2MeetLink?: string | null;
   studyDates: string[];
   studyTime: string;
   location: string | null;
