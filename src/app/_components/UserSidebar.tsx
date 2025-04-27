@@ -173,13 +173,13 @@ export function UserSidebar({
           <div className="space-y-2">
             {isEditing ? (
               <div className="space-y-2">
-                <div className="flex items-center space-x-2">
+                <div className="flex flex-wrap items-center gap-2">
                   <input
                     type="text"
                     value={newUsername}
                     onChange={(e) => setNewUsername(e.target.value)}
                     placeholder="New username"
-                    className="flex-1 px-2 py-1 text-sm border rounded bg-background dark:bg-muted focus:border-primary dark:focus:border-accent outline-none"
+                    className="flex-1 min-w-[110px] px-2 py-1 text-sm border rounded bg-background dark:bg-muted focus:border-primary dark:focus:border-accent outline-none"
                     autoFocus
                   />
                   <Button
