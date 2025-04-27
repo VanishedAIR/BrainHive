@@ -30,6 +30,58 @@ _A platform for students to easily find, join, and manage study groups - Develop
 
 ---
 
+## 🔧 Installation & Setup
+
+1. **Clone the repository**
+
+   ```
+   git clone https://github.com/VanishedAIR/BrainHive.git
+   cd BrainHive
+   ```
+
+2. **Install dependencies**
+
+   ```
+   npm install
+   ```
+
+3. **Environment Variables**
+   Create a `.env` file in the root directory with:
+
+   ```
+   DATABASE_URL="your_postgres_database_url"
+   CLERK_SECRET_KEY="your_clerk_secret_key"
+   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="your_clerk_publishable_key"
+   ```
+
+4. **Set up the database**
+
+   ```
+   npx prisma generate
+   npx prisma db push
+   ```
+
+5. **Run the development server**
+   ```
+   npm run dev
+   ```
+
+## 🧪 Testing
+
+Run tests with Jest:
+
+```
+npm run test
+```
+
+To run tests in watch mode:
+
+```
+npm run test:watch
+```
+
+---
+
 ## ⚠️ Academic Disclaimer
 
 This student project was created at California State University - Long Beach for educational purposes. It is not a commercial product and is not intended for production use. Some features may be simplified or incomplete compared to professional applications.
