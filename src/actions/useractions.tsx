@@ -23,8 +23,9 @@ export async function syncUser() {
       data: {
         clerkId: userId,
         name: `${user.firstName || ""} ${user.lastName || ""}`,
-        username:
-          user.username ?? user.emailAddresses[0].emailAddress.split("@")[0],
+        username: (
+          user.username ?? user.emailAddresses[0].emailAddress.split("@")[0]
+        ).substring(0, 16),
         email: user.emailAddresses[0].emailAddress,
         image: user.imageUrl,
       },
@@ -70,6 +71,14 @@ export async function updateUsername(newUsername: string) {
 
     if (!userId) {
       return { success: false, message: "Not authenticated" };
+    }
+
+    // Validate username length
+    if (newUsername.length > 16) {
+      return {
+        success: false,
+        message: "Username cannot exceed 16 characters",
+      };
     }
 
     // Get the current user from database
@@ -166,7 +175,6 @@ export async function deleteCurrentUser() {
   }
 }
 
-
 export async function searchStudyGroups(query: string) {
   console.log(" searchStudyGroups() called!");
 
@@ -215,5 +223,3 @@ export async function searchStudyGroups(query: string) {
     return [];
   }
 }
-
-

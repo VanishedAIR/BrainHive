@@ -90,6 +90,17 @@ describe("User Actions", () => {
       expect(result).toEqual({ success: false, message: "Not authenticated" });
     });
 
+    it("returns error when username exceeds maximum length", async () => {
+      mockedAuth.mockResolvedValue({ userId: "test-clerk-id" });
+
+      const longUsername = "a".repeat(17);
+      const result = await updateUsername(longUsername);
+      expect(result).toEqual({
+        success: false,
+        message: "Username cannot exceed 16 characters",
+      });
+    });
+
     it("returns success when username is updated", async () => {
       mockedAuth.mockResolvedValue({ userId: "test-clerk-id" });
 
