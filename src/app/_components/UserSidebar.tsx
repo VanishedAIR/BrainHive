@@ -230,7 +230,7 @@ export function UserSidebar({
         {/* Owner's Study Groups */}
         <div className="space-y-3">
           <h4 className="font-semibold text-primary/90 dark:text-accent/90">
-            Your Study Groups
+            Your Hives
           </h4>
           {ownedStudyGroups.length > 0 ? (
             <ul className="space-y-3">
@@ -257,7 +257,8 @@ export function UserSidebar({
                           : group.subjects}
                       </p>
                       <p className="text-sm text-muted-foreground">
-                        <span className="font-medium">Time:</span> {group.studyTime}
+                        <span className="font-medium">Time:</span>{" "}
+                        {group.studyTime}
                       </p>
                       <p className="text-sm text-muted-foreground">
                         <span className="font-medium">Dates:</span>{" "}
@@ -278,7 +279,7 @@ export function UserSidebar({
         {/* Joined Study Groups */}
         <div className="space-y-3">
           <h4 className="font-semibold text-primary dark:text-accent">
-            Joined Study Groups
+            Joined Hives
           </h4>
           {filteredJoinedGroups.length > 0 ? (
             <ul className="space-y-3">
@@ -299,7 +300,8 @@ export function UserSidebar({
                           : group.subjects}
                       </p>
                       <p className="text-sm text-muted-foreground">
-                        <span className="font-medium">Time:</span> {group.studyTime}
+                        <span className="font-medium">Time:</span>{" "}
+                        {group.studyTime}
                       </p>
                       <p className="text-sm text-muted-foreground">
                         <span className="font-medium">Dates:</span>{" "}
