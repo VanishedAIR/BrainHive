@@ -103,28 +103,56 @@ export default function HomeClientContent() {
             <div className="flex-1 md:flex-[2] p-8 md:border-r border-border overflow-y-auto h-[60vh] md:h-[75vh]">
               {searchResults ? (
                 searchResults.length > 0 ? (
-                  searchResults.map((group) => (
-                    <div
-                      key={group.id}
-                      className="mb-6 p-4 rounded-lg border border-yellow-400 bg-yellow-50 cursor-pointer"
-                      onClick={() => handleGroupSelect(group)}
-                    >
-                      <h2 className="font-bold text-lg text-yellow-800">
-                        {group.studyGroupName}
-                      </h2>
-                      <p className="text-sm">
-                        Subjects:{" "}
-                        {Array.isArray(group.subjects)
-                          ? group.subjects.join(", ")
-                          : group.subjects}
-                      </p>
-                      <p className="text-sm">Created by: {group.author.username}</p>
-                      <p className="text-sm">Members: {group.members.length}</p>
-                      <p className="text-sm">
-                        Study Sessions: {group.studyDates?.[0]} at {group.studyTime}
-                      </p>
-                    </div>
-                  ))
+                  <div className="w-full space-y-3 md:space-y-4">
+                    {searchResults.map((group) => (
+                      <button
+                        key={group.id}
+                        onClick={() => handleGroupSelect(group)}
+                        className={`study-group-button w-full text-left p-3 md:p-4 rounded-lg transition-all duration-200 border-2 shadow-sm hover:border-primary dark:hover:border-[#3f557a] hover:shadow-md ${
+                          selectedGroup?.id === group.id
+                            ? "border-primary bg-primary/5 dark:border-[#3f557a] dark:bg-[rgba(41,68,110,0.7)]/50"
+                            : ""
+                        }`}
+                      >
+                        <div className="flex items-center gap-2 md:gap-3">
+                          <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center text-primary font-semibold">
+                            {group.studyGroupName[0].toUpperCase()}
+                          </div>
+                          <h3 className="text-xl font-semibold text-primary">
+                            {group.studyGroupName}
+                          </h3>
+                        </div>
+                        <p className="text-gray-500 mt-2">
+                          Subjects:{" "}
+                          {Array.isArray(group.subjects)
+                            ? group.subjects.join(", ")
+                            : group.subjects}
+                        </p>
+                        <p className="text-sm text-gray-400">
+                          Created by: {group.author.username}
+                        </p>
+                        <p className="text-sm text-gray-400">
+                          Members: {group.members.length}
+                        </p>
+                        <div className="text-sm text-gray-400">
+                          Next Session:{" "}
+                          {group.studyDates && group.studyDates[0] && (
+                            <span>
+                              {new Date(
+                                group.studyDates[0]
+                              ).toLocaleDateString()}{" "}
+                              at {group.studyTime}
+                              {group.studyDates.length > 1
+                                ? ` (+${
+                                    group.studyDates.length - 1
+                                  } more sessions)`
+                                : ""}
+                            </span>
+                          )}
+                        </div>
+                      </button>
+                    ))}
+                  </div>
                 ) : (
                   <p className="text-muted-foreground">No results found.</p>
                 )
@@ -161,4 +189,3 @@ export default function HomeClientContent() {
     </div>
   );
 }
-
