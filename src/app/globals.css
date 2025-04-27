@@ -6,7 +6,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Map Tailwind’s theme keys to our custom variables */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -47,100 +46,99 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-/* Light Mode: Brainhive Brand Colors */
+/* Light Mode: Simplified Color Palette */
 :root {
   --radius: 0.625rem;
-  --background: #f8f9fa; /* soft gray background */
-  --foreground: #2c3e50; /* deep navy text */
+  --background: #ffffff;
+  --foreground: #1a1a1a;
   --card: #ffffff;
-  --card-foreground: #2c3e50;
+  --card-foreground: #1a1a1a;
   --popover: #ffffff;
-  --popover-foreground: #2c3e50;
+  --popover-foreground: #1a1a1a;
 
   /* Primary interactive colors */
-  --primary: #f6b93b; /* rich honey gold */
-  --primary-foreground: #2c3e50;
-  --primary-hover: #e67e22; /* warm amber for hover */
+  --primary: #ff8c00; /* orange */
+  --primary-foreground: #ffffff;
+  --primary-hover: #ff6b00;
 
   /* Secondary colors / accents */
-  --secondary: #edf2f7; /* light gray for secondary elements */
-  --secondary-foreground: #2c3e50;
-  --secondary-hover: #e2e8f0; /* subtle hover effect */
+  --secondary: #f5f5f5;
+  --secondary-foreground: #1a1a1a;
+  --secondary-hover: #e5e5e5;
 
   /* Additional defaults */
-  --muted: #f1f5f9; /* softer background */
-  --muted-foreground: #4a5568;
-  --accent: #e67e22; /* warm amber accent */
+  --muted: #f5f5f5;
+  --muted-foreground: #666666;
+  --accent: #ff8c00;
   --accent-foreground: #ffffff;
-  --destructive: #e53e3e; /* refined red */
-  --border: #cbd5e0; /* subtle border */
-  --input: #edf2f7;
-  --ring: #f6b93b; /* honey gold ring */
-  --chart-1: #f6b93b;
-  --chart-2: #e67e22;
-  --chart-3: #2c3e50;
-  --chart-4: #718096;
-  --chart-5: #a0aec0;
+  --destructive: #ff4444;
+  --border: #e5e5e5;
+  --input: #f5f5f5;
+  --ring: #ff8c00;
+  --chart-1: #ff8c00;
+  --chart-2: #ff6b00;
+  --chart-3: #ff4500;
+  --chart-4: #ff3300;
+  --chart-5: #ff2200;
   --sidebar: #ffffff;
-  --sidebar-foreground: #2c3e50;
-  --sidebar-primary: #f6b93b;
-  --sidebar-primary-foreground: #2c3e50;
-  --sidebar-accent: #e67e22;
+  --sidebar-foreground: #1a1a1a;
+  --sidebar-primary: #ff8c00;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #ff6b00;
   --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: #cbd5e0;
-  --sidebar-ring: #f6b93b;
+  --sidebar-border: #e5e5e5;
+  --sidebar-ring: #ff8c00;
 
   /* Link Colors */
   --link-color: var(--primary);
   --link-hover: var(--primary-hover);
 }
 
-/* Dark Mode: Adjusted for Contrast */
+/* Dark Mode: Simplified Color Palette */
 .dark {
-  /* Base colors - softer dark blue background */
-  --background: #0f172a;
-  --foreground: #e2e8f0;
-  --card: #1e293b;
-  --card-foreground: #e2e8f0;
-  --popover: #1e293b;
-  --popover-foreground: #e2e8f0;
+  --background: #1a1a1a;
+  --foreground: #ffffff;
+  --card: #262626;
+  --card-foreground: #ffffff;
+  --popover: #262626;
+  --popover-foreground: #ffffff;
 
-  /* Primary colors - refined honey gold */
-  --primary: #f59e0b;
-  --primary-foreground: #0f172a;
-  --primary-hover: #d97706;
+  /* Primary colors */
+  --primary: #ff8c00;
+  --primary-foreground: #ffffff;
+  --primary-hover: #ff6b00;
 
-  /* Secondary colors - deep navy */
-  --secondary: #334155;
-  --secondary-foreground: #e2e8f0;
-  --secondary-hover: #475569;
+  /* Secondary colors */
+  --secondary: #262626;
+  --secondary-foreground: #ffffff;
+  --secondary-hover: #333333;
 
   /* Muted and accent colors */
-  --muted: #1e293b;
-  --muted-foreground: #94a3b8;
-  --accent: #d97706;
-  --accent-foreground: #f1f5f9;
-  --destructive: #ef4444;
-  --border: #334155;
-  --input: #1e293b;
-  --ring: #f59e0b;
+  --muted: #262626;
+  --muted-foreground: #999999;
+  --accent: #ff8c00;
+  --accent-foreground: #ffffff;
+  --destructive: #ff4444;
+  --border: #333333;
+  --input: #262626;
+  --ring: #ff8c00;
 
-  /* Chart colors - warm gradient */
-  --chart-1: #f59e0b;
-  --chart-2: #d97706;
-  --chart-3: #b45309;
-  --chart-4: #92400e;
-  --chart-5: #78350f;
+  /* Chart colors */
+  --chart-1: #ff8c00;
+  --chart-2: #ff6b00;
+  --chart-3: #ff4500;
+  --chart-4: #ff3300;
+  --chart-5: #ff2200;
 
   /* Sidebar styling */
-  --sidebar: #1e293b;
-  --sidebar-foreground: #e2e8f0;
-  --sidebar-primary: #f59e0b;
-  --sidebar-primary-foreground: #0f172a;
-  --sidebar-accent: #d97706;
-  --sidebar-accent-foreground: #f1f5f9;
-  --sidebar-border: #334155;
-  --sidebar-ring: #f59e0b;
+  --sidebar: #262626;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #ff8c00;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #ff6b00;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #333333;
+  --sidebar-ring: #ff8c00;
 
   /* Link colors */
   --link-color: var(--primary);
@@ -188,13 +186,13 @@
 }
 
 :root {
-  --primary-light: rgba(246, 185, 59, 0.05);
-  --accent-hover: rgba(230, 125, 34, 0.1);
-  --study-group-bg: rgba(230, 125, 34, 0.1);
+  --primary-light: rgba(255, 140, 0, 0.05);
+  --accent-hover: rgba(255, 107, 0, 0.1);
+  --study-group-bg: rgba(255, 107, 0, 0.1);
 }
 
 .dark {
-  --primary-light: rgba(255, 1, 1, 0.08);
-  --accent-hover: rgba(41, 68, 110, 0.7);
-  --study-group-bg: rgba(30, 41, 59, 0.7);
+  --primary-light: rgba(255, 140, 0, 0.08);
+  --accent-hover: rgba(38, 38, 38, 0.7);
+  --study-group-bg: rgba(38, 38, 38, 0.7);
 }

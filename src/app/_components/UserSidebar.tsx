@@ -277,7 +277,7 @@ export function UserSidebar({
 
         {/* Joined Study Groups */}
         <div className="space-y-3">
-          <h4 className="font-semibold text-primary/90 dark:text-accent/90">
+          <h4 className="font-semibold text-primary dark:text-accent">
             Joined Study Groups
           </h4>
           {filteredJoinedGroups.length > 0 ? (

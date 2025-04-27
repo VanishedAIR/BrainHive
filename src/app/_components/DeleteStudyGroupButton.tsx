@@ -15,6 +15,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Trash } from "lucide-react";
 
 interface DeleteStudyGroupButtonProps {
   groupId: string;
@@ -63,7 +64,7 @@ export default function DeleteStudyGroupButton({
           handleDeleteGroup();
         }}
       >
-        Delete
+        <Trash className="w-4 h-4" />
       </Button>
 
       <AlertDialog
