@@ -2,8 +2,8 @@ import Post from "@/app/_components/post";
 import Navbar from "../_components/navbar";
 import { getCurrentUser } from "@/actions/useractions";
 import { redirect } from "next/navigation";
-export default async function PostPage() {
 
+export default async function PostPage() {
     const user = await getCurrentUser();
 
     if (!user) {
@@ -11,11 +11,11 @@ export default async function PostPage() {
     }
 
     return (
-        <div className = "relative">
+        <div className="relative">
             <section className="flex flex-col flex-1">
                 <Navbar />
             </section>
-            <Post />
+            <Post redirectPath="/home" />
         </div>
     );
 }

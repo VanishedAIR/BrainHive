@@ -6,8 +6,14 @@ import { Label } from "@/components/ui/label";
 import { createPost } from "@/actions/postactions";
 import { Button } from "@/components/ui/button";
 import {toast} from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
 
-const PostPage: React.FC = () => {
+interface PostProps {
+  redirectPath?: string;
+}
+
+const PostPage: React.FC<PostProps> = ({ redirectPath }) => {
+  const router = useRouter();
   const [studyGroupName, setStudyGroupName] = useState("");
   const [studyGroupBio, setStudyGroupBio] = useState("");
   const [subjects, setSubjects] = useState<string[]>([]); // Array to store multiple subjects
@@ -46,7 +52,8 @@ const PostPage: React.FC = () => {
     );
   };
 
-  const handleSubmit = async()  => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     setLoading(true);
 
     // Validate required fields
@@ -121,6 +128,10 @@ const PostPage: React.FC = () => {
         setStudyDates([]);
         setStudyTime("");
         setLocation("");
+
+        if (redirectPath) {
+          router.push(redirectPath);
+        }
       } else {
         toast({
           title: "Error",

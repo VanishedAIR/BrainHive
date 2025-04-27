@@ -237,22 +237,34 @@ export function UserSidebar({
               {ownedStudyGroups.map((group) => (
                 <li
                   key={group.id}
-                  className="space-y-2 bg-primary/5 dark:bg-accent/5 p-3 rounded-lg border border-primary/10 dark:border-accent/10 hover:border-primary/20 dark:hover:border-accent/20 transition-colors duration-200"
+                  className="space-y-3 bg-primary/5 dark:bg-accent/5 p-4 rounded-lg border border-primary/10 dark:border-accent/10 hover:border-primary/20 dark:hover:border-accent/20 transition-colors duration-200"
                 >
-                  <div>
-                    <strong className="text-sm text-foreground/90">
-                      {group.studyGroupName}
-                    </strong>
-                    <p className="text-sm text-muted-foreground">
-                      {Array.isArray(group.subjects)
-                        ? group.subjects.join(", ")
-                        : group.subjects}
-                    </p>
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <strong className="text-base text-foreground/90">
+                        {group.studyGroupName}
+                      </strong>
+                      <DeleteStudyGroupButton
+                        groupId={group.id}
+                        onDeleteSuccess={handleDeleteSuccess}
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <p className="text-sm text-muted-foreground">
+                        <span className="font-medium">Subjects:</span>{" "}
+                        {Array.isArray(group.subjects)
+                          ? group.subjects.join(", ")
+                          : group.subjects}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        <span className="font-medium">Time:</span> {group.studyTime}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        <span className="font-medium">Dates:</span>{" "}
+                        {group.studyDates.join(", ")}
+                      </p>
+                    </div>
                   </div>
-                  <DeleteStudyGroupButton
-                    groupId={group.id}
-                    onDeleteSuccess={handleDeleteSuccess}
-                  />
                 </li>
               ))}
             </ul>
@@ -273,16 +285,28 @@ export function UserSidebar({
               {filteredJoinedGroups.map((group) => (
                 <li
                   key={group.id}
-                  className="space-y-1 bg-primary/5 dark:bg-accent/5 p-3 rounded-lg border border-primary/10 dark:border-accent/10 hover:border-primary/20 dark:hover:border-accent/20 transition-colors duration-200"
+                  className="space-y-3 bg-primary/5 dark:bg-accent/5 p-4 rounded-lg border border-primary/10 dark:border-accent/10 hover:border-primary/20 dark:hover:border-accent/20 transition-colors duration-200"
                 >
-                  <strong className="text-sm text-foreground/90">
-                    {group.studyGroupName}
-                  </strong>
-                  <p className="text-sm text-muted-foreground">
-                    {Array.isArray(group.subjects)
-                      ? group.subjects.join(", ")
-                      : group.subjects}
-                  </p>
+                  <div className="space-y-2">
+                    <strong className="text-base text-foreground/90">
+                      {group.studyGroupName}
+                    </strong>
+                    <div className="space-y-1.5">
+                      <p className="text-sm text-muted-foreground">
+                        <span className="font-medium">Subjects:</span>{" "}
+                        {Array.isArray(group.subjects)
+                          ? group.subjects.join(", ")
+                          : group.subjects}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        <span className="font-medium">Time:</span> {group.studyTime}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        <span className="font-medium">Dates:</span>{" "}
+                        {group.studyDates.join(", ")}
+                      </p>
+                    </div>
+                  </div>
                 </li>
               ))}
             </ul>
