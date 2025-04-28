@@ -7,6 +7,73 @@
  * Functions include syncing user data, retrieving the current user, updating usernames, deleting accounts, and searching study groups.
  */
 
+/**
+ * Creates a new study group post.
+ *
+ * @param {Object} data - The data for the new study group.
+ * @param {string} data.studyGroupName - The name of the study group.
+ * @param {string | null} [data.studyGroupBio] - The bio/description of the study group (optional).
+ * @param {string[]} data.subjects - The subjects related to the study group.
+ * @param {string | null} [data.when2MeetLink] - The When2Meet scheduling link (optional).
+ * @param {string[]} data.studyDates - The dates for the study group.
+ * @param {string} data.studyTime - The time for the study group.
+ * @param {string} data.location - The location of the study group.
+ * @returns {Promise<Object>} An object indicating success or failure, with the created study group if successful.
+ */
+
+/**
+ * Retrieves all study group posts.
+ *
+ * @returns {Promise<Array>} An array of all study groups, including their authors and members.
+ */
+
+/**
+ * Retrieves a single study group by its ID.
+ *
+ * @param {string} postId - The ID of the study group to retrieve.
+ * @returns {Promise<Object>} An object indicating success or failure, with the study group if successful.
+ */
+
+/**
+ * Deletes a study group by its ID.
+ *
+ * @param {string} postId - The ID of the study group to delete.
+ * @returns {Promise<Object>} An object indicating success or failure.
+ */
+
+/**
+ * Allows a user to join a study group.
+ *
+ * @param {string} postId - The ID of the study group to join.
+ * @returns {Promise<Object>} An object indicating success or failure.
+ */
+
+/**
+ * Allows a user to leave a study group.
+ *
+ * @param {string} postId - The ID of the study group to leave.
+ * @returns {Promise<Object>} An object indicating success or failure.
+ */
+
+/**
+ * Checks if a user is a member of a study group.
+ *
+ * @param {string} postId - The ID of the study group to check membership for.
+ * @returns {Promise<Object>} An object indicating whether the user is a member.
+ */
+
+/**
+ * Retrieves all study groups a user is a member of.
+ *
+ * @returns {Promise<Object>} An object containing success status, a message, and an array of study groups.
+ */
+
+/**
+ * Retrieves all study groups a user has created (is the author of).
+ *
+ * @returns {Promise<Object>} An object containing success status, a message, and an array of owned study groups.
+ */
+
 import prisma from "@/lib/prisma";
 import { auth, currentUser } from "@clerk/nextjs/server";
 
