@@ -3,19 +3,46 @@
 /**
  * User Actions Module
  *
- * This module contains server-side functions for managing user-related actions in the Study Group Finder application.
- * Functions include syncing user data, retrieving the current user, updating usernames, deleting accounts, and searching study groups.
+ * This module provides server-side functions for managing user-related operations in the Study Group Finder application.
+ * These include syncing user data, retrieving the current user, updating usernames, deleting accounts, and searching for study groups.
+ */
+
+/**
+ * Syncs the current user with the database.
+ * If the user does not exist, a new record is created.
+ *
+ * @returns {Promise<Object | undefined>} The user object if found or created, otherwise undefined.
+ */
+
+/**
+ * Retrieves the current user's information from the database.
+ *
+ * @returns {Promise<Object | null>} The user object if authenticated, otherwise null.
+ */
+
+/**
+ * Updates the username of the current user.
+ *
+ * @param {string} newUsername - The desired new username.
+ * @returns {Promise<Object>} An object indicating success or failure, with an optional message.
+ */
+
+/**
+ * Deletes the current user's account along with all associated data.
+ *
+ * @returns {Promise<Object>} An object indicating success or failure, with an optional message.
+ */
+
+/**
+ * Searches for study groups based on a given query string.
+ *
+ * @param {string} query - The search term to filter study groups.
+ * @returns {Promise<Array>} A list of study groups matching the query.
  */
 
 import prisma from "@/lib/prisma";
 import { auth, currentUser } from "@clerk/nextjs/server";
 
-/**
- * Syncs the current user with the database.
- * If the user does not exist in the database, it creates a new user record.
- *
- * @returns {Promise<Object | undefined>} The user object if it exists or is created, otherwise undefined.
- */
 
 export async function syncUser() {
   try {
