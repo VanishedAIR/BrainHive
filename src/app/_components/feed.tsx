@@ -1,5 +1,43 @@
 "use client";
 
+/**
+ * Feed Component
+ *
+ * This component renders a list of study groups and allows users to select a group to view its details.
+ * It supports responsive layouts and includes functionality for mobile users to show more or fewer groups.
+ *
+ * Props:
+ * - `onGroupSelect` (function): A callback function triggered when a study group is selected.
+ * - `refreshTrigger` (number, optional): A number used to trigger data refreshes (default: 0).
+ *
+ * State:
+ * - `studyGroups` (StudyGroup[]): An array of study groups fetched from the server.
+ * - `selectedGroupId` (string | null): The ID of the currently selected study group.
+ * - `isMobile` (boolean): Indicates whether the current device is mobile (determined by the `useIsMobile` hook).
+ * - `showAll` (boolean): Indicates whether all study groups are displayed on mobile devices.
+ *
+ * Functions:
+ * - `getClosestDate`: Determines the closest upcoming date from an array of dates.
+ * - `fetchStudyGroups`: Fetches the list of study groups from the server.
+ * - `handleGroupClick`: Handles the selection of a study group and triggers the `onGroupSelect` callback.
+ *
+ * Effects:
+ * - Fetches study groups when the component mounts or when `refreshTrigger` changes.
+ * - Updates the selected group when the list of groups changes.
+ *
+ * Components Used:
+ * - `button`: Renders each study group as a clickable button.
+ *
+ * External Actions:
+ * - `getAllPosts`: Fetches all study groups from the server.
+ *
+ * Conditional Rendering:
+ * - Displays a "Show More" or "Show Less" button on mobile devices if there are more than three study groups.
+ *
+ * Types:
+ * - `StudyGroup`: Defines the structure of a study group, including its name, bio, subjects, dates, and members.
+ */
+
 import { useEffect, useState } from "react";
 import { getAllPosts } from "@/actions/postactions";
 import { useIsMobile } from "@/hooks/use-mobile";
