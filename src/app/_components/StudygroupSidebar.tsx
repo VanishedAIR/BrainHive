@@ -1,3 +1,40 @@
+/**
+ * StudygroupSidebar Component
+ *
+ * This component displays detailed information about a selected study group, including its name, bio, subjects, 
+ * study sessions, creator, members, and additional links like When2Meet or location.
+ * It also allows users to join or leave the study group using the `StudyGroupToggle` component.
+ *
+ * Props:
+ * - `selectedGroup` (StudyGroup | null): The currently selected study group or `null` if no group is selected.
+ * - `refreshTrigger` (number, optional): A number used to trigger data refreshes (default: 0).
+ * - `refreshData` (function, optional): A callback function to refresh data in the parent component.
+ *
+ * State:
+ * - `currentGroup` (StudyGroup | null): The current study group being displayed.
+ * - `showAllMembers` (boolean): Indicates whether all members of the study group are displayed.
+ *
+ * Functions:
+ * - `updateGroup`: Fetches the latest details of the selected study group and updates the `currentGroup` state.
+ *
+ * Effects:
+ * - Updates the `currentGroup` state when the `selectedGroup` or `refreshTrigger` changes.
+ *
+ * Components Used:
+ * - `Button`: A reusable button component styled for the application.
+ * - `StudyGroupToggle`: A component that allows users to join or leave the study group.
+ *
+ * External Actions:
+ * - `getPostById`: Fetches the details of a study group by its ID.
+ *
+ * Conditional Rendering:
+ * - Displays a placeholder message if no study group is selected.
+ * - Displays truncated or full member lists based on the `showAllMembers` state.
+ *
+ * Links:
+ * - Renders clickable links for When2Meet and location if provided.
+ */
+
 import type { StudyGroup } from "./feed";
 import { Button } from "@/components/ui/button";
 import StudyGroupToggle from "./StudyGroupToggle";
