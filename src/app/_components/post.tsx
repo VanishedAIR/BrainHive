@@ -1,5 +1,38 @@
 "use client";
 
+/**
+ * PostPage Component
+ *
+ * This component allows users to create a new study group post in the Study Group Finder application.
+ * It includes input fields for group name, bio, subjects, location, and more, as well as validation for required fields.
+ *
+ * Props:
+ * - `redirectPath` (optional): A string specifying the path to redirect to after successfully creating a post.
+ *
+ * State:
+ * - `studyGroupName`: The name of the study group.
+ * - `studyGroupBio`: A brief bio or description of the study group.
+ * - `subjects`: An array of subjects related to the study group.
+ * - `newSubject`: A temporary input value for adding a new subject.
+ * - `when2MeetLink`: A link to a When2Meet scheduling page (optional).
+ * - `studyDates`: An array of dates for the study group.
+ * - `newStudyDate`: A temporary input value for adding a new study date.
+ * - `studyTime`: The time for the study group.
+ * - `location`: The location of the study group.
+ * - `loading`: A boolean indicating whether the form submission is in progress.
+ * - `posts`: A local state to store posts (not currently used in this implementation).
+ *
+ * Functions:
+ * - `handleAddSubject`: Adds a new subject to the `subjects` array.
+ * - `handleRemoveSubject`: Removes a subject from the `subjects` array.
+ * - `handleAddStudyDate`: Adds a new date to the `studyDates` array.
+ * - `handleRemoveStudyDate`: Removes a date from the `studyDates` array.
+ * - `handleSubmit`: Handles form submission, validates input fields, and creates a new study group post.
+ *
+ * Effects:
+ * - None in this implementation.
+ */
+
 import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
