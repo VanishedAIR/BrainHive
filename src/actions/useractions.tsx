@@ -3,6 +3,13 @@
 /**
  * User Actions Module
  *
+ * This module contains server-side functions for managing user-related actions in the Study Group Finder application.
+ * Functions include syncing user data, retrieving the current user, updating usernames, deleting accounts, and searching study groups.
+ */
+
+/**
+ * User Actions Module
+ *
  * This module provides server-side functions for managing user-related operations in the Study Group Finder application.
  * These include syncing user data, retrieving the current user, updating usernames, deleting accounts, and searching for study groups.
  */
@@ -44,6 +51,13 @@ import prisma from "@/lib/prisma";
 import { auth, currentUser } from "@clerk/nextjs/server";
 
 
+/**
+ * Syncs the current user with the database.
+ * If the user does not exist in the database, it creates a new user record.
+ *
+ * @returns {Promise<Object | undefined>} The user object if it exists or is created, otherwise undefined.
+ */
+
 export async function syncUser() {
   try {
     const { userId } = await auth();
@@ -51,6 +65,7 @@ export async function syncUser() {
 
     if (!userId || !user) return;
 
+    // Check if the user already exists in the database
     // Check if the user already exists in the database
     const existingUser = await prisma.user.findUnique({
       where: {
@@ -60,6 +75,7 @@ export async function syncUser() {
 
     if (existingUser) return existingUser;
 
+    // Create a new user in the database
     // Create a new user in the database
     const dbUser = await prisma.user.create({
       data: {
@@ -78,6 +94,12 @@ export async function syncUser() {
     console.log("Error in syncUser", error);
   }
 }
+
+/**
+ * Retrieves the current user from the database.
+ *
+ * @returns {Promise<Object | null>} The current user object or null if not authenticated.
+ */
 
 /**
  * Retrieves the current user from the database.
@@ -112,6 +134,13 @@ export async function getCurrentUser() {
     return null;
   }
 }
+
+/**
+ * Updates the username of the current user.
+ *
+ * @param {string} newUsername - The new username to set.
+ * @returns {Promise<Object>} The result of the update operation.
+ */
 
 /**
  * Updates the username of the current user.
@@ -196,6 +225,12 @@ export async function updateUsername(newUsername: string) {
  * @returns {Promise<Object>} The result of the delete operation.
  */
 
+/**
+ * Deletes the current user's account and all associated data.
+ * 
+ * @returns {Promise<Object>} The result of the delete operation.
+ */
+
 export async function deleteCurrentUser() {
   try {
     const { userId } = await auth();
@@ -235,6 +270,13 @@ export async function deleteCurrentUser() {
     return { success: false, message: "Failed to delete account" };
   }
 }
+
+/**
+ * Searches for study groups based on a query string.
+ * 
+ * @param {string} query - The search query string.
+ * * @returns {Promise<Array>} An array of study groups matching the query.
+ */
 
 /**
  * Searches for study groups based on a query string.
