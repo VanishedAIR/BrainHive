@@ -1,5 +1,37 @@
 "use client";
 
+/**
+ * UserSidebar Component
+ *
+ * Displays the user sidebar in the Study Group Finder application.
+ * Allows users to manage their profile, edit their username, and navigate between study groups.
+ *
+ * Props:
+ * - `refreshData`: A callback function to refresh data in the parent component.
+ * - `refreshTrigger`: A number that triggers a refresh when updated (default: 0).
+ *
+ * State:
+ * - `user`: Stores the current user's information.
+ * - `isEditing`: Boolean to track if the username is being edited.
+ * - `newUsername`: Stores the new username input value.
+ * - `error`: Stores error messages related to username updates.
+ * - `studyGroups`: Stores the list of study groups the user has joined.
+ * - `ownedStudyGroups`: Stores the list of study groups the user owns.
+ * - `filteredJoinedGroups`: Stores the list of joined study groups excluding owned groups.
+ *
+ * Functions:
+ * - `loadUserData`: Fetches and sets the current user's data.
+ * - `loadStudyGroups`: Fetches and sets the user's joined and owned study groups.
+ * - `handleEditUsername`: Enables editing of the username.
+ * - `handleCancelEdit`: Cancels the username editing process.
+ * - `handleSaveUsername`: Saves the updated username and refreshes data.
+ * - `handleDeleteSuccess`: Refreshes study groups and parent data after a successful deletion.
+ *
+ * Effects:
+ * - Loads user data and study groups on component mount or when `refreshTrigger` changes.
+ * - Filters joined study groups to exclude owned groups when `studyGroups` or `ownedStudyGroups` change.
+ */
+
 import { getCurrentUser, updateUsername } from "@/actions/useractions";
 import {
   getUserStudyGroups,
