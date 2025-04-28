@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Pencil, Check, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import LeaveStudyGroupButton from "./LeaveStudyGroupButton";
 
 interface StudyGroup {
   id: string;
@@ -128,6 +129,11 @@ export function UserSidebar({
   };
 
   const handleDeleteSuccess = () => {
+    loadStudyGroups();
+    refreshData();
+  };
+
+  const handleLeaveSuccess = () => {
     loadStudyGroups();
     refreshData();
   };
@@ -288,10 +294,14 @@ export function UserSidebar({
                   key={group.id}
                   className="space-y-3 bg-primary/5 dark:bg-accent/5 p-4 rounded-lg border border-primary/10 dark:border-accent/10 hover:border-primary/20 dark:hover:border-accent/20 transition-colors duration-200"
                 >
-                  <div className="space-y-2">
+                  <div>
                     <strong className="text-base text-foreground/90">
                       {group.studyGroupName}
                     </strong>
+                    <LeaveStudyGroupButton
+                      groupId={group.id}
+                      onLeaveSuccess={handleLeaveSuccess}
+                    />
                     <div className="space-y-1.5">
                       <p className="text-sm text-muted-foreground">
                         <span className="font-medium">Subjects:</span>{" "}
