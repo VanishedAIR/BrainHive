@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createPost } from "@/actions/postactions";
 import { Button } from "@/components/ui/button";
-import {toast} from "@/components/ui/use-toast";
+import { toast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 
 interface PostProps {
@@ -40,9 +40,17 @@ const PostPage: React.FC<PostProps> = ({ redirectPath }) => {
   };
 
   const handleAddStudyDate = () => {
-    if (newStudyDate.trim() && !studyDates.includes(newStudyDate)) {
-      setStudyDates((prevDates) => [...prevDates, newStudyDate]);
-      setNewStudyDate(""); // Clear the input field
+    if (newStudyDate.trim()) {
+      if (!studyDates.includes(newStudyDate)) {
+        setStudyDates((prevDates) => [...prevDates, newStudyDate]);
+        setNewStudyDate(""); 
+      } else {
+        toast({
+          title: "Duplicate Date",
+          description: "This date has already been added",
+          variant: "destructive",
+        });
+      }
     }
   };
 
@@ -61,6 +69,7 @@ const PostPage: React.FC<PostProps> = ({ redirectPath }) => {
       toast({
         title: "Required Field",
         description: "Please enter a study group name",
+        variant: "destructive",
       });
       setLoading(false);
       return;
@@ -70,6 +79,7 @@ const PostPage: React.FC<PostProps> = ({ redirectPath }) => {
       toast({
         title: "Required Field",
         description: "Please add at least one subject",
+        variant: "destructive",
       });
       setLoading(false);
       return;
@@ -79,6 +89,7 @@ const PostPage: React.FC<PostProps> = ({ redirectPath }) => {
       toast({
         title: "Required Field",
         description: "Please add at least one study date",
+        variant: "destructive",
       });
       setLoading(false);
       return;
@@ -88,6 +99,7 @@ const PostPage: React.FC<PostProps> = ({ redirectPath }) => {
       toast({
         title: "Required Field",
         description: "Please select a study time",
+        variant: "destructive",
       });
       setLoading(false);
       return;
@@ -97,6 +109,7 @@ const PostPage: React.FC<PostProps> = ({ redirectPath }) => {
       toast({
         title: "Required Field",
         description: "Please enter a location",
+        variant: "destructive",
       });
       setLoading(false);
       return;
@@ -278,6 +291,7 @@ const PostPage: React.FC<PostProps> = ({ redirectPath }) => {
                 type="date"
                 value={newStudyDate}
                 onChange={(e) => setNewStudyDate(e.target.value)}
+                min={new Date().toISOString().split('T')[0]} 
                 className="w-full h-12 p-3 border border-gray-300 rounded-md text-base focus:ring-2 focus:ring-primary focus:border-primary text-gray-400 appearance-none"
               />
               <Button
@@ -289,16 +303,21 @@ const PostPage: React.FC<PostProps> = ({ redirectPath }) => {
               </Button>
             </div>
             <div className="flex flex-wrap gap-2 mt-2">
-              {studyDates.map((date, index) => (
-                <Button
-                  key={index}
-                  type="button"
-                  onClick={() => handleRemoveStudyDate(date)}
-                  className="flex items-center px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-red-300 hover:text-red-700 transition-colors"
-                >
-                  {new Date(date).toLocaleDateString()}
-                </Button>
-              ))}
+              {studyDates.map((date, index) => {
+                const [year, month, day] = date.split('-').map(Number);
+                const displayDate = new Date(year, month - 1, day); 
+                
+                return (
+                  <Button
+                    key={index}
+                    type="button"
+                    onClick={() => handleRemoveStudyDate(date)}
+                    className="flex items-center px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-red-300 hover:text-red-700 transition-colors"
+                  >
+                    {displayDate.toLocaleDateString()}
+                  </Button>
+                );
+              })}
             </div>
           </div>
 
