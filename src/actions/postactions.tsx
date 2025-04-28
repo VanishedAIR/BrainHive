@@ -11,6 +11,7 @@ import prisma from "@/lib/prisma";
 import { auth, currentUser } from "@clerk/nextjs/server";
 
 /**
+ * 
  * Syncs the current user with the database.
  * If the user does not exist in the database, it creates a new user record.
  * 
