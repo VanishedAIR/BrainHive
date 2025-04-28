@@ -1,3 +1,42 @@
+/**
+ * StudyGroupToggle Component
+ *
+ * This component provides functionality for users to join or leave a study group.
+ * It also checks if the user is the owner of the study group and displays appropriate buttons based on the user's status.
+ *
+ * Props:
+ * - `postId` (string): The ID of the study group post.
+ * - `refreshTrigger` (number, optional): A number used to trigger data refreshes (default: 0).
+ * - `refreshData` (function, optional): A callback function to refresh data in the parent component.
+ *
+ * State:
+ * - `isLoading` (boolean): Indicates whether a join/leave action is in progress.
+ * - `isMember` (boolean): Indicates whether the user is a member of the study group.
+ * - `isOwner` (boolean): Indicates whether the user is the owner of the study group.
+ * - `isCheckingStatus` (boolean): Indicates whether the membership/ownership status is being checked.
+ *
+ * Functions:
+ * - `checkStatus`: Checks if the user is the owner or a member of the study group.
+ * - `handleJoin`: Handles the action of joining the study group.
+ * - `handleLeave`: Handles the action of leaving the study group.
+ *
+ * Effects:
+ * - Checks membership and ownership status when the component mounts, `postId` changes, or `refreshTrigger` changes.
+ *
+ * Components Used:
+ * - `Button`: A reusable button component styled for the application.
+ *
+ * External Actions:
+ * - `checkMembership`: Checks if the user is a member of the study group.
+ * - `joinStudyGroup`: Adds the user as a member of the study group.
+ * - `leaveStudyGroup`: Removes the user from the study group.
+ * - `getUserOwnedStudyGroups`: Retrieves the list of study groups owned by the user.
+ *
+ * Notifications:
+ * - Uses the `toast` component to display success or error messages for join/leave actions.
+ */
+
+
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
