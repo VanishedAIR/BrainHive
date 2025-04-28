@@ -1,4 +1,30 @@
 "use client";
+
+/**
+ * Hero Component
+ *
+ * This component renders the hero section for the Study Group Finder application.
+ * It includes a headline, a subheading, an image, and call-to-action buttons for user engagement.
+ *
+ * Features:
+ * - Displays a prominent headline and subheading to introduce the application.
+ * - Includes a responsive image for visual appeal.
+ * - Provides two call-to-action buttons:
+ *   - "JOIN NOW FOR FREE" button opens a sign-up modal.
+ *   - "LEARN MORE!" button scrolls to the overview section.
+ *
+ * Components Used:
+ * - `SignUpButton`: A button from the Clerk library that triggers the sign-up modal.
+ *
+ * Styling:
+ * - Uses Tailwind CSS for responsive design and styling.
+ * - Includes gradient text, hover effects, and responsive layouts for mobile and desktop views.
+ *
+ * Accessibility:
+ * - The image includes an `alt` attribute for accessibility.
+ * - Buttons are styled for clear visibility and interaction.
+ */
+
 import { SignUpButton } from "@clerk/nextjs";
 
 export default function Hero() {
