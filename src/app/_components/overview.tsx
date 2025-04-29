@@ -20,6 +20,11 @@
  * - The image includes an `alt` attribute for accessibility.
  */
 
+"use client";
+import Image from "next/image";
+import { useState } from "react";
+
+
 export default function Overview() {
   return (
     <div id="overview" className="relative min-h-screen py-16 px-8"
