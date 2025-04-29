@@ -3,25 +3,25 @@
 /**
  * Hero Component
  *
- * This component renders the hero section for the Study Group Finder application.
- * It includes a headline, a subheading, an image, and call-to-action buttons for user engagement.
+ * This component renders the hero section of the Study Group Finder application.
+ * It includes a headline, subheading, image, and call-to-action buttons to engage users.
  *
  * Features:
- * - Displays a prominent headline and subheading to introduce the application.
+ * - Displays a headline and subheading to introduce the application.
  * - Includes a responsive image for visual appeal.
  * - Provides two call-to-action buttons:
- *   - "JOIN NOW FOR FREE" button opens a sign-up modal.
- *   - "LEARN MORE!" button scrolls to the overview section.
+ *   - "JOIN NOW FOR FREE" opens a sign-up modal.
+ *   - "LEARN MORE!" scrolls to the overview section.
  *
- * Components Used:
- * - `SignUpButton`: A button from the Clerk library that triggers the sign-up modal.
+ * Components:
+ * - `SignUpButton`: A button from the Clerk library for user sign-up.
  *
  * Styling:
- * - Uses Tailwind CSS for responsive design and styling.
- * - Includes gradient text, hover effects, and responsive layouts for mobile and desktop views.
+ * - Uses Tailwind CSS for responsive design and hover effects.
+ * - Includes gradient text and layouts optimized for mobile and desktop.
  *
  * Accessibility:
- * - The image includes an `alt` attribute for accessibility.
+ * - The image includes an `alt` attribute for screen readers.
  * - Buttons are styled for clear visibility and interaction.
  */
 
