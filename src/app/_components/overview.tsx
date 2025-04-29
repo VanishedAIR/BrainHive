@@ -53,7 +53,7 @@ export default function Overview() {
             }
           >
             <div
-              className="relative shadow-xl rounded-xl overflow-hidden bg-background w-full mx-auto"
+              className="relative shadow-xl rounded-xl overflow-hidden bg-background w-full mx-auto border border-border"
               style={{
                 maxWidth: "605px",
                 height: "auto",
@@ -75,7 +75,7 @@ export default function Overview() {
                     width: "100%",
                     height: "auto",
                   }}
-                  className="p-2 group-hover:scale-[1.02] transition-transform duration-300"
+                  className="group-hover:scale-[1.02] transition-transform duration-300"
                 />
               </div>
 
@@ -118,7 +118,7 @@ export default function Overview() {
               }
             >
               <div
-                className="relative shadow-xl rounded-xl bg-background w-full overflow-hidden"
+                className="relative rounded-xl w-full overflow-hidden"
                 style={{
                   maxWidth: "100%",
                   height: "auto",
@@ -139,7 +139,7 @@ export default function Overview() {
                       maxWidth: "100%",
                       height: "auto",
                     }}
-                    className="p-2 group-hover:scale-[1.02] transition-transform duration-300"
+                    className="group-hover:scale-[1.02] transition-transform duration-300"
                   />
                 </div>
 
@@ -181,7 +181,7 @@ export default function Overview() {
               }
             >
               <div
-                className="relative shadow-xl rounded-xl overflow-hidden bg-background"
+                className="relative shadow-xl rounded-xl overflow-hidden bg-background border border-border"
                 style={{
                   width: "360px",
                   maxWidth: "100%",
@@ -204,7 +204,7 @@ export default function Overview() {
                       width: "100%",
                       height: "auto",
                     }}
-                    className="p-2 group-hover:scale-[1.02] transition-transform duration-300"
+                    className="group-hover:scale-[1.02] transition-transform duration-300"
                   />
                 </div>
 
@@ -248,7 +248,7 @@ export default function Overview() {
               }
             >
               <div
-                className="relative shadow-xl rounded-xl overflow-hidden bg-background"
+                className="relative shadow-xl rounded-xl overflow-hidden bg-background border border-border"
                 style={{
                   width: "230px",
                   maxWidth: "100%",
@@ -271,7 +271,7 @@ export default function Overview() {
                       width: "100%",
                       height: "auto",
                     }}
-                    className="p-2 group-hover:scale-[1.02] transition-transform duration-300"
+                    className="group-hover:scale-[1.02] transition-transform duration-300"
                   />
                 </div>
 
@@ -314,7 +314,7 @@ export default function Overview() {
             }
           >
             <div
-              className="relative shadow-xl rounded-xl overflow-hidden bg-background w-full mx-auto"
+              className="relative shadow-xl rounded-xl overflow-hidden bg-background w-full mx-auto border border-border"
               style={{
                 maxWidth: "min(900px, 100%)",
                 height: "auto",
@@ -335,7 +335,7 @@ export default function Overview() {
                     maxWidth: "100%",
                     height: "auto",
                   }}
-                  className="p-2 group-hover:scale-[1.02] transition-transform duration-300"
+                  className="group-hover:scale-[1.02] transition-transform duration-300"
                 />
               </div>
 
