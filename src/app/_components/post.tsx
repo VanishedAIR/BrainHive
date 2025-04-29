@@ -236,12 +236,12 @@ const PostPage: React.FC<PostProps> = ({ redirectPath }) => {
               {subjects.map((subject, index) => (
                 <div
                   key={index}
-                  className="flex items-center space-x-2 bg-gray-200 text-gray-700 rounded-md"
+                  className="flex items-center space-x-2 bg-gray-200 rounded-md"
                 >
                   <span>
                     <Button
                       onClick={() => handleRemoveSubject(subject)}
-                      className=" hover:text-red-700 hover:bg-red-300 bg-transparent"
+                      className=" hover:text-red-700 hover:bg-red-300 text-gray-700 bg-transparent"
                     >
                       {subject}
                     </Button>
