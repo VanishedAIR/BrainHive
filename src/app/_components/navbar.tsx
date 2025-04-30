@@ -1,3 +1,33 @@
+/**
+ * Navbar Component
+ *
+ * This component renders the navigation bar for the Study Group Finder application.
+ * It includes a logo, a mode toggle button, and a client-side navigation bar.
+ *
+ * Features:
+ * - Displays the application logo that links to the home page.
+ * - Includes a mode toggle button for switching between light and dark themes.
+ * - Renders the `ClientNavbar` component for user-specific navigation options.
+ * - Syncs the current user with the database if the user is signed in.
+ *
+ * Components:
+ * - `ClientNavbar`: Handles user-specific navigation options (e.g., sign-in or profile).
+ * - `ModeToggle`: A button for toggling between light and dark themes.
+ * - `Link`: Provides navigation to the home page.
+ *
+ * External Actions:
+ * - `currentUser`: Retrieves the currently signed-in user from Clerk.
+ * - `syncUser`: Syncs the current user with the database.
+ *
+ * Styling:
+ * - Uses Tailwind CSS for layout and styling.
+ * - Includes responsive design for the header and navigation elements.
+ *
+ * Behavior:
+ * - Displays the navigation bar with user-specific options and theme toggle functionality.
+ */
+
+
 import { currentUser } from "@clerk/nextjs/server";
 import { syncUser } from "@/actions/useractions";
 import ClientNavbar from "./ClientNavbar";

@@ -1,5 +1,46 @@
 "use client";
 
+/**
+ * Feed Component
+ *
+ * This component displays a list of study groups and allows users to select one to view its details.
+ * It supports responsive layouts and includes a "Show More" feature for mobile users.
+ *
+ * Props:
+ * - `onGroupSelect` (function): Callback triggered when a study group is selected.
+ * - `refreshTrigger` (number, optional): A value to trigger data refreshes (default: 0).
+ *
+ * State:
+ * - `studyGroups` (StudyGroup[]): List of study groups fetched from the server.
+ * - `selectedGroupId` (string | null): ID of the currently selected study group.
+ * - `isMobile` (boolean): Indicates if the current device is mobile.
+ * - `showAll` (boolean): Determines if all study groups are displayed on mobile.
+ *
+ * Functions:
+ * - `getClosestDate`: Finds the nearest upcoming date from a list of dates or the most recent past date if no future dates exist.
+ * - `fetchStudyGroups`: Fetches study groups from the server and sets the initial selected group.
+ * - `handleGroupClick`: Handles the selection of a study group and updates the state.
+ *
+ * Effects:
+ * - Fetches study groups when the component mounts or `refreshTrigger` changes.
+ * - Updates the selected group when the list of groups changes.
+ *
+ * Components:
+ * - Renders each study group as a clickable button.
+ * - Displays a "Show More" or "Show Less" button on mobile devices if there are more than three study groups.
+ *
+ * External Actions:
+ * - `getAllPosts`: Fetches all study groups from the server.
+ *
+ * Behavior:
+ * - Displays a list of study groups with details such as name, subjects, creator, members, and upcoming sessions.
+ * - Allows users to select a study group to view its details.
+ * - Includes responsive layouts for mobile and desktop devices.
+ *
+ * Types:
+ * - `StudyGroup`: Defines the structure of a study group, including its name, bio, subjects, dates, and members.
+ */
+
 import { useEffect, useState } from "react";
 import { getAllPosts } from "@/actions/postactions";
 import { useIsMobile } from "@/hooks/use-mobile";
