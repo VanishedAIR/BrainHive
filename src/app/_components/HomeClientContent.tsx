@@ -1,4 +1,3 @@
-
 "use client";
 
 /**
@@ -117,17 +116,6 @@ export default function HomeClientContent() {
               className="w-full pr-20 py-6 px-4 h-12 rounded-md border-2 border-primary dark:border-primary outline-none transition-all focus:ring-2 focus:ring-primary/30"
             />
             <div className="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center">
-              {searchTerm && (
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={clearSearch}
-                  className="mr-1 hover:bg-transparent"
-                >
-                  <X className="w-5 h-5 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300" />
-                </Button>
-              )}
               {isSearching ? (
                 <div className="animate-spin h-5 w-5 border-2 border-primary border-t-transparent rounded-full mr-1"></div>
               ) : (
