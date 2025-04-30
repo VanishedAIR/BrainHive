@@ -1,3 +1,4 @@
+
 "use client";
 
 /**
@@ -39,13 +40,12 @@
 
 import StudygroupSidebar from "./StudygroupSidebar";
 import Feed from "./feed";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import type { StudyGroup } from "./feed";
 import { Button } from "@/components/ui/button";
 import { UserSidebar } from "./UserSidebar";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, X, Search } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Search } from "lucide-react";
 
 export default function HomeClientContent() {
   const [selectedGroup, setSelectedGroup] = useState<StudyGroup | null>(null);
@@ -53,6 +53,7 @@ export default function HomeClientContent() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState<StudyGroup[] | null>(null);
+  const [isSearching, setIsSearching] = useState(false);
   const isMobile = useIsMobile();
 
   const handleGroupSelect = (group: StudyGroup) => {
@@ -63,13 +64,28 @@ export default function HomeClientContent() {
     setRefreshTrigger((prev) => prev + 1);
   }, []);
 
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      if (searchTerm.trim()) {
+        handleSearch();
+      } else {
+        setSearchResults(null);
+      }
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchTerm]);
+
   const handleSearch = async () => {
     if (!searchTerm.trim()) {
-      setSearchResults(null); // reset to full feed
+      setSearchResults(null);
       return;
     }
+
+    setIsSearching(true);
+
     try {
-      const res = await fetch(`/api/search?q=${encodeURIComponent(searchTerm)}`);
+      const res = await fetch(`/api/search?q=${encodeURIComponent(searchTerm)}&includeSubjects=true`);
       if (!res.ok) {
         throw new Error(`HTTP error! status: ${res.status}`);
       }
@@ -77,37 +93,55 @@ export default function HomeClientContent() {
       setSearchResults(data);
     } catch (error) {
       console.error("Search request failed:", error);
-      setSearchResults(null); // reset to full feed
-      // Optionally, set an error message state here to display to the user
+      setSearchResults(null);
+    } finally {
+      setIsSearching(false);
     }
+  };
+
+  const clearSearch = () => {
+    setSearchTerm("");
+    setSearchResults(null);
   };
 
   return (
     <div className="flex-1 pt-4 px-4">
       <div className="flex flex-col max-w-[1500px] mx-auto">
-        {/* Search section */}
         <div className="w-full md:w-[60%] lg:w-[50%] p-4 mb-8 md:mb-16 mx-auto">
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleSearch();
-            }}
-            className="relative"
-          >
+          <div className="relative">
             <input
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search..."
-              className="w-full pr-10 py-6 px-4 h-12 rounded-md border-2 border-primary dark:border-primary outline-none"
+              placeholder="Search for study groups..."
+              className="w-full pr-20 py-6 px-4 h-12 rounded-md border-2 border-primary dark:border-primary outline-none transition-all focus:ring-2 focus:ring-primary/30"
             />
-            <Button
-              type="submit"
-              className="absolute right-2 top-1/2 transform -translate-y-1/2"
-            >
-              <Search className="w-6 h-6" />
-            </Button>
-          </form>
+            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center">
+              {searchTerm && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={clearSearch}
+                  className="mr-1 hover:bg-transparent"
+                >
+                  <X className="w-5 h-5 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300" />
+                </Button>
+              )}
+              {isSearching ? (
+                <div className="animate-spin h-5 w-5 border-2 border-primary border-t-transparent rounded-full mr-1"></div>
+              ) : (
+                <Search className="w-5 h-5 text-primary" />
+              )}
+            </div>
+          </div>
+          {searchTerm && searchResults && (
+            <div className="text-sm text-gray-500 mt-2">
+              <span>
+                Found {searchResults.length} {searchResults.length === 1 ? "group" : "groups"} matching "{searchTerm}"
+              </span>
+            </div>
+          )}
         </div>
 
         <div className="relative border-2 border-border rounded-xl overflow-hidden mb-8 md:mb-16">
@@ -192,7 +226,9 @@ export default function HomeClientContent() {
                     ))}
                   </div>
                 ) : (
-                  <p className="text-muted-foreground">No results found.</p>
+                  <div className="flex flex-col items-center justify-center h-full">
+                    <p className="text-muted-foreground text-center">No study groups found matching "{searchTerm}"</p>
+                  </div>
                 )
               ) : (
                 <Feed
