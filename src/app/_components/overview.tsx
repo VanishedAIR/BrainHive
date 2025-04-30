@@ -2,6 +2,49 @@
 import Image from "next/image";
 import { useState } from "react";
 
+/**
+ * Overview Component
+ *
+ * This component renders the "Overview" section of the BrainHive application, showcasing its key features with interactive visuals and descriptions.
+ *
+ * Features:
+ * - Displays an overview of BrainHive's functionality, including:
+ *   - Real-time Study Group Feed
+ *   - Dynamic Search Functionality
+ *   - Comprehensive Study Group Details
+ *   - User Profile Management
+ *   - Light and Dark Mode Support
+ * - Includes interactive images that open in a modal for a closer look.
+ * - Provides detailed descriptions of each feature to engage users.
+ *
+ * State:
+ * - `selectedImage` (object | null): Tracks the currently selected image for the modal. Contains:
+ *   - `src` (string): The image source URL.
+ *   - `alt` (string): The image alt text for accessibility.
+ *   - `width` (number): The image width.
+ *   - `height` (number): The image height.
+ *
+ * Functions:
+ * - `openModal(image)`: Opens the modal with the selected image and disables page scrolling.
+ * - `closeModal()`: Closes the modal and re-enables page scrolling.
+ *
+ * Components:
+ * - `Image`: Displays images for each feature with hover effects.
+ * - Modal: Displays a larger version of the selected image in a lightbox-style overlay.
+ *
+ * Styling:
+ * - Uses Tailwind CSS for responsive layouts and hover effects.
+ * - Includes gradient overlays and transitions for interactive elements.
+ *
+ * Accessibility:
+ * - Images include `alt` attributes for screen readers.
+ * - The modal includes a close button with accessible labels.
+ *
+ * Behavior:
+ * - Encourages user interaction with clickable images and detailed descriptions.
+ * - Provides a visually appealing and responsive design for both desktop and mobile users.
+ */
+
 export default function Overview() {
   const [selectedImage, setSelectedImage] = useState<{
     src: string;
