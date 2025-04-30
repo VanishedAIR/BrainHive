@@ -1,3 +1,49 @@
+/**
+ * StudyGroupToggle Component
+ *
+ * This component provides functionality for users to join or leave a study group. It also checks if the user is the owner of the study group and adjusts the UI accordingly.
+ *
+ * Props:
+ * - `postId` (string): The ID of the study group.
+ * - `refreshTrigger` (number, optional): A value to trigger data refreshes (default: 0).
+ * - `refreshData` (function, optional): A callback function to refresh the study group data.
+ *
+ * State:
+ * - `isLoading` (boolean): Indicates whether a join or leave action is in progress.
+ * - `isMember` (boolean): Tracks whether the user is a member of the study group.
+ * - `isOwner` (boolean): Tracks whether the user is the owner of the study group.
+ * - `isCheckingStatus` (boolean): Indicates whether the component is checking the user's membership and ownership status.
+ *
+ * Functions:
+ * - `checkStatus`: Checks if the user is the owner or a member of the study group.
+ * - `handleJoin`: Handles the action for joining the study group.
+ * - `handleLeave`: Handles the action for leaving the study group.
+ *
+ * Components:
+ * - `Button`: A styled button component for actions like joining or leaving the study group.
+ *
+ * Behavior:
+ * - Displays a loading state while checking the user's membership and ownership status.
+ * - Shows a disabled button if the user is the owner of the study group.
+ * - Displays a "Join Group" button if the user is not a member or owner.
+ * - Displays a "Leave Group" button if the user is a member but not the owner.
+ * - Refreshes the study group data after a successful join or leave action if `refreshData` is provided.
+ *
+ * External Actions:
+ * - `checkMembership`: Checks if the user is a member of the study group.
+ * - `joinStudyGroup`: Adds the user to the study group.
+ * - `leaveStudyGroup`: Removes the user from the study group.
+ * - `getUserOwnedStudyGroups`: Retrieves the list of study groups owned by the user.
+ * - `toast`: Displays success or error notifications to the user.
+ *
+ * Styling:
+ * - Uses Tailwind CSS for consistent styling and responsive design.
+ *
+ * Accessibility:
+ * - Buttons include proper labels and states for screen readers.
+ * - Ensures proper feedback for loading and error states.
+ */
+
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
