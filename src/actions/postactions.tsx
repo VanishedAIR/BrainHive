@@ -1,9 +1,8 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 
-// Function to create a new study group
 export async function createPost(data: {
   studyGroupName: string;
   studyGroupBio?: string | null; //optional = nullable
@@ -13,6 +12,22 @@ export async function createPost(data: {
   studyTime: string;
   location: string;
 }) {
+  /*
+   Creates a new study group post.
+   
+   Args:
+     data: Object containing study group details:
+       - studyGroupName: Name of the study group
+       - studyGroupBio: Optional description of the study group
+       - subjects: Array of subjects for the study group
+       - when2MeetLink: Optional link to When2Meet scheduling tool
+       - studyDates: Array of dates for study sessions
+       - studyTime: Time for study sessions
+       - location: Location for study sessions
+   
+   Returns:
+     Object with success status and the created study group if successful.
+  */
   try {
     const { userId } = await auth();
 
@@ -34,6 +49,7 @@ export async function createPost(data: {
 
     console.log("Creating study group with data:", data);
 
+    // Format the study time to be in the format of "HH:MM AM/PM"
     const formattedStudyTime = new Date(
       `1970-01-01T${data.studyTime}`
     ).toLocaleTimeString("en-US", {
@@ -42,6 +58,7 @@ export async function createPost(data: {
       hour12: true,
     });
 
+    // Create the study group
     const studyGroup = await prisma.studyGroup.create({
       data: {
         studyGroupName: data.studyGroupName,
@@ -74,8 +91,16 @@ export async function createPost(data: {
   }
 }
 
-// Function to get all study groups
 export async function getAllPosts() {
+  /*
+   Retrieves all study groups.
+   
+   Args:
+     None
+   
+   Returns:
+     Array of study group objects.
+  */
   try {
     const studyGroups = await prisma.studyGroup.findMany({
       include: {
@@ -100,8 +125,16 @@ export async function getAllPosts() {
   }
 }
 
-// Function to get a single study group by ID
 export async function getPostById(postId: string) {
+  /*
+   Retrieves a specific study group by its ID.
+   
+   Args:
+     postId (string): The ID of the study group to retrieve
+   
+   Returns:
+     Object with success status and the study group if found.
+  */
   try {
     const studyGroup = await prisma.studyGroup.findUnique({
       where: {
@@ -130,8 +163,16 @@ export async function getPostById(postId: string) {
   }
 }
 
-// Function to delete a study group by ID
 export async function deletePost(postId: string) {
+  /*
+   Deletes a study group by its ID.
+   
+   Args:
+     postId (string): The ID of the study group to delete
+   
+   Returns:
+     Object with success status and message.
+  */
   try {
     const { userId } = await auth();
 
@@ -139,7 +180,7 @@ export async function deletePost(postId: string) {
       return { success: false, message: "Not authenticated" };
     }
 
-    // Find the study group to ensure it belongs to the authenticated user
+    // Find the study group to make sure it belongs to the user
     const studyGroup = await prisma.studyGroup.findFirst({
       where: {
         id: postId,
@@ -149,6 +190,7 @@ export async function deletePost(postId: string) {
       },
     });
 
+    // If the study group is not found, return an error
     if (!studyGroup) {
       return {
         success: false,
@@ -172,6 +214,15 @@ export async function deletePost(postId: string) {
 
 // Function to join a study group
 export async function joinStudyGroup(postId: string) {
+  /*
+   Adds the current user as a member of a study group.
+   
+   Args:
+     postId (string): The ID of the study group to join
+   
+   Returns:
+     Object with success status and message.
+  */
   try {
     const { userId } = await auth();
 
@@ -205,6 +256,7 @@ export async function joinStudyGroup(postId: string) {
       },
     });
 
+    // If the user is already a member, return an error
     if (existingMembership) {
       return {
         success: false,
@@ -236,6 +288,15 @@ export async function joinStudyGroup(postId: string) {
 
 // Function to leave a study group
 export async function leaveStudyGroup(postId: string) {
+  /*
+   Removes the current user from a study group.
+   
+   Args:
+     postId (string): The ID of the study group to leave
+   
+   Returns:
+     Object with success status and message.
+  */
   try {
     const { userId } = await auth();
 
@@ -284,8 +345,16 @@ export async function leaveStudyGroup(postId: string) {
   }
 }
 
-// Check if a user is a member of a study group
 export async function checkMembership(postId: string) {
+  /*
+   Checks if the current user is a member of a specific study group.
+   
+   Args:
+     postId (string): The ID of the study group to check
+   
+   Returns:
+     Object with isMember boolean status.
+  */
   try {
     const { userId } = await auth();
 
@@ -307,6 +376,7 @@ export async function checkMembership(postId: string) {
       };
     }
 
+    // Check if the user is a member of the study group
     const membership = await prisma.studyGroupMember.findUnique({
       where: {
         userId_postId: {
@@ -327,8 +397,16 @@ export async function checkMembership(postId: string) {
   }
 }
 
-// Get all study groups a user is a member of
 export async function getUserStudyGroups() {
+  /*
+   Retrieves all study groups the current user is a member of.
+   
+   Args:
+     None
+   
+   Returns:
+     Object with success status, message, and array of study group objects.
+  */
   try {
     const { userId } = await auth();
 
@@ -381,8 +459,16 @@ export async function getUserStudyGroups() {
   }
 }
 
-// Get all study groups a user has created (is the author of)
 export async function getUserOwnedStudyGroups() {
+  /*
+   Retrieves all study groups created by the current user.
+   
+   Args:
+     None
+   
+   Returns:
+     Object with success status, message, and array of study group objects.
+  */
   try {
     const { userId } = await auth();
 
