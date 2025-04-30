@@ -4,12 +4,23 @@ import prisma from "@/lib/prisma";
 import { auth, currentUser, clerkClient } from "@clerk/nextjs/server";
 
 export async function syncUser() {
+  /*
+   Synchronizes the Clerk user with the database.
+   
+   Args:
+     null
+   
+   Returns:
+     User object if successful, undefined otherwise.
+   */
   try {
     const { userId } = await auth();
     const user = await currentUser();
 
+    // If the user is not authenticated or doesn't exist, return
     if (!userId || !user) return;
 
+    // Check if the user already exists in the database
     const existingUser = await prisma.user.findUnique({
       where: {
         clerkId: userId,
@@ -18,6 +29,7 @@ export async function syncUser() {
 
     if (existingUser) return existingUser;
 
+    // Create a new user in the database
     const dbUser = await prisma.user.create({
       data: {
         clerkId: userId,
@@ -37,11 +49,21 @@ export async function syncUser() {
 }
 
 export async function getCurrentUser() {
+  /*
+   Gets the current user from the database.
+   
+   Args:
+     null
+   
+   Returns:
+     User object if found, null otherwise.
+   */
   try {
     const { userId } = await auth();
 
     if (!userId) return null;
 
+    // Get the user from the database
     const user = await prisma.user.findFirst({
       where: {
         clerkId: userId,
@@ -65,6 +87,15 @@ export async function getCurrentUser() {
 }
 
 export async function updateUsername(newUsername: string) {
+  /*
+   Updates the username for the current user.
+   
+   Args:
+     newUsername (string): The new username to set
+   
+   Returns:
+     Object with success status and message.
+   */
   try {
     const { userId } = await auth();
 
@@ -91,7 +122,7 @@ export async function updateUsername(newUsername: string) {
       return { success: false, message: "User not found" };
     }
 
-    // If username hasn't changed, return success without doing anything
+    // If username hasn't changed, return without doing anything
     if (currentUserDb.username === newUsername) {
       return { success: true };
     }
@@ -117,7 +148,7 @@ export async function updateUsername(newUsername: string) {
       },
     });
 
-    // Also update the username in all StudyGroupMember records for this user
+    // Update the username in all StudyGroupMember records for this user
     await prisma.studyGroupMember.updateMany({
       where: {
         userId: currentUserDb.id,
@@ -135,6 +166,15 @@ export async function updateUsername(newUsername: string) {
 }
 
 export async function deleteCurrentUser() {
+  /*
+   Deletes the current user account.
+   
+   Args:
+     null
+   
+   Returns:
+     Object with success status and message.
+   */
   try {
     const { userId } = await auth();
 
@@ -179,13 +219,24 @@ export async function deleteCurrentUser() {
 }
 
 export async function searchStudyGroups(query: string) {
+  /*
+   Searches for study groups based on a text query.
+   
+   Args:
+     query (string): The search term to look for
+   
+   Returns:
+     Array of study group objects matching the query.
+   */
   console.log(" searchStudyGroups() called!");
 
   try {
+    // If the query is empty, return an empty Array
     if (!query.trim()) return [];
 
     console.log("Search Query:", query);
 
+    // Find all study groups that match the query
     const results = await prisma.studyGroup.findMany({
       where: {
         OR: [
