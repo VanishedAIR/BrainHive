@@ -1,5 +1,42 @@
 "use client";
 
+/**
+ * HomeClientContent Component
+ *
+ * This component serves as the main content area for the Study Group Finder application.
+ * It includes a search bar, a feed of study groups, and sidebars for user and study group details.
+ *
+ * State:
+ * - `selectedGroup` (StudyGroup | null): The currently selected study group.
+ * - `refreshTrigger` (number): A value used to trigger data refreshes.
+ * - `isSidebarOpen` (boolean): Indicates whether the user sidebar is open.
+ * - `searchTerm` (string): The current search input value.
+ * - `searchResults` (StudyGroup[] | null): The results of the search query, or `null` if no search is active.
+ *
+ * Functions:
+ * - `handleGroupSelect`: Sets the selected study group.
+ * - `refreshData`: Triggers a refresh of the feed and sidebars.
+ * - `handleSearch`: Executes a search query and updates the search results.
+ *
+ * Components:
+ * - `StudygroupSidebar`: Displays details about the selected study group.
+ * - `Feed`: Displays a list of study groups.
+ * - `UserSidebar`: Displays user-specific information and actions.
+ * - `Button`: A reusable button component.
+ *
+ * External Hooks:
+ * - `useIsMobile`: Determines if the current device is mobile.
+ *
+ * API Calls:
+ * - `/api/search`: Fetches search results based on the user's query.
+ *
+ * Behavior:
+ * - Displays a search bar for filtering study groups.
+ * - Shows a list of study groups or search results.
+ * - Allows users to select a study group to view its details.
+ * - Includes responsive layouts for mobile and desktop devices.
+ */
+
 import StudygroupSidebar from "./StudygroupSidebar";
 import Feed from "./feed";
 import { useState, useCallback } from "react";
