@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { auth, currentUser, clerkClient } from "@clerk/nextjs/server";
 
 export async function syncUser() {
   try {
@@ -10,7 +10,6 @@ export async function syncUser() {
 
     if (!userId || !user) return;
 
-    // existing user
     const existingUser = await prisma.user.findUnique({
       where: {
         clerkId: userId,
@@ -154,7 +153,7 @@ export async function deleteCurrentUser() {
       return { success: false, message: "User not found" };
     }
 
-    // First, delete all study groups authored by the user
+    // Delete all study groups authored by the user
     await prisma.studyGroup.deleteMany({
       where: {
         authorId: user.id,
@@ -167,6 +166,10 @@ export async function deleteCurrentUser() {
         id: user.id,
       },
     });
+
+    // Delete the user from Clerk's system
+    const client = await clerkClient();
+    await client.users.deleteUser(userId);
 
     return { success: true };
   } catch (error) {
