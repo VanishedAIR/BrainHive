@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/themeprovider";
 import { Toaster } from "@/components/ui/toaster";
 import { SmallScreenWarning } from "@/components/SmallScreenWarning";
+import Footer from "./_components/Footer";
 
 export const metadata: Metadata = {
   title: "BrainHive",
@@ -29,10 +30,15 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ClerkProvider>
-            <SmallScreenWarning>
-              {children}
-              <Toaster />
-            </SmallScreenWarning>
+            <div className="flex flex-col min-h-screen">
+              <SmallScreenWarning>
+                <main className="flex-1 flex flex-col">
+                  {children}
+                  <Toaster />
+                </main>
+                <Footer />
+              </SmallScreenWarning>
+            </div>
           </ClerkProvider>
         </ThemeProvider>
       </body>
