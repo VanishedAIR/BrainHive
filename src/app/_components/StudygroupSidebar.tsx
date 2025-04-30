@@ -1,3 +1,48 @@
+/**
+ * StudygroupSidebar Component
+ *
+ * This component displays detailed information about a selected study group, including its name, bio, subjects, sessions, members, and other relevant details.
+ * It also provides interactive options like toggling membership and accessing external links.
+ *
+ * Props:
+ * - `selectedGroup` (StudyGroup | null): The currently selected study group.
+ * - `refreshTrigger` (number, optional): A value to trigger data refreshes (default: 0).
+ * - `refreshData` (function, optional): A callback function to refresh the study group data.
+ *
+ * State:
+ * - `currentGroup` (StudyGroup | null): The currently displayed study group.
+ * - `showAllMembers` (boolean): Tracks whether all members of the study group are displayed.
+ *
+ * Functions:
+ * - `updateGroup`: Fetches the latest details of the selected study group when it changes or when `refreshTrigger` updates.
+ *
+ * Components:
+ * - `Button`: A styled button component for actions like opening links.
+ * - `StudyGroupToggle`: A component for toggling membership in the study group.
+ *
+ * Behavior:
+ * - Displays study group details such as:
+ *   - Name, bio, subjects, and study sessions.
+ *   - Creation date and creator information.
+ *   - List of members with an option to show more or fewer members.
+ *   - Links to external resources like When2Meet or location URLs.
+ * - Updates the displayed study group details dynamically when the selected group or `refreshTrigger` changes.
+ *
+ * Styling:
+ * - Uses Tailwind CSS for responsive layouts and consistent styling.
+ * - Includes hover effects and transitions for interactive elements.
+ *
+ * Accessibility:
+ * - Includes accessible labels and descriptions for buttons and links.
+ * - Ensures proper keyboard navigation and screen reader support.
+ *
+ * External Actions:
+ * - `getPostById`: Fetches the latest details of a study group from the server.
+ *
+ * Limitations:
+ * - Displays a placeholder message if no study group is selected.
+ */
+
 import type { StudyGroup } from "./feed";
 import { Button } from "@/components/ui/button";
 import StudyGroupToggle from "./StudyGroupToggle";

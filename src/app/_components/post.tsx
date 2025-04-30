@@ -1,5 +1,58 @@
 "use client";
 
+/**
+ * PostPage Component
+ *
+ * This component allows users to create a new study group post. It includes a form for entering study group details such as name, bio, subjects, dates, time, and location.
+ *
+ * Props:
+ * - `redirectPath` (string, optional): The path to redirect the user after successfully creating a study group.
+ *
+ * State:
+ * - `studyGroupName` (string): The name of the study group.
+ * - `studyGroupBio` (string): A brief description of the study group.
+ * - `subjects` (string[]): An array of subjects associated with the study group.
+ * - `newSubject` (string): Temporary input for adding a new subject.
+ * - `when2MeetLink` (string): A link to a When2Meet scheduling page (optional).
+ * - `studyDates` (string[]): An array of selected study dates.
+ * - `newStudyDate` (string): Temporary input for adding a new study date.
+ * - `studyTime` (string): The selected study time.
+ * - `location` (string): The location of the study group.
+ * - `loading` (boolean): Indicates whether the form submission is in progress.
+ * - `posts` (any[]): Local state to store posts (not currently used).
+ *
+ * Functions:
+ * - `handleAddSubject`: Adds a new subject to the `subjects` array.
+ * - `handleRemoveSubject`: Removes a subject from the `subjects` array.
+ * - `handleAddStudyDate`: Adds a new date to the `studyDates` array.
+ * - `handleRemoveStudyDate`: Removes a date from the `studyDates` array.
+ * - `handleSubmit`: Validates the form, submits the study group data, and handles success or error responses.
+ *
+ * Components:
+ * - `Input`: A reusable input field component.
+ * - `Label`: A reusable label component for form fields.
+ * - `Button`: A styled button component for actions like adding subjects, dates, or submitting the form.
+ *
+ * External Actions:
+ * - `createPost`: Sends the study group data to the server to create a new post.
+ * - `toast`: Displays success or error notifications to the user.
+ * - `router.push`: Redirects the user to the specified path after successful form submission.
+ *
+ * Styling:
+ * - Uses Tailwind CSS for responsive design and consistent styling.
+ * - Includes hover effects, transitions, and accessibility features.
+ *
+ * Accessibility:
+ * - Includes `aria-labels` and `alt` attributes for screen readers.
+ * - Provides tooltips for additional context on certain fields (e.g., When2Meet link, location).
+ *
+ * Behavior:
+ * - Validates required fields before submission.
+ * - Displays error messages for missing or invalid inputs.
+ * - Resets the form fields after successful submission.
+ * - Redirects the user to the specified path if `redirectPath` is provided.
+ */
+
 import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
