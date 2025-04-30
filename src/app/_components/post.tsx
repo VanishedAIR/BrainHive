@@ -168,6 +168,18 @@ const PostPage: React.FC<PostProps> = ({ redirectPath }) => {
       return;
     }
 
+    if (when2MeetLink.trim()) {
+      if (!when2MeetLink.startsWith("https://") || !when2MeetLink.includes("when2meet")) {
+        toast({
+          title: "Invalid When2Meet Link",
+          description: "Please enter a secure When2Meet link (must start with https:// and include when2meet)",
+          variant: "destructive",
+        });
+        setLoading(false);
+        return;
+      }
+    }
+
     try {
       const postData = {
         studyGroupName: studyGroupName.trim(),
