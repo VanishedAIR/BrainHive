@@ -11,6 +11,11 @@ import {
 jest.mock("@clerk/nextjs/server", () => ({
   auth: jest.fn(),
   currentUser: jest.fn(),
+  clerkClient: jest.fn().mockResolvedValue({
+    users: {
+      deleteUser: jest.fn().mockResolvedValue({}),
+    },
+  }),
 }));
 
 // Mock Prisma client
@@ -35,11 +40,12 @@ jest.mock("@/lib/prisma", () => ({
 }));
 
 // Import the mocked modules
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { auth, currentUser, clerkClient } from "@clerk/nextjs/server";
 import prisma from "@/lib/prisma";
 
 const mockedAuth = auth as unknown as jest.Mock;
 const mockedCurrentUser = currentUser as unknown as jest.Mock;
+const mockedClerkClient = clerkClient as unknown as jest.Mock;
 
 describe("User Actions", () => {
   beforeEach(() => {
